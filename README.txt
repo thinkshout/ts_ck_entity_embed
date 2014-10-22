@@ -1,6 +1,6 @@
 ## SUMMARY
 
-Enabled embedding of entities into a WYSIWYG text field using CKEditor.
+Enables embedding of entities into a WYSIWYG text field using CKEditor.
 
 ## REQUIREMENTS
 

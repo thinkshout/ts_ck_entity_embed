@@ -1,0 +1,6 @@
+name = TS CK Entity Embed
+description = Embed entities into a WYSIWYG text field using CKEditor.
+package = TS CK Entity Embed
+core = 7.x
+
+dependencies[] = ckeditor

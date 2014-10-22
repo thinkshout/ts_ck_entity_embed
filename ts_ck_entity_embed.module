@@ -4,3 +4,37 @@
  * @file
  * Defines core TS CK Entity Embed functionality.
  */
+
+/**
+ * Implements hook_hook_info().
+ */
+function ts_ck_entity_embed_hook_info() {
+  $hooks = array(
+    'ts_ck_entity_embed_entity_info' => array(
+      'group' => 'ts_ck_entity_embed',
+    ),
+  );
+
+  return $hooks;
+}
+
+/**
+ * Gets embeddable entity information.
+ *
+ * @see hook_ts_ck_entity_embed_entity_info()
+ */
+function ts_ck_entity_embed_get_entity_info() {
+  $entity_info = &drupal_static(__FUNCTION__);
+
+  if (!isset($entity_info)) {
+    $entity_info = array();
+
+    foreach (module_implements('ts_ck_entity_embed_entity_info') as $module) {
+      foreach (module_invoke($module, 'ts_ck_entity_embed_entity_info') as $entity_id => $info) {
+        $entity_info[$entity_id] = $info;
+      }
+    }
+  }
+
+  return $entity_info;
+}

@@ -19,6 +19,50 @@ function ts_ck_entity_embed_hook_info() {
 }
 
 /**
+ * Implements hook_permission().
+ */
+function ts_ck_entity_embed_permission() {
+  return array(
+    'access ckeditor entity embed' => array(
+      'title' => t('Access CKEditor Entity Embed plugin'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_wysiwyg_plugin().
+ */
+function ts_ck_entity_embed_wysiwyg_plugin($editor, $version) {
+  if (($editor == 'ckeditor') && user_access('access ckeditor entity embed')) {
+    return array('drupal_path' => array(
+      'path' => drupal_get_path('module', 'ts_ck_entity_embed') .'/plugins/entity/',
+      'load' => TRUE,
+      'extensions' => array('Link' => t('CKEditor Entity Embed')),
+    ));
+  }
+}
+
+/**
+ * Implements hook_filter_info().
+ */
+function ts_ck_entity_embed_filter_info() {
+  $filters['ckeditor_entity_embed'] = array(
+    'title' => t('CKEditor Entity Embed'),
+    'description' => t('Renders entities embedded into a text field.'),
+    'process callback' => 'ts_ck_entity_embed_filter_process',
+  );
+
+  return $filters;
+}
+
+/**
+ * Filter process callback for CKEditor Entity Embed plugin.
+ */
+function ts_ck_entity_embed_filter_process($text, $filter, $format, $langcode, $cache, $cache_id) {
+
+}
+
+/**
  * Gets embeddable entity information.
  *
  * @see hook_ts_ck_entity_embed_entity_info()

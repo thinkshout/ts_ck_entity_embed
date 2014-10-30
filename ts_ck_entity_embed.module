@@ -111,8 +111,8 @@ function ts_ck_entity_embed_get_entity_info() {
     $entity_info = array();
 
     foreach (module_implements('ts_ck_entity_embed_entity_info') as $module) {
-      foreach (module_invoke($module, 'ts_ck_entity_embed_entity_info') as $entity_id => $info) {
-        $entity_info[$entity_id] = $info;
+      foreach (module_invoke($module, 'ts_ck_entity_embed_entity_info') as $entity_name => $info) {
+        $entity_info[$entity_name] = $info;
       }
     }
   }

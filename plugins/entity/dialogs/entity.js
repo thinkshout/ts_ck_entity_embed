@@ -11,17 +11,17 @@ CKEDITOR.dialog.add('entityDialog', function(editor) {
 
   if (entity_info) {
 
-    for (var entity_id in entity_info) {
+    for (var entity_name in entity_info) {
 
       var tab = {
-        id: 'tab-' + entity_id,
-        label: entity_id,
+        id: 'tab-' + entity_name,
+        label: entity_name,
 
         elements: [
           {
             type: 'text',
-            id: 'entity-' + entity_id + '-id',
-            label: 'Select ' + entity_id,
+            id: 'entity-' + entity_name + '-id',
+            label: 'Select ' + entity_name,
           }
         ]
       };

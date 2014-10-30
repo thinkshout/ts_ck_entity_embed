@@ -51,6 +51,35 @@ function ts_ck_entity_embed_ckeditor_plugin() {
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function ts_ck_entity_embed_form_alter(&$form, &$form_state, $form_id) {
+  // TODO: Limit to forms with CKEditor enabled.
+
+  // Attach embeddable entity info to form.
+  $entity_info = ts_ck_entity_embed_get_entity_info();
+
+  $attached_js = array(
+    array(
+      'data' => array(
+        'ts_ck_entity_embed' => array('entity_info' => $entity_info),
+      ),
+      'type' => 'setting',
+    ),
+  );
+
+  if (!isset($form['#attached'])) {
+    $form['#attached'] = array();
+  }
+
+  if (!isset($form['#attached']['js'])) {
+    $form['#attached']['js'] = array();
+  }
+
+  $form['#attached']['js'] += $attached_js;
+}
+
+/**
  * Implements hook_filter_info().
  */
 function ts_ck_entity_embed_filter_info() {

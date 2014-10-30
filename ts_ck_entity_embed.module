@@ -33,19 +33,21 @@ function ts_ck_entity_embed_permission() {
  * Implements hook_ckeditor_plugin().
  */
 function ts_ck_entity_embed_ckeditor_plugin() {
-  return array(
-    'entity' => array(
-      'name' => 'entity',
-      'desc' => t('Plugin for embedding entities.'),
-      'path' => drupal_get_path('module', 'ts_ck_entity_embed') . '/plugins/entity/',
-      //'buttons' => array(
-      //  'button_name' => array(
-      //    'icon' => 'path to button icon',
-      //    'label' => 'Button Label',
-      //  )
-      //),
+  $plugins = array();
+
+  $plugins['entity'] = array(
+    'name' => 'entity',
+    'desc' => t('Plugin for embedding entities.'),
+    'path' => drupal_get_path('module', 'ts_ck_entity_embed') . '/plugins/entity/',
+    'buttons' => array(
+      'button_name' => array(
+        'icon' => 'icons/entity.png',
+        'label' => 'Entity',
+      ),
     ),
   );
+
+  return $plugins;
 }
 
 /**

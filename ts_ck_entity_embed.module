@@ -40,7 +40,7 @@ function ts_ck_entity_embed_ckeditor_plugin() {
     'desc' => t('Plugin for embedding entities.'),
     'path' => drupal_get_path('module', 'ts_ck_entity_embed') . '/plugins/entity/',
     'buttons' => array(
-      'button_name' => array(
+      'Entity' => array(
         'icon' => 'icons/entity.png',
         'label' => 'Entity',
       ),

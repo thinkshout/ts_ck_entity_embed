@@ -35,9 +35,9 @@ function ts_ck_entity_embed_permission() {
 function ts_ck_entity_embed_wysiwyg_plugin($editor, $version) {
   if (($editor == 'ckeditor') && user_access('access ckeditor entity embed')) {
     return array('drupal_path' => array(
-      'path' => drupal_get_path('module', 'ts_ck_entity_embed') .'/plugins/entity/',
+      'path' => drupal_get_path('module', 'ts_ck_entity_embed') . '/plugins/entity/',
       'load' => TRUE,
-      'extensions' => array('Link' => t('CKEditor Entity Embed')),
+      'extensions' => array('Entity' => t('CKEditor Entity Embed')),
     ));
   }
 }

@@ -6,6 +6,22 @@
  */
 
 /**
+ * Implements hook_menu().
+ */
+function ts_ck_entity_embed_menu() {
+  $items = array();
+
+  $items['admin/ts_ck_entity_embed/entities/%'] = array(
+    'page callback' => 'ts_ck_entity_embed_entity_autocomplete',
+    'page arguments' => array(3),
+    'access callback' => 'ts_ck_entity_embed_permission',
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
  * Implements hook_hook_info().
  */
 function ts_ck_entity_embed_hook_info() {
@@ -118,4 +134,30 @@ function ts_ck_entity_embed_get_entity_info() {
   }
 
   return $entity_info;
+}
+
+/**
+ * Autocomplete callback for entity lookup.
+ */
+function ts_ck_entity_embed_entity_autocomplete($entity_type, $string) {
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', $entity_type)
+    ->propertyCondition('title', $string, 'CONTAINS')
+    ->range(0, 10);
+
+  $entities = array();
+
+  $result = $query->execute();
+  if (isset($result[$entity_type])) {
+    $entity_ids = array_keys($result[$entity_type]);
+    $entities_data = entity_load($entity_type, $entity_ids);
+
+    if (!empty($entities_data)) {
+      foreach ($entities_data as $id => $entity) {
+        $entities[$entity->title . ' [' . $id . ']'] = $entity->title;
+      }
+    }
+  }
+
+  drupal_json_output($entities);
 }

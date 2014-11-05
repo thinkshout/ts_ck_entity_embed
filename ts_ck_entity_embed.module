@@ -12,7 +12,7 @@ function ts_ck_entity_embed_menu() {
   $items = array();
 
   $items['admin/ts_ck_entity_embed/entities/%'] = array(
-    'page callback' => 'ts_ck_entity_embed_entity_autocomplete',
+    'page callback' => 'ts_ck_entity_embed_entity_search',
     'page arguments' => array(3),
     'access callback' => 'ts_ck_entity_embed_permission',
     'type' => MENU_CALLBACK,
@@ -137,9 +137,9 @@ function ts_ck_entity_embed_get_entity_info() {
 }
 
 /**
- * Autocomplete callback for entity lookup.
+ * Search callback for entity lookup.
  */
-function ts_ck_entity_embed_entity_autocomplete($entity_type, $string) {
+function ts_ck_entity_embed_entity_search($entity_type, $string) {
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', $entity_type)
     ->propertyCondition('title', $string, 'CONTAINS')
@@ -154,7 +154,11 @@ function ts_ck_entity_embed_entity_autocomplete($entity_type, $string) {
 
     if (!empty($entities_data)) {
       foreach ($entities_data as $id => $entity) {
-        $entities[$entity->title . ' [' . $id . ']'] = $entity->title;
+        $entities[] = array(
+          'id' => $id,
+          'title' => $entity->title,
+          'view_modes' => array(),
+        );
       }
     }
   }

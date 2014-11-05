@@ -21,7 +21,7 @@ CKEDITOR.dialog.add('entityDialog', function(editor) {
           {
             type: 'text',
             id: 'entity-' + entity_type + '-id',
-            label: 'Select ' + entity_type,
+            label: 'Find ' + entity_type,
           }
         ]
       };
@@ -31,8 +31,6 @@ CKEDITOR.dialog.add('entityDialog', function(editor) {
     }
   }
 
-  console.log(tabs);
-
   return {
 
     title: 'Entity',
@@ -41,6 +39,13 @@ CKEDITOR.dialog.add('entityDialog', function(editor) {
 
     // Dialog window content definition.
     contents: tabs,
+
+    // Dialog load handler.
+    onLoad: function() {
+
+      TSCKEntityEmbedEntityDialog.init();
+
+    },
 
     // Dialog confirmation handler.
     onOk: function() {
@@ -52,4 +57,18 @@ CKEDITOR.dialog.add('entityDialog', function(editor) {
     },
   };
 
+});
+
+var TSCKEntityEmbedEntityDialog = {};
+
+jQuery(document).ready(function ($) {
+  TSCKEntityEmbedEntityDialog.init = function () {
+
+    $(".cke_dialog_contents").find(".cke_dialog_page_contents").each(function (i) {
+
+      console.log($(this).attr("name"));
+
+    });
+
+  }
 });

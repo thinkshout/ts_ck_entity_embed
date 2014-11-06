@@ -78,11 +78,13 @@ jQuery(document).ready(function ($) {
 
       $(this).find('.cke_dialog_ui_input_text').change(function () {
 
-        $.get('/admin/ts_ck_entity_embed/entities/' + entity_type + '/' + $(this).val(), function (data) {
+        if ($(this).val().length != 0) {
+          $.get('/admin/ts_ck_entity_embed/entities/' + entity_type + '/' + $(this).val(), function (data) {
 
-          TSCKEntityEmbedEntityDialog.populateResults(entity_type, data);
+            TSCKEntityEmbedEntityDialog.populateResults(entity_type, data);
 
-        });
+          });
+        }
 
       });
 

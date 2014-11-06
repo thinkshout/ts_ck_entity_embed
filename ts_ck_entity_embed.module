@@ -176,8 +176,9 @@ function ts_ck_entity_embed_get_entity_info() {
     $entity_info = ts_ck_entity_embed_default_entity_info();
 
     foreach (module_implements('ts_ck_entity_embed_entity_info') as $module) {
-      foreach (module_invoke($module, 'ts_ck_entity_embed_entity_info') as $entity_name => $info) {
-        $entity_info[$entity_name] = $info;
+      foreach (module_invoke($module, 'ts_ck_entity_embed_entity_info') as $entity_type => $info) {
+        $entity_info[$entity_type] = $info;
+        $entity_info[$entity_type] = ts_ck_entity_embed_get_view_modes($entity_type);
       }
     }
   }
@@ -194,10 +195,18 @@ function ts_ck_entity_embed_default_entity_info() {
   $entity_info = array(
     'bean' => array(
       'render_method' => 'ts_ck_entity_embed_render_bean',
+      'view_modes' => ts_ck_entity_embed_get_view_modes('bean'),
     ),
   );
 
   return $entity_info;
+}
+
+function ts_ck_entity_embed_get_view_modes($entity_type) {
+  $entity_info = entity_get_info($entity_type);
+  $view_modes = ($entity_info) ? array_keys($entity_info['view modes']) : array();
+
+  return $view_modes;
 }
 
 /**

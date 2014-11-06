@@ -142,10 +142,26 @@ jQuery(document).ready(function ($) {
     },
 
     TSCKEntityEmbedEntityDialog.insertSelectedEntity = function (editor) {
-      editor.insertHtml("testing");
+
+      var results = $(".cke_dialog_page_contents").find("li");
+
+      for (var i = 0; i < results.length; i++) {
+
+        if ($(results[i]).hasClass("selected")) {
+
+          var id_parts = $(results[i]).attr("id").split("-");
+          var entity_type = id_parts[0];
+          var entity_id = id_parts[1];
+
+          var token = TSCKEntityEmbedEntityDialog.generateToken(entity_type, entity_id, 'default');
+          editor.insertHtml(token);
+        }
+      }
     },
 
     TSCKEntityEmbedEntityDialog.generateToken = function (entity_type, entity_id, view_mode) {
+
+      return '[ts_ck_entity_embed|entity_type=' + entity_type + '|entity_id=' + entity_id + '|view_mode=' + view_mode + ']';
 
     }
 

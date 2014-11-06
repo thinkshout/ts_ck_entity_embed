@@ -48,7 +48,7 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
     // Dialog load handler.
     onLoad: function () {
 
-      TSCKEntityEmbedEntityDialog.init();
+      TSCKEntityEmbedEntityDialog.init(editor);
 
     },
 
@@ -66,11 +66,15 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
 
 });
 
-var TSCKEntityEmbedEntityDialog = {};
+var TSCKEntityEmbedEntityDialog = {
+  editor: null,
+};
 
 jQuery(document).ready(function ($) {
 
-  TSCKEntityEmbedEntityDialog.init = function () {
+  TSCKEntityEmbedEntityDialog.init = function (editor) {
+
+    TSCKEntityEmbedEntityDialog.editor = editor;
 
     $(".cke_dialog_contents").find(".cke_dialog_page_contents").each(function (i) {
 
@@ -145,6 +149,8 @@ jQuery(document).ready(function ($) {
 
     TSCKEntityEmbedEntityDialog.insertSelectedEntity = function (editor) {
 
+      console.log("insertSelectedEntity");
+
       var results = $(".cke_dialog_page_contents").find("li");
 
       for (var i = 0; i < results.length; i++) {
@@ -154,9 +160,19 @@ jQuery(document).ready(function ($) {
           var id_parts = $(results[i]).attr("id").split("-");
           var entity_type = id_parts[0];
           var entity_id = id_parts[1];
+          var view_mode = 'default';
 
-          var token = TSCKEntityEmbedEntityDialog.generateToken(entity_type, entity_id, 'default');
-          editor.insertHtml(token);
+          var token = TSCKEntityEmbedEntityDialog.generateToken(entity_type, entity_id, view_mode);
+
+          //editor.insertHtml(token);
+
+          $.get('/admin/ts_ck_entity_embed/render/' + entity_type + '/' + entity_id + '/' + view_mode, function (data) {
+
+            TSCKEntityEmbedEntityDialog.editor.insertHtml(data);
+
+          });
+
+
         }
       }
     },

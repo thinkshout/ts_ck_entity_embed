@@ -3,7 +3,7 @@
  * Entity dialog window.
  */
 
-CKEDITOR.dialog.add('entityDialog', function(editor) {
+CKEDITOR.dialog.add('entityDialog', function (editor) {
 
   entity_info = Drupal.settings.ts_ck_entity_embed.entity_info;
 
@@ -39,25 +39,27 @@ CKEDITOR.dialog.add('entityDialog', function(editor) {
   return {
 
     title: 'Entity',
-    minWidth: 400,
-    minHeight: 200,
+    minWidth: 640,
+    minHeight: 360,
 
     // Dialog window content definition.
     contents: tabs,
 
     // Dialog load handler.
-    onLoad: function() {
+    onLoad: function () {
 
       TSCKEntityEmbedEntityDialog.init();
 
     },
 
     // Dialog confirmation handler.
-    onOk: function() {
+    onOk: function () {
 
       // The context of this function is the dialog object itself.
       // http://docs.ckeditor.com/#!/api/CKEDITOR.dialog
       var dialog = this;
+
+      TSCKEntityEmbedEntityDialog.insertSelectedEntity(editor);
 
     },
   };
@@ -74,8 +76,6 @@ jQuery(document).ready(function ($) {
 
       var entity_type = $(this).attr("name").replace("tab-", "");
 
-      console.log(entity_type);
-
       $(this).find('.cke_dialog_ui_input_text').change(function () {
 
         $.get('/admin/ts_ck_entity_embed/entities/' + entity_type + '/' + $(this).val(), function (data) {
@@ -90,26 +90,63 @@ jQuery(document).ready(function ($) {
 
   },
 
-  TSCKEntityEmbedEntityDialog.populateResults = function(entity_type, data) {
+    TSCKEntityEmbedEntityDialog.populateResults = function (entity_type, data) {
 
-    var resultsElement = $('#entity-' + entity_type + '-results');
+      var resultsElement = $('#entity-' + entity_type + '-results');
 
-    console.log(resultsElement);
+      if (data.length === 0) {
+        resultsElement.html('No results');
+      } else {
+        resultsElement.html('<ul id="entity-' + entity_type + '-results-list"></ul>');
 
-    console.log("results: " + data.length);
+        var resultsListElement = $("#entity-" + entity_type + "-results-list");
 
-    if (data.length === 0) {
-      resultsElement.html('No results');
-    } else {
-      resultsElement.html('<ul id="entity-' + entity_type + '-results-list"></ul>');
+        for (var i = 0; i < data.length; i++) {
+          resultsListElement.append(
+            '<li id="' + entity_type + '-' + data[0].id + '">' + data[0].title + '</li>'
+          );
 
-      for (var i = 0; i < data.length; i++) {
-        $('#entity-' + entity_type + '-results-list').append(
-          '<a id="' + entity_type + '-' + data[0].id + '" href="#">' + data[0].title + '</a>'
-        );
+          var resultElement = $("#" + entity_type + "-" + data[0].id);
+
+          resultElement.click(function () {
+
+            var id_parts = $(this).attr("id").split("-");
+            var entity_type = id_parts[0];
+            var entity_id = id_parts[1];
+
+            TSCKEntityEmbedEntityDialog.selectEntity(entity_type, entity_id);
+
+          });
+        }
       }
-    }
 
-  }
+    },
+
+    TSCKEntityEmbedEntityDialog.selectEntity = function (entity_type, entity_id) {
+
+      var resultsListElement = $("#entity-" + entity_type + "-results-list");
+
+      var results = resultsListElement.find("li");
+
+      for (var i = 0; i < results.length; i++) {
+
+        var id_parts = $(results[i]).attr("id").split("-");
+
+        if (id_parts[1] == entity_id) {
+          $(results[i]).addClass("selected");
+        } else {
+          $(results[i]).removeClass("selected");
+        }
+      }
+
+    },
+
+    TSCKEntityEmbedEntityDialog.insertSelectedEntity = function (editor) {
+      editor.insertHtml("testing");
+    },
+
+    TSCKEntityEmbedEntityDialog.generateToken = function (entity_type, entity_id, view_mode) {
+
+    }
 
 });

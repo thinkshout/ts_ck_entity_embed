@@ -18,6 +18,13 @@ function ts_ck_entity_embed_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['admin/ts_ck_entity_embed/render/%/%/%'] = array(
+    'page callback' => 'ts_ck_entity_embed_entity_render',
+    'page arguments' => array(3, 4, 5),
+    'access callback' => 'ts_ck_entity_embed_permission',
+    'type' => MENU_CALLBACK,
+  );
+
   return $items;
 }
 
@@ -218,7 +225,7 @@ function ts_ck_entity_embed_render_bean($entity, $view_mode) {
 }
 
 /**
- * Search callback for entity lookup.
+ * Page callback for entity search URL.
  */
 function ts_ck_entity_embed_entity_search($entity_type, $string) {
   $query = new EntityFieldQuery();
@@ -245,4 +252,27 @@ function ts_ck_entity_embed_entity_search($entity_type, $string) {
   }
 
   drupal_json_output($entities);
+}
+
+/**
+ * Page callback for entity render URL.
+ */
+function ts_ck_entity_embed_entity_render($entity_type, $entity_id, $view_mode) {
+  $content = '';
+
+  $entity_info = ts_ck_entity_embed_get_entity_info();
+
+  if (isset($entity_info[$entity_type])) {
+    $render_method = $entity_info[$entity_type]['render_method'];
+    if (function_exists($render_method)) {
+
+      $entity = entity_load_single($entity_type, $entity_id);
+
+      if ($entity !== FALSE) {
+        $content = $render_method($entity, $view_mode);
+      }
+    }
+  }
+
+  echo $content;
 }

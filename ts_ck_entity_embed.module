@@ -11,9 +11,9 @@
 function ts_ck_entity_embed_menu() {
   $items = array();
 
-  $items['admin/ts_ck_entity_embed/entities/%'] = array(
+  $items['admin/ts_ck_entity_embed/entities/%/%'] = array(
     'page callback' => 'ts_ck_entity_embed_entity_search',
-    'page arguments' => array(3),
+    'page arguments' => array(3, 4),
     'access callback' => 'ts_ck_entity_embed_permission',
     'type' => MENU_CALLBACK,
   );
@@ -110,9 +110,58 @@ function ts_ck_entity_embed_filter_info() {
 
 /**
  * Filter process callback for CKEditor Entity Embed plugin.
+ *
+ * @param string $text
+ *   The text string to be filtered.
+ * @param object $filter
+ *   The filter object containing settings for the given format.
+ * @param string $format
+ *   The text format object assigned to the text to be filtered.
+ * @param string $langcode
+ *   The language code of the text to be filtered.
+ * @param bool $cache
+ *   A Boolean indicating whether the filtered text is going to be cached in
+ *   {cache_filter}.
+ * @param int $cache_id
+ *   The ID of the filtered text in {cache_filter}, if $cache is TRUE.
+ *
+ * @return string
+ *   The filtered text.
  */
 function ts_ck_entity_embed_filter_process($text, $filter, $format, $langcode, $cache, $cache_id) {
+  if (!empty($text)) {
+    $pattern = '/\[ts_ck_entity_embed\|entity_type=(\w+)\|entity_id=(\d+)\|view_mode=(\w+)\]/s';
+    $text = preg_replace_callback($pattern, 'ts_ck_entity_embed_process_callback', $text);
+  }
 
+  return $text;
+}
+
+/**
+ * Callback for preg_replace in ts_ck_entity_embed_filter_process().
+ */
+function ts_ck_entity_embed_process_callback($matches = array()) {
+  $content = '';
+
+  $entity_type = (isset($matches[1])) ? $matches[1] : NULL;
+  $entity_id = (isset($matches[2])) ? $matches[2] : NULL;
+  $view_mode = (isset($matches[3])) ? $matches[3] : NULL;
+
+  $entity_info = ts_ck_entity_embed_get_entity_info();
+
+  if (isset($entity_info[$entity_type])) {
+    $render_method = $entity_info[$entity_type]['render_method'];
+    if (function_exists($render_method)) {
+
+      $entity = entity_load_single($entity_type, $entity_id);
+
+      if ($entity !== FALSE) {
+        $content = $render_method($entity, $view_mode);
+      }
+    }
+  }
+
+  return $content;
 }
 
 /**
@@ -143,9 +192,6 @@ function ts_ck_entity_embed_get_entity_info() {
  */
 function ts_ck_entity_embed_default_entity_info() {
   $entity_info = array(
-    'node' => array(
-      'render_method' => 'ts_ck_entity_embed_render_node',
-    ),
     'bean' => array(
       'render_method' => 'ts_ck_entity_embed_render_bean',
     ),
@@ -155,17 +201,11 @@ function ts_ck_entity_embed_default_entity_info() {
 }
 
 /**
- * Render method for embedded node entities.
- */
-function ts_ck_entity_embed_render_node($entity, $view_mode) {
-  return node_view($entity, $view_mode);
-}
-
-/**
  * Render method for embedded bean entities.
  */
 function ts_ck_entity_embed_render_bean($entity, $view_mode) {
-  return bean_view($entity, $view_mode);
+  $entity_view = bean_view($entity, $view_mode);
+  return render($entity_view);
 }
 
 /**

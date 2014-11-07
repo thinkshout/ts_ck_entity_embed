@@ -68,6 +68,7 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
 
 var TSCKEntityEmbedEntityDialog = {
   editor: null,
+  jQuery: null,
 };
 
 jQuery(document).ready(function ($) {
@@ -75,6 +76,7 @@ jQuery(document).ready(function ($) {
   TSCKEntityEmbedEntityDialog.init = function (editor) {
 
     TSCKEntityEmbedEntityDialog.editor = editor;
+    TSCKEntityEmbedEntityDialog.jQuery = $;
 
     $(".cke_dialog_contents").find(".cke_dialog_page_contents").each(function (i) {
 
@@ -149,8 +151,6 @@ jQuery(document).ready(function ($) {
 
     TSCKEntityEmbedEntityDialog.insertSelectedEntity = function (editor) {
 
-      console.log("insertSelectedEntity");
-
       var results = $(".cke_dialog_page_contents").find("li");
 
       for (var i = 0; i < results.length; i++) {
@@ -168,19 +168,36 @@ jQuery(document).ready(function ($) {
 
           $.get('/admin/ts_ck_entity_embed/render/' + entity_type + '/' + entity_id + '/' + view_mode, function (data) {
 
-            TSCKEntityEmbedEntityDialog.editor.insertHtml(data);
+            var previewElement = TSCKEntityEmbedEntityDialog.generateEntityPreview(entity_type, entity_id, data);
+
+            TSCKEntityEmbedEntityDialog.editor.insertHtml(previewElement.prop('outerHTML'));
 
           });
-
 
         }
       }
     },
 
-    TSCKEntityEmbedEntityDialog.generateToken = function (entity_type, entity_id, view_mode) {
+    TSCKEntityEmbedEntityDialog.generateEntityPreview = function (entity_type, entity_id, html) {
 
-      return '[ts_ck_entity_embed|entity_type=' + entity_type + '|entity_id=' + entity_id + '|view_mode=' + view_mode + ']';
+      var element_id = 'entity-preview-' + entity_type + '-' + entity_id;
+
+      var previewHtml = '<div id="' + element_id + '" class="entity-preview" contenteditable="false">' + html + '</div>';
+
+      var parsedHtml = TSCKEntityEmbedEntityDialog.jQuery.parseHTML(previewHtml);
+
+      $(parsedHtml).each(function () {
+        $(this).attr("contenteditable", "false")
+      });
+
+      return $(parsedHtml);
 
     }
+
+  TSCKEntityEmbedEntityDialog.generateToken = function (entity_type, entity_id, view_mode) {
+
+    return '[ts_ck_entity_embed|entity_type=' + entity_type + '|entity_id=' + entity_id + '|view_mode=' + view_mode + ']';
+
+  }
 
 });

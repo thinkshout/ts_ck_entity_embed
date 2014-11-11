@@ -46,6 +46,8 @@ jQuery(document).ready(function ($) {
 
         for (var i = 0; i < TSCKEntityEmbedEntity.editors.length; i++) {
 
+          var editor = TSCKEntityEmbedEntity.editors[i];
+
           var html = editor.getData();
 
           // Regex pattern to match entity type, ID and view mode
@@ -56,6 +58,8 @@ jQuery(document).ready(function ($) {
 
           if (html_parts != null) {
             var token = TSCKEntityEmbedEntity.generateToken(html_parts[1], html_parts[2], html_parts[3]);
+
+            console.log(token);
 
             html = html.replace(html_parts[0], token);
 

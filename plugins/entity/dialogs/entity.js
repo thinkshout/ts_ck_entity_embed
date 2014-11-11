@@ -162,10 +162,6 @@ jQuery(document).ready(function ($) {
           var entity_id = id_parts[1];
           var view_mode = 'default';
 
-          var token = TSCKEntityEmbedEntityDialog.generateToken(entity_type, entity_id, view_mode);
-
-          //editor.insertHtml(token);
-
           $.get('/admin/ts_ck_entity_embed/render/' + entity_type + '/' + entity_id + '/' + view_mode, function (data) {
 
             var preview_html = TSCKEntityEmbedEntityDialog.generateEntityPreviewHtml(entity_type, entity_id, view_mode, data);

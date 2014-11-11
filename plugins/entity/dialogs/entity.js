@@ -100,23 +100,23 @@ jQuery(document).ready(function ($) {
 
     TSCKEntityEmbedEntityDialog.populateResults = function (entity_type, data) {
 
-      var resultsElement = $('#entity-' + entity_type + '-results');
+      var results_element = $('#entity-' + entity_type + '-results');
 
       if (data.length === 0) {
-        resultsElement.html('No results');
+        results_element.html('No results');
       } else {
-        resultsElement.html('<ul id="entity-' + entity_type + '-results-list"></ul>');
+        results_element.html('<ul id="entity-' + entity_type + '-results-list"></ul>');
 
-        var resultsListElement = $("#entity-" + entity_type + "-results-list");
+        var results_list_element = $("#entity-" + entity_type + "-results-list");
 
         for (var i = 0; i < data.length; i++) {
-          resultsListElement.append(
+          results_list_element.append(
             '<li id="' + entity_type + '-' + data[0].id + '">' + data[0].title + '</li>'
           );
 
-          var resultElement = $("#" + entity_type + "-" + data[0].id);
+          var result_element = $("#" + entity_type + "-" + data[0].id);
 
-          resultElement.click(function () {
+          result_element.click(function () {
 
             var id_parts = $(this).attr("id").split("-");
             var entity_type = id_parts[0];
@@ -132,9 +132,9 @@ jQuery(document).ready(function ($) {
 
     TSCKEntityEmbedEntityDialog.selectEntity = function (entity_type, entity_id) {
 
-      var resultsListElement = $("#entity-" + entity_type + "-results-list");
+      var results_list_element = $("#entity-" + entity_type + "-results-list");
 
-      var results = resultsListElement.find("li");
+      var results = results_list_element.find("li");
 
       for (var i = 0; i < results.length; i++) {
 
@@ -168,9 +168,9 @@ jQuery(document).ready(function ($) {
 
           $.get('/admin/ts_ck_entity_embed/render/' + entity_type + '/' + entity_id + '/' + view_mode, function (data) {
 
-            var previewElement = TSCKEntityEmbedEntityDialog.generateEntityPreview(entity_type, entity_id, data);
+            var preview_html = TSCKEntityEmbedEntityDialog.generateEntityPreviewHtml(entity_type, entity_id, view_mode, data);
 
-            TSCKEntityEmbedEntityDialog.editor.insertHtml(previewElement.prop('outerHTML'));
+            TSCKEntityEmbedEntityDialog.editor.insertHtml(preview_html);
 
           });
 
@@ -178,26 +178,18 @@ jQuery(document).ready(function ($) {
       }
     },
 
-    TSCKEntityEmbedEntityDialog.generateEntityPreview = function (entity_type, entity_id, html) {
+    TSCKEntityEmbedEntityDialog.generateEntityPreviewHtml = function (entity_type, entity_id, view_mode, html) {
 
       var element_id = 'entity-preview-' + entity_type + '-' + entity_id;
 
-      var previewHtml = '<div id="' + element_id + '" class="entity-preview" contenteditable="false">' + html + '</div>';
+      var preview_html = '<!-- ts_ck_entity_embed|start|' + entity_type + '|' + entity_id + '|' + view_mode + ' -->' +
+        '<div id="' + element_id + '" class="entity-preview" contenteditable="false">' + html + '</div>' +
+        '<!-- ts_ck_entity_embed|end -->';
 
-      var parsedHtml = TSCKEntityEmbedEntityDialog.jQuery.parseHTML(previewHtml);
-
-      $(parsedHtml).each(function () {
-        $(this).attr("contenteditable", "false")
-      });
-
-      return $(parsedHtml);
+      return preview_html;
 
     }
 
-  TSCKEntityEmbedEntityDialog.generateToken = function (entity_type, entity_id, view_mode) {
 
-    return '[ts_ck_entity_embed|entity_type=' + entity_type + '|entity_id=' + entity_id + '|view_mode=' + view_mode + ']';
-
-  }
 
 });

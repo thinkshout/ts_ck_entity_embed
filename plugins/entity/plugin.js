@@ -63,7 +63,8 @@ jQuery(document).ready(function ($) {
 
             html = html.replace(html_parts[0], token);
 
-            // TODO Apply updated HTML to CKEditor field.
+            // Update editor with tokenized entities prior to saving.
+            editor.setData(html);
           }
 
         }

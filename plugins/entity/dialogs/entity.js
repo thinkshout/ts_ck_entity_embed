@@ -186,6 +186,4 @@ jQuery(document).ready(function ($) {
 
     }
 
-
-
 });

@@ -38,6 +38,8 @@ jQuery(document).ready(function ($) {
 
     TSCKEntityEmbedEntity.editors.push(editor);
 
+    TSCKEntityEmbedEntity.insertPreviewEntities(editor);
+
     var editor_element = $("#" + editor.name);
     var form = editor_element.closest("form");
 
@@ -73,6 +75,17 @@ jQuery(document).ready(function ($) {
     }
 
   },
+
+    TSCKEntityEmbedEntity.insertPreviewEntities = function (editor) {
+
+      var html = editor.getData();
+
+      // Regex pattern to match entity tokens.
+      var pattern = /[ts_ck_entity_embed\|entity_type=(\w+)\|entity_id=(\d+)\|view_mode=(\w+)]/;
+
+      editor.setData(html);
+
+    },
 
     TSCKEntityEmbedEntity.generateToken = function (entity_type, entity_id, view_mode) {
 

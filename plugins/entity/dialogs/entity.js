@@ -38,6 +38,7 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
               '<option value="right">Right</option>' +
               '<option value="center">Center</option>' +
               '</select>' +
+              '<div class="preview-box"></div>' +
               '</div>' +
               '<div id="entity-' + entity_type + '-results">' +
               '<form id="entity-' + entity_type + '-results-list" class="entity-results-list">No results</form>' +
@@ -84,6 +85,7 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
 var TSCKEntityEmbedEntityDialog = {
   editor: null,
   jQuery: null,
+  selected_entity: null,
 };
 
 jQuery(document).ready(function ($) {
@@ -146,25 +148,6 @@ jQuery(document).ready(function ($) {
 
     TSCKEntityEmbedEntityDialog.selectEntity = function (entity_type, entity_id) {
 
-      var results_list_element = $("#entity-" + entity_type + "-results-list");
-
-      var results = results_list_element.find("li");
-
-      for (var i = 0; i < results.length; i++) {
-
-        var id_parts = $(results[i]).attr("id").split("-");
-
-        if (id_parts[1] == entity_id) {
-          $(results[i]).addClass("selected");
-        } else {
-          $(results[i]).removeClass("selected");
-        }
-      }
-
-    },
-
-    TSCKEntityEmbedEntityDialog.insertSelectedEntity = function (editor) {
-
       var selected = $(".cke_dialog_page_contents input[type=radio]:checked");
 
       if (selected) {
@@ -173,11 +156,25 @@ jQuery(document).ready(function ($) {
         var value_parts = selected_value.split("-");
         var entity_type = value_parts[0];
         var entity_id = value_parts[1];
-        // TODO: Replace with user-selected view mode.
         var view_mode = $("#entity-view-mode").val();
         var alignment = $("#entity-align").val();
 
-        TSCKEntityEmbedEntity.insertEntityPreviewHtml(editor, entity_type, entity_id, view_mode, alignment);
+        TSCKEntityEmbedEntityDialog.selected_entity = {
+          entity_type: entity_type,
+          entity_id: entity_id,
+          view_mode: view_mode,
+          alignment: alignment,
+        };
+      }
+
+    },
+
+    TSCKEntityEmbedEntityDialog.insertSelectedEntity = function (editor) {
+
+      var selected = TSCKEntityEmbedEntityDialog.selected_entity;
+
+      if (selected) {
+        TSCKEntityEmbedEntity.insertEntityPreviewHtml(editor, selected.entity_type, selected.entity_id, selected.view_mode, selected.alignment);
       }
 
     }

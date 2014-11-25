@@ -105,13 +105,14 @@ jQuery(document).ready(function ($) {
       if (data.length === 0) {
         results_element.html('No results');
       } else {
-        results_element.html('<form id="entity-' + entity_type + '-results-list"></form>');
+        results_element.html('<form id="entity-' + entity_type + '-results-list" class="entity-results-list"></form>');
 
         var results_list_element = $("#entity-" + entity_type + "-results-list");
 
         for (var i = 0; i < data.length; i++) {
           results_list_element.append(
-            '<input type="radio" name="entity" value="' + entity_type + '-' + data[i].id + '" /> ' + data[i].label
+            '<input type="radio" id="' + entity_type + '-' + data[i].id + '" name="entity" value="' + entity_type + '-' + data[i].id + '" />' +
+            '<label for="' + entity_type + '-' + data[i].id + '">' + data[i].label + '</label>'
           );
 
           var result_element = $("#" + entity_type + "-" + data[i].id);

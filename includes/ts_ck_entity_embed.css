@@ -1,0 +1,13 @@
+.entity-results-list input[type="radio"], .entity-results-list label {
+    margin-top: 8px;
+}
+
+.entity-results-list input[type="radio"] {
+    clear: left;
+    float: left;
+}
+
+.entity-results-list label {
+    float: left;
+    margin-left: 10px;
+}

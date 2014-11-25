@@ -100,6 +100,12 @@ function ts_ck_entity_embed_form_alter(&$form, &$form_state, $form_id) {
   }
 
   $form['#attached']['js'] += $attached_js;
+
+  if (!isset($form['#attached']['css'])) {
+    $form['#attached']['css'] = array();
+  }
+
+  $form['#attached']['css'][] = drupal_get_path('module', 'ts_ck_entity_embed') . '/includes/ts_ck_entity_embed.css';
 }
 
 /**

@@ -164,6 +164,7 @@ jQuery(document).ready(function ($) {
     },
 
     TSCKEntityEmbedEntityDialog.insertSelectedEntity = function (editor) {
+
       var selected = $(".cke_dialog_page_contents input[type=radio]:checked");
 
       if (selected) {
@@ -173,7 +174,7 @@ jQuery(document).ready(function ($) {
         var entity_type = value_parts[0];
         var entity_id = value_parts[1];
         // TODO: Replace with user-selected view mode.
-        var view_mode = 'default';
+        var view_mode = $("#entity-view-mode").val();
 
         TSCKEntityEmbedEntity.insertEntityPreviewHtml(editor, entity_type, entity_id, view_mode);
       }

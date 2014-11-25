@@ -55,18 +55,23 @@ jQuery(document).ready(function ($) {
           var html = editor.getData();
 
           // Regex pattern to match entities from HTML comment.
-          var pattern = /<!-- ts_ck_entity_embed\|start\|\w+\|\d+\|\w+ -->[\s\S]+?<!-- ts_ck_entity_embed\|end -->/g;
+          var pattern = /<!-- ts_ck_entity_embed\|start\|\w+\|\d+\|\w+\|\w+ -->[\s\S]+?<!-- ts_ck_entity_embed\|end -->/g;
 
           var matches = html.match(pattern);
 
           if (matches) {
             for (var i = 0; i < matches.length; i++) {
               // Regex to match entity type, ID and view mode.
-              var entity_pattern = /<!-- ts_ck_entity_embed\|start\|(\w+)\|(\d+)\|(\w+) -->[\s\S]+?<!-- ts_ck_entity_embed\|end -->/;
+              var entity_pattern = /<!-- ts_ck_entity_embed\|start\|(\w+)\|(\d+)\|(\w+)\|(\w+) -->[\s\S]+?<!-- ts_ck_entity_embed\|end -->/;
 
               var entity_matches = matches[i].match(entity_pattern);
 
-              var token = TSCKEntityEmbedEntity.generateToken(entity_matches[1], entity_matches[2], entity_matches[3]);
+              var entity_type = entity_matches[1];
+              var entity_id = entity_matches[2];
+              var view_mode = entity_matches[3];
+              var alignment = entity_matches[4];
+
+              var token = TSCKEntityEmbedEntity.generateToken(entity_type, entity_id, view_mode, alignment);
 
               html = html.replace(entity_matches[0], token);
             }
@@ -87,7 +92,7 @@ jQuery(document).ready(function ($) {
       TSCKEntityEmbedEntity.editor_entity_previews[editor.id] = [];
 
       // Regex pattern to match entity tokens.
-      var pattern = /\[ts_ck_entity_embed\|entity_type=\w+\|entity_id=\d+\|view_mode=\w+\]/g;
+      var pattern = /\[ts_ck_entity_embed\|entity_type=\w+\|entity_id=\d+\|view_mode=\w+\|alignment=\w+\]/g;
 
       var html = editor.getData();
 
@@ -106,11 +111,11 @@ jQuery(document).ready(function ($) {
 
     },
 
-    TSCKEntityEmbedEntity.insertEntityPreviewHtml = function (editor, entity_type, entity_id, view_mode) {
+    TSCKEntityEmbedEntity.insertEntityPreviewHtml = function (editor, entity_type, entity_id, view_mode, alignment) {
 
-      $.get('/admin/ts_ck_entity_embed/render/' + entity_type + '/' + entity_id + '/' + view_mode, function (data) {
+      $.get('/admin/ts_ck_entity_embed/render/' + entity_type + '/' + entity_id + '/' + view_mode + '/' + alignment, function (data) {
 
-        var preview_html = TSCKEntityEmbedEntity.generatePreviewHtml(entity_type, entity_id, view_mode, data);
+        var preview_html = TSCKEntityEmbedEntity.generatePreviewHtml(entity_type, entity_id, view_mode, alignment, data);
 
         editor.insertHtml(preview_html);
 
@@ -121,19 +126,20 @@ jQuery(document).ready(function ($) {
     TSCKEntityEmbedEntity.cacheEntityTokenReplacement = function (editor, token) {
 
       // Regex pattern to match entity token components.
-      var token_pattern = /ts_ck_entity_embed\|entity_type=(\w+)\|entity_id=(\d+)\|view_mode=(\w+)/;
+      var token_pattern = /ts_ck_entity_embed\|entity_type=(\w+)\|entity_id=(\d+)\|view_mode=(\w+)\|alignment=(\w+)/;
 
       var token_matches = token.match(token_pattern);
 
       var entity_type = token_matches[1];
       var entity_id = token_matches[2];
       var view_mode = token_matches[3];
+      var alignment = token_matches[4];
 
-      $.get('/admin/ts_ck_entity_embed/render/' + entity_type + '/' + entity_id + '/' + view_mode, function (data) {
+      $.get('/admin/ts_ck_entity_embed/render/' + entity_type + '/' + entity_id + '/' + view_mode + '/' + alignment, function (data) {
 
-        var preview_html = TSCKEntityEmbedEntity.generatePreviewHtml(entity_type, entity_id, view_mode, data);
+        var preview_html = TSCKEntityEmbedEntity.generatePreviewHtml(entity_type, entity_id, view_mode, alignment, data);
 
-        var token = TSCKEntityEmbedEntity.generateToken(entity_type, entity_id, view_mode);
+        var token = TSCKEntityEmbedEntity.generateToken(entity_type, entity_id, view_mode, alignment);
 
         TSCKEntityEmbedEntity.editor_entity_previews[editor.id][token] = preview_html
 
@@ -167,11 +173,11 @@ jQuery(document).ready(function ($) {
 
     },
 
-    TSCKEntityEmbedEntity.generatePreviewHtml = function (entity_type, entity_id, view_mode, html) {
+    TSCKEntityEmbedEntity.generatePreviewHtml = function (entity_type, entity_id, view_mode, alignment, html) {
 
       var element_id = 'entity-preview-' + entity_type + '-' + entity_id;
 
-      var preview_html = '<!-- ts_ck_entity_embed|start|' + entity_type + '|' + entity_id + '|' + view_mode + ' -->' +
+      var preview_html = '<!-- ts_ck_entity_embed|start|' + entity_type + '|' + entity_id + '|' + view_mode + '|' + alignment + ' -->' +
         '<div id="' + element_id + '" class="entity-preview" contenteditable="false">' + html + '</div>' +
         '<!-- ts_ck_entity_embed|end -->';
 
@@ -179,9 +185,9 @@ jQuery(document).ready(function ($) {
 
     },
 
-    TSCKEntityEmbedEntity.generateToken = function (entity_type, entity_id, view_mode) {
+    TSCKEntityEmbedEntity.generateToken = function (entity_type, entity_id, view_mode, alignment) {
 
-      return '[ts_ck_entity_embed|entity_type=' + entity_type + '|entity_id=' + entity_id + '|view_mode=' + view_mode + ']';
+      return '[ts_ck_entity_embed|entity_type=' + entity_type + '|entity_id=' + entity_id + '|view_mode=' + view_mode + '|alignment=' + alignment + ']';
 
     }
 

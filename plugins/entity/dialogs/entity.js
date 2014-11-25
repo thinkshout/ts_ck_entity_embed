@@ -175,8 +175,9 @@ jQuery(document).ready(function ($) {
         var entity_id = value_parts[1];
         // TODO: Replace with user-selected view mode.
         var view_mode = $("#entity-view-mode").val();
+        var alignment = $("#entity-align").val();
 
-        TSCKEntityEmbedEntity.insertEntityPreviewHtml(editor, entity_type, entity_id, view_mode);
+        TSCKEntityEmbedEntity.insertEntityPreviewHtml(editor, entity_type, entity_id, view_mode, alignment);
       }
 
     }

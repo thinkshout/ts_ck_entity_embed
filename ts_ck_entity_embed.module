@@ -18,9 +18,9 @@ function ts_ck_entity_embed_menu() {
     'type' => MENU_CALLBACK,
   );
 
-  $items['admin/ts_ck_entity_embed/render/%/%/%'] = array(
+  $items['admin/ts_ck_entity_embed/render/%/%/%/%'] = array(
     'page callback' => 'ts_ck_entity_embed_entity_render',
-    'page arguments' => array(3, 4, 5),
+    'page arguments' => array(3, 4, 5, 6),
     'access callback' => 'ts_ck_entity_embed_permission',
     'type' => MENU_CALLBACK,
   );
@@ -143,7 +143,7 @@ function ts_ck_entity_embed_filter_info() {
  */
 function ts_ck_entity_embed_filter_process($text, $filter, $format, $langcode, $cache, $cache_id) {
   if (!empty($text)) {
-    $pattern = '/\[ts_ck_entity_embed\|entity_type=(\w+)\|entity_id=(\d+)\|view_mode=(\w+)\]/s';
+    $pattern = '/\[ts_ck_entity_embed\|entity_type=(\w+)\|entity_id=(\d+)\|view_mode=(\w+)\|alignment=(\w+)\]/s';
     $text = preg_replace_callback($pattern, 'ts_ck_entity_embed_process_callback', $text);
   }
 
@@ -159,6 +159,7 @@ function ts_ck_entity_embed_process_callback($matches = array()) {
   $entity_type = (isset($matches[1])) ? $matches[1] : NULL;
   $entity_id = (isset($matches[2])) ? $matches[2] : NULL;
   $view_mode = (isset($matches[3])) ? $matches[3] : NULL;
+  $alignment = (isset($matches[4])) ? $matches[4] : NULL;
 
   $entity_info = ts_ck_entity_embed_get_entity_info();
 
@@ -170,6 +171,7 @@ function ts_ck_entity_embed_process_callback($matches = array()) {
 
       if ($entity !== FALSE) {
         $content = $render_method($entity, $view_mode);
+        $content = ts_ck_entity_embed_wrap_content_alignment($content, $alignment);
       }
     }
   }
@@ -263,7 +265,7 @@ function ts_ck_entity_embed_entity_search($entity_type, $string) {
 /**
  * Page callback for entity render URL.
  */
-function ts_ck_entity_embed_entity_render($entity_type, $entity_id, $view_mode) {
+function ts_ck_entity_embed_entity_render($entity_type, $entity_id, $view_mode, $alignment) {
   $content = '';
 
   $entity_info = ts_ck_entity_embed_get_entity_info();
@@ -276,9 +278,26 @@ function ts_ck_entity_embed_entity_render($entity_type, $entity_id, $view_mode) 
 
       if ($entity !== FALSE) {
         $content = $render_method($entity, $view_mode);
+        $content = ts_ck_entity_embed_wrap_content_alignment($content, $alignment);
       }
     }
   }
 
   echo $content;
+}
+
+function ts_ck_entity_embed_wrap_content_alignment($content, $alignment) {
+  switch ($alignment) {
+    case 'left':
+      $content = '<div style="float: left">' . $content . '</div>';
+      break;
+    case 'right':
+      $content = '<div style="float: right">' . $content . '</div>';
+      break;
+    case 'center':
+      $content = '<div style="clear: both; text-align: center"><div style="margin-left: auto; margin-right: auto">' . $content . '</div></div>';
+      break;
+  }
+
+  return $content;
 }

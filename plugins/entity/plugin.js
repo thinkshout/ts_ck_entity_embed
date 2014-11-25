@@ -142,7 +142,6 @@ jQuery(document).ready(function ($) {
           var html = editor.getData();
 
           for (var token in TSCKEntityEmbedEntity.editor_entity_previews[editor.id]) {
-
             if (!TSCKEntityEmbedEntity.editor_entity_previews[editor.id].hasOwnProperty(token)) {
               continue;
             }

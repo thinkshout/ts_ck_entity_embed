@@ -54,21 +54,26 @@ jQuery(document).ready(function ($) {
 
           var html = editor.getData();
 
-          // Regex pattern to match entity type, ID and view mode
-          // from HTML comment.
-          var pattern = /<!-- ts_ck_entity_embed\|start\|(\w+)\|(\d+)\|(\w+) -->[\s\S]+?<!-- ts_ck_entity_embed\|end -->/;
+          // Regex pattern to match entities from HTML comment.
+          var pattern = /<!-- ts_ck_entity_embed\|start\|\w+\|\d+\|\w+ -->[\s\S]+?<!-- ts_ck_entity_embed\|end -->/g;
 
-          var html_parts = html.match(pattern);
+          var matches = html.match(pattern);
 
-          if (html_parts != null) {
-            var token = TSCKEntityEmbedEntity.generateToken(html_parts[1], html_parts[2], html_parts[3]);
+          if (matches) {
+            for (var i = 0; i < matches.length; i++) {
+              // Regex to match entity type, ID and view mode.
+              var entity_pattern = /<!-- ts_ck_entity_embed\|start\|(\w+)\|(\d+)\|(\w+) -->[\s\S]+?<!-- ts_ck_entity_embed\|end -->/;
 
-            html = html.replace(html_parts[0], token);
+              var entity_matches = matches[i].match(entity_pattern);
+
+              var token = TSCKEntityEmbedEntity.generateToken(entity_matches[1], entity_matches[2], entity_matches[3]);
+
+              html = html.replace(entity_matches[0], token);
+            }
 
             // Update editor with tokenized entities prior to saving.
             editor.setData(html);
           }
-
         }
 
       });

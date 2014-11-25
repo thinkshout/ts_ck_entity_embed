@@ -30,6 +30,8 @@ CKEDITOR.plugins.add('entity', {
 
 var TSCKEntityEmbedEntity = {
   editors: [],
+  editor_token_counts: [],
+  editor_entity_previews: [],
 };
 
 jQuery(document).ready(function ($) {
@@ -38,7 +40,7 @@ jQuery(document).ready(function ($) {
 
     TSCKEntityEmbedEntity.editors.push(editor);
 
-    TSCKEntityEmbedEntity.insertPreviewEntities(editor);
+    TSCKEntityEmbedEntity.replaceTokens(editor);
 
     var editor_element = $("#" + editor.name);
     var form = editor_element.closest("form");
@@ -74,7 +76,10 @@ jQuery(document).ready(function ($) {
 
   },
 
-    TSCKEntityEmbedEntity.insertPreviewEntities = function (editor) {
+    TSCKEntityEmbedEntity.replaceTokens = function (editor) {
+
+      // Cache loaded entity previews.
+      TSCKEntityEmbedEntity.editor_entity_previews[editor.id] = [];
 
       var html = editor.getData();
 
@@ -83,19 +88,31 @@ jQuery(document).ready(function ($) {
 
       var matches = html.match(pattern);
 
-      $.when(
+      if (matches) {
+        // Track token parsing progress.
+        TSCKEntityEmbedEntity.editor_token_counts[editor.id] = [];
+        TSCKEntityEmbedEntity.editor_token_counts[editor.id]['total'] = matches.length;
+        TSCKEntityEmbedEntity.editor_token_counts[editor.id]['parsed'] = 0;
 
-          // TODO: Get HTML for each entity.
+        console.log(TSCKEntityEmbedEntity.editor_token_counts);
+
+        // Parse tokens.
+
+        // Regex pattern to match entity token components.
+        var token_pattern = /ts_ck_entity_embed\|entity_type=(\w+)\|entity_id=(\d+)\|view_mode=(\w+)/;
+
+        for (var i = 0; i < matches.length; i++) {
+          var token_matches = matches[i].match(token_pattern);
+
+          var entity_type = token_matches[1];
+          var entity_id = token_matches[2];
+          var view_mode = token_matches[3];
+
+        }
+
+      }
 
 
-
-
-
-        ).then(function () {
-
-          // TODO: Replace tokens with entity HTML.
-
-        });
 
       editor.setData(html);
 

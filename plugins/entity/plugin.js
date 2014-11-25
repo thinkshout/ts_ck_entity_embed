@@ -61,8 +61,6 @@ jQuery(document).ready(function ($) {
           if (html_parts != null) {
             var token = TSCKEntityEmbedEntity.generateToken(html_parts[1], html_parts[2], html_parts[3]);
 
-            console.log(token);
-
             html = html.replace(html_parts[0], token);
 
             // Update editor with tokenized entities prior to saving.
@@ -81,11 +79,39 @@ jQuery(document).ready(function ($) {
       var html = editor.getData();
 
       // Regex pattern to match entity tokens.
-      var pattern = /[ts_ck_entity_embed\|entity_type=(\w+)\|entity_id=(\d+)\|view_mode=(\w+)]/;
+      var pattern = /\[ts_ck_entity_embed\|entity_type=\w+\|entity_id=\d+\|view_mode=\w+\]/;
+
+      var matches = html.match(pattern);
+
+      $.when(
+
+          // TODO: Get HTML for each entity.
+
+        ).then(function () {
+
+          // TODO: Replace tokens with entity HTML.
+
+        });
 
       editor.setData(html);
 
     },
+
+    TSCKEntityEmbedEntity.insertEntityPreviewHtml = function (editor, entity_type, entity_id, view_mode) {
+
+      $.get('/admin/ts_ck_entity_embed/render/' + entity_type + '/' + entity_id + '/' + view_mode, function (data) {
+
+        var element_id = 'entity-preview-' + entity_type + '-' + entity_id;
+
+        var preview_html = '<!-- ts_ck_entity_embed|start|' + entity_type + '|' + entity_id + '|' + view_mode + ' -->' +
+          '<div id="' + element_id + '" class="entity-preview" contenteditable="false">' + data + '</div>' +
+          '<!-- ts_ck_entity_embed|end -->';
+
+        editor.insertHtml(preview_html);
+
+      });
+
+    }
 
     TSCKEntityEmbedEntity.generateToken = function (entity_type, entity_id, view_mode) {
 

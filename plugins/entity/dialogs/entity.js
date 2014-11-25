@@ -162,28 +162,10 @@ jQuery(document).ready(function ($) {
           var entity_id = id_parts[1];
           var view_mode = 'default';
 
-          $.get('/admin/ts_ck_entity_embed/render/' + entity_type + '/' + entity_id + '/' + view_mode, function (data) {
-
-            var preview_html = TSCKEntityEmbedEntityDialog.generateEntityPreviewHtml(entity_type, entity_id, view_mode, data);
-
-            TSCKEntityEmbedEntityDialog.editor.insertHtml(preview_html);
-
-          });
+          TSCKEntityEmbedEntity.insertEntityPreviewHtml(editor, entity_type, entity_id, view_mode);
 
         }
       }
-    },
-
-    TSCKEntityEmbedEntityDialog.generateEntityPreviewHtml = function (entity_type, entity_id, view_mode, html) {
-
-      var element_id = 'entity-preview-' + entity_type + '-' + entity_id;
-
-      var preview_html = '<!-- ts_ck_entity_embed|start|' + entity_type + '|' + entity_id + '|' + view_mode + ' -->' +
-        '<div id="' + element_id + '" class="entity-preview" contenteditable="false">' + html + '</div>' +
-        '<!-- ts_ck_entity_embed|end -->';
-
-      return preview_html;
-
     }
 
 });

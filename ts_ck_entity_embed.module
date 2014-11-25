@@ -237,7 +237,7 @@ function ts_ck_entity_embed_entity_search($entity_type, $string) {
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', $entity_type)
     ->propertyCondition('label', $string, 'CONTAINS')
-    ->range(0, 10);
+    ->range(0, 20);
 
   $entities = array();
 

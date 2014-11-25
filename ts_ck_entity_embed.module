@@ -230,7 +230,7 @@ function ts_ck_entity_embed_render_bean($entity, $view_mode) {
 function ts_ck_entity_embed_entity_search($entity_type, $string) {
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', $entity_type)
-    ->propertyCondition('title', $string, 'CONTAINS')
+    ->propertyCondition('label', $string, 'CONTAINS')
     ->range(0, 10);
 
   $entities = array();
@@ -244,7 +244,7 @@ function ts_ck_entity_embed_entity_search($entity_type, $string) {
       foreach ($entities_data as $id => $entity) {
         $entities[] = array(
           'id' => $id,
-          'title' => $entity->title,
+          'label' => $entity->label,
           'view_modes' => array(),
         );
       }

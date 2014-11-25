@@ -111,10 +111,10 @@ jQuery(document).ready(function ($) {
 
         for (var i = 0; i < data.length; i++) {
           results_list_element.append(
-            '<li id="' + entity_type + '-' + data[0].id + '">' + data[0].title + '</li>'
+            '<li id="' + entity_type + '-' + data[i].id + '">' + data[i].label + '</li>'
           );
 
-          var result_element = $("#" + entity_type + "-" + data[0].id);
+          var result_element = $("#" + entity_type + "-" + data[i].id);
 
           result_element.click(function () {
 

@@ -1,3 +1,15 @@
+.entity-results-list {
+    float: left;
+    height: 250px !important;
+    overflow: auto;
+    width: 300px !important;
+}
+
+.entity-preview {
+    float: right !important;
+    width: 300px !important;
+}
+
 .entity-results-list input[type="radio"], .entity-results-list label {
     margin-top: 8px;
 }
@@ -5,6 +17,7 @@
 .entity-results-list input[type="radio"] {
     clear: left;
     float: left;
+    margin-left: 15px;
 }
 
 .entity-results-list label {

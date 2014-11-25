@@ -81,10 +81,10 @@ jQuery(document).ready(function ($) {
       // Cache loaded entity previews.
       TSCKEntityEmbedEntity.editor_entity_previews[editor.id] = [];
 
-      var html = editor.getData();
-
       // Regex pattern to match entity tokens.
       var pattern = /\[ts_ck_entity_embed\|entity_type=\w+\|entity_id=\d+\|view_mode=\w+\]/g;
+
+      var html = editor.getData();
 
       var matches = html.match(pattern);
 
@@ -98,8 +98,6 @@ jQuery(document).ready(function ($) {
           TSCKEntityEmbedEntity.cacheEntityTokenReplacement(editor, matches[i]);
         }
       }
-
-      editor.setData(html);
 
     },
 
@@ -130,13 +128,29 @@ jQuery(document).ready(function ($) {
 
         var preview_html = TSCKEntityEmbedEntity.generatePreviewHtml(entity_type, entity_id, view_mode, data);
 
+        var token = TSCKEntityEmbedEntity.generateToken(entity_type, entity_id, view_mode);
+
         TSCKEntityEmbedEntity.editor_entity_previews[editor.id][token] = preview_html
 
         TSCKEntityEmbedEntity.editor_token_counts[editor.id]['parsed']++;
 
+        // Handle token replacement when all tokens have been parsed / cached.
         if (TSCKEntityEmbedEntity.editor_token_counts[editor.id]['parsed'] == TSCKEntityEmbedEntity.editor_token_counts[editor.id]['total']) {
           console.log("Parsed all token for editor ID: " + editor.id);
 
+          // Replace all parsed tokens with preview HTML in the editor.
+          var html = editor.getData();
+
+          for (var token in TSCKEntityEmbedEntity.editor_entity_previews[editor.id]) {
+
+            if (!TSCKEntityEmbedEntity.editor_entity_previews[editor.id].hasOwnProperty(token)) {
+              continue;
+            }
+
+            html = html.replace(token, TSCKEntityEmbedEntity.editor_entity_previews[editor.id][token]);
+          }
+
+          editor.setData(html);
         }
 
       });

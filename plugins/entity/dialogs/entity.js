@@ -27,7 +27,17 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
             type: 'html',
             id: 'entity-' + entity_type + '-results',
             html:
-              '<div id="entity-' + entity_type + '-preview" class="entity-preview">...' +
+              '<div id="entity-' + entity_type + '-preview" class="entity-preview">' +
+              '<label for="entity-view-mode">View mode:</label>' +
+              '<select id="entity-view-mode">' +
+              '<option value="default">Default</option>' +
+              '</select>' +
+              '<label for="entity-align">Align:</label>' +
+              '<select id="entity-align">' +
+              '<option value="left">Left</option>' +
+              '<option value="right">Right</option>' +
+              '<option value="center">Center</option>' +
+              '</select>' +
               '</div>' +
               '<div id="entity-' + entity_type + '-results">' +
               '<form id="entity-' + entity_type + '-results-list" class="entity-results-list">No results</form>' +

@@ -24,3 +24,12 @@
     float: left;
     margin-left: 10px;
 }
+
+.entity-preview label {
+    clear: left;
+    float: left;
+}
+
+.entity-preview input, .entity-preview select {
+    float: left;
+}

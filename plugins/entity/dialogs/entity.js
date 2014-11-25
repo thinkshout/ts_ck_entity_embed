@@ -105,13 +105,13 @@ jQuery(document).ready(function ($) {
       if (data.length === 0) {
         results_element.html('No results');
       } else {
-        results_element.html('<ul id="entity-' + entity_type + '-results-list"></ul>');
+        results_element.html('<form id="entity-' + entity_type + '-results-list"></form>');
 
         var results_list_element = $("#entity-" + entity_type + "-results-list");
 
         for (var i = 0; i < data.length; i++) {
           results_list_element.append(
-            '<li id="' + entity_type + '-' + data[i].id + '">' + data[i].label + '</li>'
+            '<input type="radio" name="entity" value="' + entity_type + '-' + data[i].id + '" /> ' + data[i].label
           );
 
           var result_element = $("#" + entity_type + "-" + data[i].id);
@@ -150,22 +150,20 @@ jQuery(document).ready(function ($) {
     },
 
     TSCKEntityEmbedEntityDialog.insertSelectedEntity = function (editor) {
+      var selected = $(".cke_dialog_page_contents input[type=radio]:checked");
 
-      var results = $(".cke_dialog_page_contents").find("li");
+      if (selected) {
+        var selected_value = selected.val();
 
-      for (var i = 0; i < results.length; i++) {
+        var value_parts = selected_value.split("-");
+        var entity_type = value_parts[0];
+        var entity_id = value_parts[1];
+        // TODO: Replace with user-selected view mode.
+        var view_mode = 'default';
 
-        if ($(results[i]).hasClass("selected")) {
-
-          var id_parts = $(results[i]).attr("id").split("-");
-          var entity_type = id_parts[0];
-          var entity_id = id_parts[1];
-          var view_mode = 'default';
-
-          TSCKEntityEmbedEntity.insertEntityPreviewHtml(editor, entity_type, entity_id, view_mode);
-
-        }
+        TSCKEntityEmbedEntity.insertEntityPreviewHtml(editor, entity_type, entity_id, view_mode);
       }
+
     }
 
 });

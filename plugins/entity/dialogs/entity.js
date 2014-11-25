@@ -159,6 +159,8 @@ jQuery(document).ready(function ($) {
         var view_mode = $("#entity-view-mode").val();
         var alignment = $("#entity-align").val();
 
+        TSCKEntityEmbedEntity.updateEntityPreview(entity_type, entity_id, view_mode, alignment);
+
         TSCKEntityEmbedEntityDialog.selected_entity = {
           entity_type: entity_type,
           entity_id: entity_id,
@@ -176,6 +178,18 @@ jQuery(document).ready(function ($) {
       if (selected) {
         TSCKEntityEmbedEntity.insertEntityPreviewHtml(editor, selected.entity_type, selected.entity_id, selected.view_mode, selected.alignment);
       }
+
+    },
+
+    TSCKEntityEmbedEntity.updateEntityPreview = function (entity_type, entity_id, view_mode, alignment) {
+
+      $.get('/admin/ts_ck_entity_embed/render/' + entity_type + '/' + entity_id + '/' + view_mode + '/' + alignment, function (data) {
+
+        var preview_html = TSCKEntityEmbedEntity.generatePreviewHtml(entity_type, entity_id, view_mode, alignment, data);
+
+        $('.entity-preview .preview-box').html(preview_html);
+
+      });
 
     }
 

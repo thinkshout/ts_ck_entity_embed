@@ -26,7 +26,12 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
           {
             type: 'html',
             id: 'entity-' + entity_type + '-results',
-            html: '<div id="entity-' + entity_type + '-results">No results</div>',
+            html:
+              '<div id="entity-' + entity_type + '-preview" class="entity-preview">...' +
+              '</div>' +
+              '<div id="entity-' + entity_type + '-results">' +
+              '<form id="entity-' + entity_type + '-results-list" class="entity-results-list">No results</form>' +
+              '</div>',
           },
         ]
       };
@@ -100,14 +105,12 @@ jQuery(document).ready(function ($) {
 
     TSCKEntityEmbedEntityDialog.populateResults = function (entity_type, data) {
 
-      var results_element = $('#entity-' + entity_type + '-results');
+      var results_list_element = $('#entity-' + entity_type + '-results-list');
 
       if (data.length === 0) {
-        results_element.html('No results');
+        results_list_element.html('No results');
       } else {
-        results_element.html('<form id="entity-' + entity_type + '-results-list" class="entity-results-list"></form>');
-
-        var results_list_element = $("#entity-" + entity_type + "-results-list");
+        results_list_element.html('');
 
         for (var i = 0; i < data.length; i++) {
           results_list_element.append(

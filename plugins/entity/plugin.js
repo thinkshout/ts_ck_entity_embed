@@ -87,6 +87,10 @@ jQuery(document).ready(function ($) {
 
           // TODO: Get HTML for each entity.
 
+
+
+
+
         ).then(function () {
 
           // TODO: Replace tokens with entity HTML.
@@ -101,17 +105,25 @@ jQuery(document).ready(function ($) {
 
       $.get('/admin/ts_ck_entity_embed/render/' + entity_type + '/' + entity_id + '/' + view_mode, function (data) {
 
-        var element_id = 'entity-preview-' + entity_type + '-' + entity_id;
-
-        var preview_html = '<!-- ts_ck_entity_embed|start|' + entity_type + '|' + entity_id + '|' + view_mode + ' -->' +
-          '<div id="' + element_id + '" class="entity-preview" contenteditable="false">' + data + '</div>' +
-          '<!-- ts_ck_entity_embed|end -->';
+        var preview_html = TSCKEntityEmbedEntity.generatePreviewHtml(entity_type, entity_id, view_mode, data);
 
         editor.insertHtml(preview_html);
 
       });
 
-    }
+    },
+
+    TSCKEntityEmbedEntity.generatePreviewHtml = function (entity_type, entity_id, view_mode, html) {
+
+      var element_id = 'entity-preview-' + entity_type + '-' + entity_id;
+
+      var preview_html = '<!-- ts_ck_entity_embed|start|' + entity_type + '|' + entity_id + '|' + view_mode + ' -->' +
+        '<div id="' + element_id + '" class="entity-preview" contenteditable="false">' + html + '</div>' +
+        '<!-- ts_ck_entity_embed|end -->';
+
+      return preview_html;
+
+    },
 
     TSCKEntityEmbedEntity.generateToken = function (entity_type, entity_id, view_mode) {
 

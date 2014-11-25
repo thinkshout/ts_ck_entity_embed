@@ -146,7 +146,13 @@ jQuery(document).ready(function ($) {
               continue;
             }
 
-            html = html.replace(token, TSCKEntityEmbedEntity.editor_entity_previews[editor.id][token]);
+            var regex_token = token.replace('\[', '\\[');
+            regex_token = regex_token.replace('\]', '\\]');
+            regex_token = regex_token.split('|').join('\\|');
+
+            var regex = new RegExp(regex_token, 'g');
+
+            html = html.replace(regex, TSCKEntityEmbedEntity.editor_entity_previews[editor.id][token]);
           }
 
           editor.setData(html);

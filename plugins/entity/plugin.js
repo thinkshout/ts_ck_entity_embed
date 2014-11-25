@@ -79,7 +79,7 @@ jQuery(document).ready(function ($) {
       var html = editor.getData();
 
       // Regex pattern to match entity tokens.
-      var pattern = /\[ts_ck_entity_embed\|entity_type=\w+\|entity_id=\d+\|view_mode=\w+\]/;
+      var pattern = /\[ts_ck_entity_embed\|entity_type=\w+\|entity_id=\d+\|view_mode=\w+\]/g;
 
       var matches = html.match(pattern);
 

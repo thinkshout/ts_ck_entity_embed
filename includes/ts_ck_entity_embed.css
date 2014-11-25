@@ -5,11 +5,6 @@
     width: 300px !important;
 }
 
-.entity-preview {
-    float: right !important;
-    width: 300px !important;
-}
-
 .entity-results-list input[type="radio"], .entity-results-list label {
     margin-top: 8px;
 }
@@ -25,6 +20,11 @@
     margin-left: 10px;
 }
 
+.entity-preview {
+    float: right !important;
+    width: 300px !important;
+}
+
 .entity-preview label {
     clear: left;
     float: left;
@@ -32,4 +32,13 @@
 
 .entity-preview input, .entity-preview select {
     float: left;
+}
+
+.entity-preview .preview-box {
+    border: 1px solid #C0C0C0;
+    clear: left;
+    height: 200px;
+    margin-top: 50px;
+    overflow: auto;
+    width: 200px;
 }

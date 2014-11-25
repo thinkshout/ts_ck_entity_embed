@@ -94,25 +94,10 @@ jQuery(document).ready(function ($) {
         TSCKEntityEmbedEntity.editor_token_counts[editor.id]['total'] = matches.length;
         TSCKEntityEmbedEntity.editor_token_counts[editor.id]['parsed'] = 0;
 
-        console.log(TSCKEntityEmbedEntity.editor_token_counts);
-
-        // Parse tokens.
-
-        // Regex pattern to match entity token components.
-        var token_pattern = /ts_ck_entity_embed\|entity_type=(\w+)\|entity_id=(\d+)\|view_mode=(\w+)/;
-
         for (var i = 0; i < matches.length; i++) {
-          var token_matches = matches[i].match(token_pattern);
-
-          var entity_type = token_matches[1];
-          var entity_id = token_matches[2];
-          var view_mode = token_matches[3];
-
+          TSCKEntityEmbedEntity.cacheEntityTokenReplacement(editor, matches[i]);
         }
-
       }
-
-
 
       editor.setData(html);
 
@@ -125,6 +110,34 @@ jQuery(document).ready(function ($) {
         var preview_html = TSCKEntityEmbedEntity.generatePreviewHtml(entity_type, entity_id, view_mode, data);
 
         editor.insertHtml(preview_html);
+
+      });
+
+    },
+
+    TSCKEntityEmbedEntity.cacheEntityTokenReplacement = function (editor, token) {
+
+      // Regex pattern to match entity token components.
+      var token_pattern = /ts_ck_entity_embed\|entity_type=(\w+)\|entity_id=(\d+)\|view_mode=(\w+)/;
+
+      var token_matches = token.match(token_pattern);
+
+      var entity_type = token_matches[1];
+      var entity_id = token_matches[2];
+      var view_mode = token_matches[3];
+
+      $.get('/admin/ts_ck_entity_embed/render/' + entity_type + '/' + entity_id + '/' + view_mode, function (data) {
+
+        var preview_html = TSCKEntityEmbedEntity.generatePreviewHtml(entity_type, entity_id, view_mode, data);
+
+        TSCKEntityEmbedEntity.editor_entity_previews[editor.id][token] = preview_html
+
+        TSCKEntityEmbedEntity.editor_token_counts[editor.id]['parsed']++;
+
+        if (TSCKEntityEmbedEntity.editor_token_counts[editor.id]['parsed'] == TSCKEntityEmbedEntity.editor_token_counts[editor.id]['total']) {
+          console.log("Parsed all token for editor ID: " + editor.id);
+
+        }
 
       });
 

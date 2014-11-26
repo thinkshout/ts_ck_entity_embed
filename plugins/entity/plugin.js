@@ -53,8 +53,12 @@ jQuery(document).ready(function ($) {
             console.log('Double-clicked on an entity preview element.');
             // TODO: Get entity ID, etc from this parent element.
 
+            var dialog = new CKEDITOR.dialog(editor, 'entityDialog');
+            dialog.show();
 
+            evt.data.preventDefault();
 
+            continue;
           }
         }
       }

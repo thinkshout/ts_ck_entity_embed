@@ -55,8 +55,8 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
   return {
 
     title: 'Entity',
-    minWidth: 640,
-    minHeight: 360,
+    minWidth: 840,
+    minHeight: 560,
 
     // Dialog window content definition.
     contents: tabs,

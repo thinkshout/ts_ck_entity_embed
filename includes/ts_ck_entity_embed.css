@@ -22,7 +22,7 @@
 
 .entity-preview {
     float: right !important;
-    width: 300px !important;
+    width: 500px !important;
 }
 
 .entity-preview label {
@@ -37,8 +37,8 @@
 .entity-preview .preview-box {
     border: 1px solid #C0C0C0;
     clear: left;
-    height: 200px;
+    height: 400px;
     margin-top: 50px;
     overflow: auto;
-    width: 200px;
+    width: 460px;
 }

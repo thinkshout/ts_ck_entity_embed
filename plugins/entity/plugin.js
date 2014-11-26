@@ -147,7 +147,7 @@ jQuery(document).ready(function ($) {
 
         // Handle token replacement when all tokens have been parsed / cached.
         if (TSCKEntityEmbedEntity.editor_token_counts[editor.id]['parsed'] == TSCKEntityEmbedEntity.editor_token_counts[editor.id]['total']) {
-          console.log("Parsed all token for editor ID: " + editor.id);
+          console.log("Parsed all tokens for editor ID: " + editor.id);
 
           // Replace all parsed tokens with preview HTML in the editor.
           var html = editor.getData();

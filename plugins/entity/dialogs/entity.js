@@ -13,6 +13,12 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
 
     for (var entity_type in entity_info) {
 
+      var view_modes = entity_info[entity_type].view_modes;
+      var view_mode_options = '';
+      for (var i = 0; i < view_modes.length; i++) {
+        view_mode_options += '<option value="' + view_modes[i] + '">' + view_modes[i] + '</option>'
+      }
+
       var tab = {
         id: 'tab-' + entity_type,
         label: entity_type,
@@ -29,9 +35,7 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
             html:
               '<div id="entity-' + entity_type + '-preview" class="entity-preview">' +
               '<label for="entity-view-mode">View mode:</label>' +
-              '<select id="entity-view-mode">' +
-              '<option value="default">Default</option>' +
-              '</select>' +
+              '<select id="entity-view-mode">' + view_mode_options + '</select>' +
               '<label for="entity-align">Align:</label>' +
               '<select id="entity-align">' +
               '<option value="left">Left</option>' +

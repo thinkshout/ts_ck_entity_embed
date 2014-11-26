@@ -42,6 +42,25 @@ jQuery(document).ready(function ($) {
 
     TSCKEntityEmbedEntity.replaceTokens(editor);
 
+    editor.on('doubleclick', function(evt) {
+
+      var element = evt.data.element;
+      var element_parents = element.getParents();
+
+      if (element_parents) {
+        for (var i = 0; i < element_parents.length; i++) {
+          if (element_parents[i].hasClass('entity-preview')) {
+            console.log('Double-clicked on an entity preview element.');
+            // TODO: Get entity ID, etc from this parent element.
+
+
+
+          }
+        }
+      }
+
+    });
+
     var editor_element = $("#" + editor.name);
     var form = editor_element.closest("form");
 

@@ -90,7 +90,7 @@ var TSCKEntityEmbedEntityDialog = {
   editor: null,
   jQuery: null,
   selected_entity: null,
-  exit_existing_entity: false,
+  edit_existing_entity: false,
 };
 
 jQuery(document).ready(function ($) {
@@ -99,6 +99,17 @@ jQuery(document).ready(function ($) {
 
     TSCKEntityEmbedEntityDialog.editor = editor;
     TSCKEntityEmbedEntityDialog.jQuery = $;
+
+    if (TSCKEntityEmbedEntityDialog.selected_entity !== null) {
+      console.log('Editing existing entity:');
+      console.log(TSCKEntityEmbedEntityDialog.selected_entity);
+
+      var selected = TSCKEntityEmbedEntityDialog.selected_entity;
+
+      TSCKEntityEmbedEntity.updateEntityPreview(selected.entity_type, selected.entity_id, selected.view_mode, selected.alignment);
+
+      TSCKEntityEmbedEntityDialog.edit_existing_entity = true;
+    }
 
     $(".cke_dialog_contents").find(".cke_dialog_page_contents").each(function (i) {
 
@@ -185,10 +196,14 @@ jQuery(document).ready(function ($) {
       }
 
       TSCKEntityEmbedEntityDialog.selected_entity = null;
+      TSCKEntityEmbedEntityDialog.edit_existing_entity = false;
 
     },
 
     TSCKEntityEmbedEntity.updateEntityPreview = function (entity_type, entity_id, view_mode, alignment) {
+
+      $("#entity-view-mode").val(view_mode);
+      $("#entity-align").val(alignment);
 
       $.get('/admin/ts_ck_entity_embed/render/' + entity_type + '/' + entity_id + '/' + view_mode + '/' + alignment, function (data) {
 

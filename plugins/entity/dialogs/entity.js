@@ -90,6 +90,7 @@ var TSCKEntityEmbedEntityDialog = {
   editor: null,
   jQuery: null,
   selected_entity: null,
+  exit_existing_entity: false,
 };
 
 jQuery(document).ready(function ($) {
@@ -182,6 +183,8 @@ jQuery(document).ready(function ($) {
       if (selected) {
         TSCKEntityEmbedEntity.insertEntityPreviewHtml(editor, selected.entity_type, selected.entity_id, selected.view_mode, selected.alignment);
       }
+
+      TSCKEntityEmbedEntityDialog.selected_entity = null;
 
     },
 

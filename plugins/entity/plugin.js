@@ -51,7 +51,17 @@ jQuery(document).ready(function ($) {
         for (var i = 0; i < element_parents.length; i++) {
           if (element_parents[i].hasClass('entity-preview')) {
             console.log('Double-clicked on an entity preview element.');
-            // TODO: Get entity ID, etc from this parent element.
+
+            var element_id_parts = element_parents[i].getId().split('-');
+
+            TSCKEntityEmbedEntityDialog.selected_entity = {
+              entity_type: element_id_parts[2],
+              entity_id: element_id_parts[3],
+              view_mode: element_id_parts[4],
+              alignment: element_id_parts[5],
+            };
+
+            console.log(TSCKEntityEmbedEntityDialog.selected_entity);
 
             var dialog = new CKEDITOR.dialog(editor, 'entityDialog');
             dialog.show();
@@ -198,7 +208,7 @@ jQuery(document).ready(function ($) {
 
     TSCKEntityEmbedEntity.generatePreviewHtml = function (entity_type, entity_id, view_mode, alignment, html) {
 
-      var element_id = 'entity-preview-' + entity_type + '-' + entity_id;
+      var element_id = 'entity-preview-' + entity_type + '-' + entity_id + '-' + view_mode + '-' + alignment;
 
       var preview_html = '<!-- ts_ck_entity_embed|start|' + entity_type + '|' + entity_id + '|' + view_mode + '|' + alignment + ' -->' +
         '<div id="' + element_id + '" class="entity-preview" contenteditable="false">' + html + '</div>' +

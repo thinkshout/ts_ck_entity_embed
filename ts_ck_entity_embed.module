@@ -253,7 +253,6 @@ function ts_ck_entity_embed_entity_search($entity_type, $string) {
         $entities[] = array(
           'id' => $id,
           'label' => $entity->label,
-          'view_modes' => array(),
         );
       }
     }

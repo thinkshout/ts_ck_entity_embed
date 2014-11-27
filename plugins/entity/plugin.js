@@ -211,7 +211,7 @@ jQuery(document).ready(function ($) {
       var element_id = 'entity-preview-' + entity_type + '-' + entity_id + '-' + view_mode + '-' + alignment;
 
       var preview_html = '<!-- ts_ck_entity_embed|start|' + entity_type + '|' + entity_id + '|' + view_mode + '|' + alignment + ' -->' +
-        '<div id="' + element_id + '" class="entity-preview" contenteditable="false">' + html + '</div>' +
+        '<div id="' + element_id + '" class="entity-preview">' + html + '</div>' +
         '<!-- ts_ck_entity_embed|end -->';
 
       return preview_html;

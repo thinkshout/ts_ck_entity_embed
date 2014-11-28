@@ -115,7 +115,7 @@ jQuery(document).ready(function ($) {
 
       var entity_type = $(this).attr("name").replace("tab-", "");
 
-      $(this).find('.cke_dialog_ui_input_text').change(function () {
+      $(this).find('.cke_dialog_ui_input_text').keypress(function () {
 
         if ($(this).val().length != 0) {
           $.get('/admin/ts_ck_entity_embed/entities/' + entity_type + '/' + $(this).val(), function (data) {

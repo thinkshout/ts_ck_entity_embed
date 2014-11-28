@@ -52,6 +52,8 @@ jQuery(document).ready(function ($) {
           if (element_parents[i].hasClass('entity-preview')) {
             console.log('Double-clicked on an entity preview element.');
 
+            TSCKEntityEmbedEntityDialog.selected_element = element_parents[i];
+
             var element_id_parts = element_parents[i].getId().split('-');
 
             TSCKEntityEmbedEntityDialog.selected_entity = {
@@ -61,12 +63,7 @@ jQuery(document).ready(function ($) {
               alignment: element_id_parts[5],
             };
 
-            console.log(TSCKEntityEmbedEntityDialog.selected_entity);
-
-            var dialog = new CKEDITOR.dialog(editor, 'entityDialog');
-            dialog.show();
-
-            evt.data.preventDefault();
+            editor.execCommand('entity');
 
             continue;
           }
@@ -150,6 +147,21 @@ jQuery(document).ready(function ($) {
         var preview_html = TSCKEntityEmbedEntity.generatePreviewHtml(entity_type, entity_id, view_mode, alignment, data);
 
         editor.insertHtml(preview_html);
+
+      });
+
+    },
+
+    TSCKEntityEmbedEntity.replaceEntityPreviewHtml = function (editor, element, entity_type, entity_id, view_mode, alignment) {
+
+      $.get('/admin/ts_ck_entity_embed/render/' + entity_type + '/' + entity_id + '/' + view_mode + '/' + alignment, function (data) {
+
+        var preview_html = TSCKEntityEmbedEntity.generatePreviewHtml(entity_type, entity_id, view_mode, alignment, data);
+
+        // TODO: Replace element.
+        var new_element = new CKEDITOR.dom.element(preview_html);
+
+        new_element.replace(element);
 
       });
 

@@ -75,13 +75,10 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
     // Dialog confirmation handler.
     onOk: function () {
 
-      // The context of this function is the dialog object itself.
-      // http://docs.ckeditor.com/#!/api/CKEDITOR.dialog
-      var dialog = this;
-
       TSCKEntityEmbedEntityDialog.insertSelectedEntity(editor);
 
     },
+
   };
 
 });
@@ -90,7 +87,7 @@ var TSCKEntityEmbedEntityDialog = {
   editor: null,
   jQuery: null,
   selected_entity: null,
-  edit_existing_entity: false,
+  selected_element: null,
 };
 
 jQuery(document).ready(function ($) {
@@ -107,8 +104,6 @@ jQuery(document).ready(function ($) {
       var selected = TSCKEntityEmbedEntityDialog.selected_entity;
 
       TSCKEntityEmbedEntity.updateEntityPreview(selected.entity_type, selected.entity_id, selected.view_mode, selected.alignment);
-
-      TSCKEntityEmbedEntityDialog.edit_existing_entity = true;
     }
 
     $(".cke_dialog_contents").find(".cke_dialog_page_contents").each(function (i) {
@@ -192,11 +187,16 @@ jQuery(document).ready(function ($) {
       var selected = TSCKEntityEmbedEntityDialog.selected_entity;
 
       if (selected) {
-        TSCKEntityEmbedEntity.insertEntityPreviewHtml(editor, selected.entity_type, selected.entity_id, selected.view_mode, selected.alignment);
+        if (TSCKEntityEmbedEntityDialog.selected_element !== null) {
+          TSCKEntityEmbedEntity.replaceEntityPreviewHtml(editor, TSCKEntityEmbedEntityDialog.selected_element, selected.entity_type, selected.entity_id, selected.view_mode, selected.alignment);
+        }
+        else {
+          TSCKEntityEmbedEntity.insertEntityPreviewHtml(editor, selected.entity_type, selected.entity_id, selected.view_mode, selected.alignment);
+        }
       }
 
+      TSCKEntityEmbedEntityDialog.selected_element = null;
       TSCKEntityEmbedEntityDialog.selected_entity = null;
-      TSCKEntityEmbedEntityDialog.edit_existing_entity = false;
 
     },
 

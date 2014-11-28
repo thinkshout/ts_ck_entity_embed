@@ -82,35 +82,34 @@ jQuery(document).ready(function ($) {
       form.on('submit', function (event) {
 
         for (var i = 0; i < TSCKEntityEmbedEntity.editors.length; i++) {
-
           var editor = TSCKEntityEmbedEntity.editors[i];
 
           var html = editor.getData();
 
-          // Regex pattern to match entities from HTML comment.
-          var pattern = /<!-- ts_ck_entity_embed\|start\|\w+\|\d+\|\w+\|\w+ -->[\s\S]+?<!-- ts_ck_entity_embed\|end -->/g;
+          var elements = editor.document.$.getElementsByTagName("div");
 
-          var matches = html.match(pattern);
+          for (var j = 0; j < elements.length; j++) {
+            var element = new CKEDITOR.dom.element(elements[j]);
 
-          if (matches) {
-            for (var i = 0; i < matches.length; i++) {
-              // Regex to match entity type, ID and view mode.
-              var entity_pattern = /<!-- ts_ck_entity_embed\|start\|(\w+)\|(\d+)\|(\w+)\|(\w+) -->[\s\S]+?<!-- ts_ck_entity_embed\|end -->/;
+            if (element.hasClass('entity-preview')) {
+              var element_id = element.getId();
+              var element_id_parts = element_id.split('-');
 
-              var entity_matches = matches[i].match(entity_pattern);
-
-              var entity_type = entity_matches[1];
-              var entity_id = entity_matches[2];
-              var view_mode = entity_matches[3];
-              var alignment = entity_matches[4];
+              var entity_type = element_id_parts[2];
+              var entity_id = element_id_parts[3];
+              var view_mode = element_id_parts[4];
+              var alignment = element_id_parts[5];
 
               var token = TSCKEntityEmbedEntity.generateToken(entity_type, entity_id, view_mode, alignment);
 
-              html = html.replace(entity_matches[0], token);
-            }
+              var token_element = new CKEDITOR.dom.text(token);
 
-            // Update editor with tokenized entities prior to saving.
-            editor.setData(html);
+              token_element.insertAfter(element);
+
+              // TODO: Strip <p> tags from token.
+
+              element.remove();
+            }
           }
         }
 
@@ -210,9 +209,7 @@ jQuery(document).ready(function ($) {
 
       var element_id = 'entity-preview-' + entity_type + '-' + entity_id + '-' + view_mode + '-' + alignment;
 
-      var preview_html = '<!-- ts_ck_entity_embed|start|' + entity_type + '|' + entity_id + '|' + view_mode + '|' + alignment + ' -->' +
-        '<div id="' + element_id + '" class="entity-preview">' + html + '</div>' +
-        '<!-- ts_ck_entity_embed|end -->';
+      var preview_html = '<div id="' + element_id + '" class="entity-preview">' + html + '</div>';
 
       return preview_html;
 

@@ -121,6 +121,24 @@ jQuery(document).ready(function ($) {
 
     });
 
+    $("#entity-view-mode").change(function () {
+
+      if (TSCKEntityEmbedEntityDialog.selected_entity != null) {
+        TSCKEntityEmbedEntityDialog.selected_entity.view_mode = $(this).val();
+        TSCKEntityEmbedEntityDialog.refresh();
+      }
+
+    });
+
+    $("#entity-align").change(function () {
+
+      if (TSCKEntityEmbedEntityDialog.selected_entity != null) {
+        TSCKEntityEmbedEntityDialog.selected_entity.alignment = $(this).val();
+        TSCKEntityEmbedEntityDialog.refresh();
+      }
+
+    });
+
   },
 
     TSCKEntityEmbedEntityDialog.refresh = function () {

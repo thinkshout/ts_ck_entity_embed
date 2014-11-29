@@ -210,7 +210,13 @@ jQuery(document).ready(function ($) {
             html = html.replace(regex, TSCKEntityEmbedEntity.editor_entity_previews[editor.id][token]);
           }
 
-          editor.setData(html);
+          editor.setData(html, {
+            callback: function() {
+              if (this.checkDirty()) {
+                console.log("Set updated HTML in editor.");
+              }
+            }
+          });
         }
 
       });

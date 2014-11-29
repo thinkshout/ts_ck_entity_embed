@@ -83,8 +83,6 @@ jQuery(document).ready(function ($) {
         for (var i = 0; i < TSCKEntityEmbedEntity.editors.length; i++) {
           var editor = TSCKEntityEmbedEntity.editors[i];
 
-          var html = editor.getData();
-
           var elements = editor.document.$.getElementsByTagName("div");
 
           for (var j = 0; j < elements.length; j++) {

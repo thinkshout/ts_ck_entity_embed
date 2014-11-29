@@ -99,11 +99,9 @@ jQuery(document).ready(function ($) {
 
               var token = TSCKEntityEmbedEntity.generateToken(entity_type, entity_id, view_mode, alignment);
 
-              var token_element = new CKEDITOR.dom.text(token);
+              var token_element = CKEDITOR.dom.element.createFromHtml(token);
 
               token_element.insertAfter(element);
-
-              // TODO: Strip <p> tags from token.
 
               element.remove();
             }

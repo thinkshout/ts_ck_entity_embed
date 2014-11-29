@@ -53,6 +53,13 @@ function ts_ck_entity_embed_permission() {
 }
 
 /**
+ * Implements hook_ckeditor_settings_alter().
+ */
+function ts_ck_entity_embed_ckeditor_settings_alter(&$settings, $conf) {
+  $settings['removePlugins'] = 'image';
+}
+
+/**
  * Implements hook_ckeditor_plugin().
  */
 function ts_ck_entity_embed_ckeditor_plugin() {

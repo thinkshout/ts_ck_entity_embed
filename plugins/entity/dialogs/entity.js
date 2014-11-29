@@ -72,12 +72,18 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
 
     },
 
+    onShow: function () {
+
+      TSCKEntityEmbedEntityDialog.refresh();
+
+    },
+
     // Dialog confirmation handler.
     onOk: function () {
 
       TSCKEntityEmbedEntityDialog.insertSelectedEntity(editor);
 
-    },
+    }
 
   };
 
@@ -96,15 +102,6 @@ jQuery(document).ready(function ($) {
 
     TSCKEntityEmbedEntityDialog.editor = editor;
     TSCKEntityEmbedEntityDialog.jQuery = $;
-
-    if (TSCKEntityEmbedEntityDialog.selected_entity !== null) {
-      console.log('Editing existing entity:');
-      console.log(TSCKEntityEmbedEntityDialog.selected_entity);
-
-      var selected = TSCKEntityEmbedEntityDialog.selected_entity;
-
-      TSCKEntityEmbedEntity.updateEntityPreview(selected.entity_type, selected.entity_id, selected.view_mode, selected.alignment);
-    }
 
     $(".cke_dialog_contents").find(".cke_dialog_page_contents").each(function (i) {
 
@@ -125,6 +122,19 @@ jQuery(document).ready(function ($) {
     });
 
   },
+
+    TSCKEntityEmbedEntityDialog.refresh = function () {
+
+      if (TSCKEntityEmbedEntityDialog.selected_entity !== null) {
+        console.log('Editing existing entity:');
+        console.log(TSCKEntityEmbedEntityDialog.selected_entity);
+
+        var selected = TSCKEntityEmbedEntityDialog.selected_entity;
+
+        TSCKEntityEmbedEntity.updateEntityPreview(selected.entity_type, selected.entity_id, selected.view_mode, selected.alignment);
+      }
+
+    }
 
     TSCKEntityEmbedEntityDialog.populateResults = function (entity_type, data) {
 

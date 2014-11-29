@@ -123,8 +123,8 @@ jQuery(document).ready(function ($) {
 
     $("#entity-view-mode").change(function () {
 
-      if (TSCKEntityEmbedEntityDialog.selected_entity != null) {
-        TSCKEntityEmbedEntityDialog.selected_entity.view_mode = $(this).val();
+      if (TSCKEntityEmbedEntity.selected_entity != null) {
+        TSCKEntityEmbedEntity.selected_entity.view_mode = $(this).val();
         TSCKEntityEmbedEntityDialog.refresh();
       }
 
@@ -132,8 +132,8 @@ jQuery(document).ready(function ($) {
 
     $("#entity-align").change(function () {
 
-      if (TSCKEntityEmbedEntityDialog.selected_entity != null) {
-        TSCKEntityEmbedEntityDialog.selected_entity.alignment = $(this).val();
+      if (TSCKEntityEmbedEntity.selected_entity != null) {
+        TSCKEntityEmbedEntity.selected_entity.alignment = $(this).val();
         TSCKEntityEmbedEntityDialog.refresh();
       }
 
@@ -143,11 +143,11 @@ jQuery(document).ready(function ($) {
 
     TSCKEntityEmbedEntityDialog.refresh = function () {
 
-      if (TSCKEntityEmbedEntityDialog.selected_entity !== null) {
+      if (TSCKEntityEmbedEntity.selected_entity !== null) {
         console.log('Editing existing entity:');
-        console.log(TSCKEntityEmbedEntityDialog.selected_entity);
+        console.log(TSCKEntityEmbedEntity.selected_entity);
 
-        var selected = TSCKEntityEmbedEntityDialog.selected_entity;
+        var selected = TSCKEntityEmbedEntity.selected_entity;
 
         TSCKEntityEmbedEntity.updateEntityPreview(selected.entity_type, selected.entity_id, selected.view_mode, selected.alignment);
       }
@@ -200,7 +200,7 @@ jQuery(document).ready(function ($) {
 
         TSCKEntityEmbedEntity.updateEntityPreview(entity_type, entity_id, view_mode, alignment);
 
-        TSCKEntityEmbedEntityDialog.selected_entity = {
+        TSCKEntityEmbedEntity.selected_entity = {
           entity_type: entity_type,
           entity_id: entity_id,
           view_mode: view_mode,
@@ -212,19 +212,19 @@ jQuery(document).ready(function ($) {
 
     TSCKEntityEmbedEntityDialog.insertSelectedEntity = function (editor) {
 
-      var selected = TSCKEntityEmbedEntityDialog.selected_entity;
+      var selected = TSCKEntityEmbedEntity.selected_entity;
 
       if (selected) {
-        if (TSCKEntityEmbedEntityDialog.selected_element !== null) {
-          TSCKEntityEmbedEntity.replaceEntityPreviewHtml(editor, TSCKEntityEmbedEntityDialog.selected_element, selected.entity_type, selected.entity_id, selected.view_mode, selected.alignment);
+        if (TSCKEntityEmbedEntity.selected_element !== null) {
+          TSCKEntityEmbedEntity.replaceEntityPreviewHtml(editor, TSCKEntityEmbedEntity.selected_element, selected.entity_type, selected.entity_id, selected.view_mode, selected.alignment);
         }
         else {
           TSCKEntityEmbedEntity.insertEntityPreviewHtml(editor, selected.entity_type, selected.entity_id, selected.view_mode, selected.alignment);
         }
       }
 
-      TSCKEntityEmbedEntityDialog.selected_element = null;
-      TSCKEntityEmbedEntityDialog.selected_entity = null;
+      TSCKEntityEmbedEntity.selected_element = null;
+      TSCKEntityEmbedEntity.selected_entity = null;
 
     },
 

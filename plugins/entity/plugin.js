@@ -32,6 +32,8 @@ var TSCKEntityEmbedEntity = {
   editors: [],
   editor_token_counts: [],
   editor_entity_previews: [],
+  selected_element: null,
+  selected_entity: null,
 };
 
 jQuery(document).ready(function ($) {
@@ -52,11 +54,11 @@ jQuery(document).ready(function ($) {
           if (element_parents[i].hasClass('entity-preview')) {
             console.log('Double-clicked on an entity preview element.');
 
-            TSCKEntityEmbedEntityDialog.selected_element = element_parents[i];
+            TSCKEntityEmbedEntity.selected_element = element_parents[i];
 
             var element_id_parts = element_parents[i].getId().split('-');
 
-            TSCKEntityEmbedEntityDialog.selected_entity = {
+            TSCKEntityEmbedEntity.selected_entity = {
               entity_type: element_id_parts[2],
               entity_id: element_id_parts[3],
               view_mode: element_id_parts[4],

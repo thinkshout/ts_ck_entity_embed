@@ -149,6 +149,8 @@ jQuery(document).ready(function ($) {
 
         editor.insertHtml(preview_html);
 
+        TSCKEntityEmbedEntity.prepareElements(editor);
+
       });
 
     },
@@ -162,6 +164,8 @@ jQuery(document).ready(function ($) {
         var new_element = CKEDITOR.dom.element.createFromHtml(preview_html);
 
         new_element.replace(element);
+
+        TSCKEntityEmbedEntity.prepareElements(editor);
 
       });
 
@@ -214,6 +218,8 @@ jQuery(document).ready(function ($) {
             callback: function() {
               if (this.checkDirty()) {
                 console.log("Set updated HTML in editor.");
+
+                TSCKEntityEmbedEntity.prepareElements(this);
               }
             }
           });
@@ -236,6 +242,22 @@ jQuery(document).ready(function ($) {
     TSCKEntityEmbedEntity.generateToken = function (entity_type, entity_id, view_mode, alignment) {
 
       return '[ts_ck_entity_embed|entity_type=' + entity_type + '|entity_id=' + entity_id + '|view_mode=' + view_mode + '|alignment=' + alignment + ']';
+
+    },
+
+    TSCKEntityEmbedEntity.prepareElements = function (editor) {
+
+      var elements = editor.document.$.getElementsByTagName("div");
+
+      for (var i = 0; i < elements.length; i++) {
+        var element = new CKEDITOR.dom.element(elements[i]);
+
+        if (element.hasClass('entity-preview')) {
+          element.setAttributes({
+            contenteditable: 'false',
+          });
+        }
+      }
 
     }
 

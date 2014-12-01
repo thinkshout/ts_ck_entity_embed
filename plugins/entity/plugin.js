@@ -54,6 +54,9 @@ jQuery(document).ready(function ($) {
           if (element_parents[i].hasClass('entity-preview')) {
             console.log('Double-clicked on an entity preview element.');
 
+            // Cancel the event to prevent any default CKEditor behavior here.
+            evt.cancel();
+
             TSCKEntityEmbedEntity.selected_element = element_parents[i];
 
             var element_id_parts = element_parents[i].getId().split('-');
@@ -72,7 +75,7 @@ jQuery(document).ready(function ($) {
         }
       }
 
-    });
+    }, null, null, 0);
 
     var editor_element = $("#" + editor.name);
     var form = editor_element.closest("form");

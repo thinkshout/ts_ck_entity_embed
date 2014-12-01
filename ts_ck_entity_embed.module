@@ -56,7 +56,10 @@ function ts_ck_entity_embed_permission() {
  * Implements hook_ckeditor_settings_alter().
  */
 function ts_ck_entity_embed_ckeditor_settings_alter(&$settings, $conf) {
+  // Disable default image plugin.
   $settings['removePlugins'] = 'image';
+  // Prevent CKEditor stripping IDs and classes from elements.
+  $settings['extraAllowedContent'] = '*[id](*)';
 }
 
 /**

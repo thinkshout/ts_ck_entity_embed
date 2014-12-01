@@ -217,6 +217,7 @@ function ts_ck_entity_embed_default_entity_info() {
   $entity_info = array(
     'bean' => array(
       'render_method' => 'ts_ck_entity_embed_render_bean',
+      'search_field' => 'label',
       'view_modes' => ts_ck_entity_embed_get_view_modes('bean'),
     ),
   );
@@ -243,24 +244,30 @@ function ts_ck_entity_embed_render_bean($entity, $view_mode) {
  * Page callback for entity search URL.
  */
 function ts_ck_entity_embed_entity_search($entity_type, $string) {
-  $query = new EntityFieldQuery();
-  $query->entityCondition('entity_type', $entity_type)
-    ->propertyCondition('label', $string, 'CONTAINS')
-    ->range(0, 20);
-
   $entities = array();
 
-  $result = $query->execute();
-  if (isset($result[$entity_type])) {
-    $entity_ids = array_keys($result[$entity_type]);
-    $entities_data = entity_load($entity_type, $entity_ids);
+  $entity_info = ts_ck_entity_embed_get_entity_info();
 
-    if (!empty($entities_data)) {
-      foreach ($entities_data as $id => $entity) {
-        $entities[] = array(
-          'id' => $id,
-          'label' => $entity->label,
-        );
+  if (isset($entity_info[$entity_type])) {
+    $search_field = $entity_info[$entity_type]['search_field'];
+
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', $entity_type)
+      ->propertyCondition($search_field, $string, 'CONTAINS')
+      ->range(0, 20);
+
+    $result = $query->execute();
+    if (isset($result[$entity_type])) {
+      $entity_ids = array_keys($result[$entity_type]);
+      $entities_data = entity_load($entity_type, $entity_ids);
+
+      if (!empty($entities_data)) {
+        foreach ($entities_data as $id => $entity) {
+          $entities[] = array(
+            'id' => $id,
+            'label' => $entity->$search_field,
+          );
+        }
       }
     }
   }

@@ -16,6 +16,9 @@ function hook_ts_ck_entity_embed_entity_info() {
     'bean' => array(
       // The method used to render the entity when embedded.
       'render_method' => 'ts_ck_entity_embed_render_bean',
+      // The database table field used to search for this type of entity.
+      // Usually whatever contains the entity name / title.
+      'search_field' => 'label',
     ),
   );
 

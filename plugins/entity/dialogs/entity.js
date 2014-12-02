@@ -34,10 +34,10 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
             id: 'entity-' + entity_type + '-results',
             html:
               '<div id="entity-' + entity_type + '-preview" class="entity-preview">' +
-              '<label for="entity-view-mode">View mode:</label>' +
-              '<select id="entity-view-mode">' + view_mode_options + '</select>' +
-              '<label for="entity-align">Align:</label>' +
-              '<select id="entity-align">' +
+              '<label for="entity-view-mode-' + entity_type + '">View mode:</label>' +
+              '<select id="entity-view-mode-' + entity_type + '" class="entity-view-mode-select">' + view_mode_options + '</select>' +
+              '<label for="entity-align-' + entity_type + '">Align:</label>' +
+              '<select id="entity-align-' + entity_type + '" class="entity-align-select">' +
               '<option value="left">Left</option>' +
               '<option value="right">Right</option>' +
               '<option value="center">Center</option>' +
@@ -121,7 +121,7 @@ jQuery(document).ready(function ($) {
 
     });
 
-    $("#entity-view-mode").change(function () {
+    $(".entity-view-mode-select").change(function () {
 
       if (TSCKEntityEmbedEntity.selected_entity != null) {
         TSCKEntityEmbedEntity.selected_entity.view_mode = $(this).val();
@@ -130,7 +130,7 @@ jQuery(document).ready(function ($) {
 
     });
 
-    $("#entity-align").change(function () {
+    $(".entity-align-select").change(function () {
 
       if (TSCKEntityEmbedEntity.selected_entity != null) {
         TSCKEntityEmbedEntity.selected_entity.alignment = $(this).val();
@@ -195,8 +195,8 @@ jQuery(document).ready(function ($) {
         var value_parts = selected_value.split("-");
         var entity_type = value_parts[0];
         var entity_id = value_parts[1];
-        var view_mode = $("#entity-view-mode").val();
-        var alignment = $("#entity-align").val();
+        var view_mode = $("#entity-view-mode-" + entity_type).val();
+        var alignment = $("#entity-align-" + entity_type).val();
 
         TSCKEntityEmbedEntity.updateEntityPreview(entity_type, entity_id, view_mode, alignment);
 
@@ -230,8 +230,8 @@ jQuery(document).ready(function ($) {
 
     TSCKEntityEmbedEntity.updateEntityPreview = function (entity_type, entity_id, view_mode, alignment) {
 
-      $("#entity-view-mode").val(view_mode);
-      $("#entity-align").val(alignment);
+      $("#entity-view-mode-" + entity_type).val(view_mode);
+      $("#entity-align-" + entity_type).val(alignment);
 
       $.get('/admin/ts_ck_entity_embed/render/' + entity_type + '/' + entity_id + '/' + view_mode + '/' + alignment, function (data) {
 

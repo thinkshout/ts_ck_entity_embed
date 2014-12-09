@@ -42,3 +42,24 @@
     overflow: auto;
     width: 460px;
 }
+
+.fh-entity-embed-center {
+  clear: both;
+  float: none;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.fh-entity-embed-left {
+  clear: both;
+  float: left;
+  margin: 2em 2em 2em 0;
+  max-width: 300px;
+}
+
+.fh-entity-embed-right {
+  clear: both;
+  float: left;
+  margin: 2em 0 2em 2em;
+  max-width: 300px;
+}

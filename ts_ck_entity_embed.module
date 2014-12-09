@@ -303,13 +303,13 @@ function ts_ck_entity_embed_entity_render($entity_type, $entity_id, $view_mode, 
 function ts_ck_entity_embed_wrap_content_alignment($content, $alignment) {
   switch ($alignment) {
     case 'left':
-      $content = '<div style="float: left">' . $content . '</div>';
+      $content = '<div class="fh-entity-embed-left">' . $content . '</div>';
       break;
     case 'right':
-      $content = '<div style="float: right">' . $content . '</div>';
+      $content = '<div class="fh-entity-embed-right">' . $content . '</div>';
       break;
     case 'center':
-      $content = '<div style="clear: both; text-align: center"><div style="margin-left: auto; margin-right: auto">' . $content . '</div></div>';
+      $content = '<div class="fh-entity-embed-center">' . $content . '</div>';
       break;
   }
 

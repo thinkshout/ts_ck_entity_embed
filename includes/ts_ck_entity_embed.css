@@ -65,13 +65,14 @@
     clear: both;
     float: left;
     margin: 2em 2em 2em 0;
-    max-width: 20%;
+    max-width: 28%;
   }
 
   .fh-entity-embed-right {
     clear: both;
     float: right;
     margin: 2em 0 2em 2em;
-    max-width: 20%;
+    max-width: 28%;
   }
 }
+

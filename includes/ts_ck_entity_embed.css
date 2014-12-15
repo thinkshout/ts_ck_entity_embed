@@ -43,14 +43,15 @@
     width: 460px;
 }
 
+.one-sidebar .fh-entity-embed-left,
+.one-sidebar .fh-entity-embed-right,
 .fh-entity-embed-right,
 .fh-entity-embed-left {
-  float: none;
   clear: both;
-  margin: 2em;
+  float: none;
   max-width: 600px;
+  margin: 0 auto;
 }
-
 
 @media (min-width: 768px) {
   .fh-entity-embed-center {
@@ -64,13 +65,13 @@
     clear: both;
     float: left;
     margin: 2em 2em 2em 0;
-    max-width: 300px;
+    max-width: 20%;
   }
 
   .fh-entity-embed-right {
     clear: both;
-    float: left;
+    float: right;
     margin: 2em 0 2em 2em;
-    max-width: 300px;
+    max-width: 20%;
   }
 }

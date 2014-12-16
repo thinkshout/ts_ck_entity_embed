@@ -189,7 +189,7 @@ jQuery(document).ready(function ($) {
 
         var token = TSCKEntityEmbedEntity.generateToken(entity_type, entity_id, view_mode, alignment);
 
-        TSCKEntityEmbedEntity.editor_entity_previews[editor.id][token] = preview_html
+        TSCKEntityEmbedEntity.editor_entity_previews[editor.id][token] = preview_html;
 
         TSCKEntityEmbedEntity.editor_token_counts[editor.id]['parsed']++;
 

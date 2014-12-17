@@ -58,6 +58,9 @@ function ts_ck_entity_embed_permission() {
 function ts_ck_entity_embed_ckeditor_settings_alter(&$settings, $conf) {
   // Prevent CKEditor stripping IDs and classes from elements.
   $settings['extraAllowedContent'] = '*[id](*)';
+
+  // Prevent CKEditor stripping images from the Picture module.
+  $settings['extraAllowedContent'] .= ';picture;source;*[media]';
 }
 
 /**

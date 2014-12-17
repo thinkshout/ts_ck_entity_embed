@@ -211,7 +211,11 @@ jQuery(document).ready(function ($) {
 
             var regex = new RegExp(regex_token, 'g');
 
-            html = html.replace(regex, TSCKEntityEmbedEntity.editor_entity_previews[editor.id][token]);
+            var embedded_html = TSCKEntityEmbedEntity.editor_entity_previews[editor.id][token];
+
+            embedded_html = embedded_html.replace(/srcset=/g, 'src=');
+
+            html = html.replace(regex, embedded_html);
           }
 
           editor.setData(html, {

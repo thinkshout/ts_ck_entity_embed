@@ -13,6 +13,11 @@ include_once 'ts_ck_entity_embed.features.inc';
 function ts_ck_entity_embed_menu() {
   $items = array();
 
+  /**
+   * Parameters:
+   *   - Entity type
+   *   - Search string
+   */
   $items['admin/ts_ck_entity_embed/entities/%/%'] = array(
     'page callback' => 'ts_ck_entity_embed_entity_search',
     'page arguments' => array(3, 4),
@@ -20,6 +25,13 @@ function ts_ck_entity_embed_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  /**
+   * Parameters:
+   *   - Entity type
+   *   - Entity ID
+   *   - View mode
+   *   - Alignment
+   */
   $items['admin/ts_ck_entity_embed/render/%/%/%/%'] = array(
     'page callback' => 'ts_ck_entity_embed_entity_render',
     'page arguments' => array(3, 4, 5, 6),

@@ -221,7 +221,7 @@ function ts_ck_entity_embed_default_entity_info() {
   $entity_info = array(
     'bean' => array(
       'render_method' => 'ts_ck_entity_embed_render_bean',
-      'search_field' => 'label',
+      'view_id' => 'fh_ck_entity_embed_bean',
       'view_modes' => ts_ck_entity_embed_get_view_modes('bean'),
     ),
   );

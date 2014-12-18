@@ -14,6 +14,8 @@ function ts_ck_entity_embed_menu() {
   $items = array();
 
   /**
+   * Provides a JSON-encoded array of entity IDs and labels.
+   *
    * Parameters:
    *   - Entity type
    *   - Search string
@@ -26,6 +28,21 @@ function ts_ck_entity_embed_menu() {
   );
 
   /**
+   * Provides the HTML of a rendered view.
+   *
+   * Parameters:
+   *   - View ID
+   */
+  $items['admin/ts_ck_entity_embed/view/%'] = array(
+    'page callback' => 'ts_ck_entity_embed_view_render',
+    'page arguments' => array(3),
+    'access callback' => 'ts_ck_entity_embed_permission',
+    'type' => MENU_CALLBACK,
+  );
+
+  /**
+   * Provides the HTML of a rendered entity.
+   *
    * Parameters:
    *   - Entity type
    *   - Entity ID
@@ -235,7 +252,7 @@ function ts_ck_entity_embed_default_entity_info() {
   $entity_info = array(
     'bean' => array(
       'render_method' => 'ts_ck_entity_embed_render_bean',
-      'view_id' => 'fh_ck_entity_embed_bean',
+      'view_name' => 'fh_ck_entity_embed_bean',
       'view_modes' => ts_ck_entity_embed_get_view_modes('bean'),
     ),
   );
@@ -291,6 +308,20 @@ function ts_ck_entity_embed_entity_search($entity_type, $string) {
   }
 
   drupal_json_output($entities);
+}
+
+/**
+ * Page callback for view render URL.
+ */
+function ts_ck_entity_embed_view_render($view_name, $display_id = 'default') {
+  $content = '';
+
+  $view = views_get_view($view_name);
+  if ($view && $view->access($display_id)) {
+    $content = views_embed_view($view_name, $display_id);
+  }
+
+  echo $content;
 }
 
 /**

@@ -5,6 +5,8 @@
  * Defines core TS CK Entity Embed functionality.
  */
 
+include_once 'ts_ck_entity_embed.features.inc';
+
 /**
  * Implements hook_menu().
  */

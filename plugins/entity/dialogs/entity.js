@@ -19,36 +19,47 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
         view_mode_options += '<option value="' + view_modes[i] + '">' + view_modes[i] + '</option>'
       }
 
+      var elements = [];
+
+      if (entity_info[entity_type].view_name) {
+        elements.push({
+          type: 'html',
+          id: 'entity-' + entity_type + '-results',
+          html: '<iframe src="/admin/ts_ck_entity_embed/view/' + entity_info[entity_type].view_name + '" width="400" height="200"></iframe>',
+        });
+      }
+      else {
+        elements.push({
+          type: 'text',
+          id: 'entity-' + entity_type + '-search',
+          label: 'Find ' + entity_type,
+        });
+
+        elements.push({
+          type: 'html',
+          id: 'entity-' + entity_type + '-results',
+          html:
+          '<div id="entity-' + entity_type + '-preview" class="entity-preview">' +
+          '<label for="entity-view-mode-' + entity_type + '">View mode:</label>' +
+          '<select id="entity-view-mode-' + entity_type + '" class="entity-view-mode-select">' + view_mode_options + '</select>' +
+          '<label for="entity-align-' + entity_type + '">Align:</label>' +
+          '<select id="entity-align-' + entity_type + '" class="entity-align-select">' +
+          '<option value="left">Left</option>' +
+          '<option value="right">Right</option>' +
+          '<option value="center">Center</option>' +
+          '</select>' +
+          '<div class="preview-box"></div>' +
+          '</div>' +
+          '<div id="entity-' + entity_type + '-results">' +
+          '<form id="entity-' + entity_type + '-results-list" class="entity-results-list">No results</form>' +
+          '</div>',
+        });
+      }
+
       var tab = {
         id: 'tab-' + entity_type,
         label: entity_type,
-
-        elements: [
-          {
-            type: 'text',
-            id: 'entity-' + entity_type + '-search',
-            label: 'Find ' + entity_type,
-          },
-          {
-            type: 'html',
-            id: 'entity-' + entity_type + '-results',
-            html:
-              '<div id="entity-' + entity_type + '-preview" class="entity-preview">' +
-              '<label for="entity-view-mode-' + entity_type + '">View mode:</label>' +
-              '<select id="entity-view-mode-' + entity_type + '" class="entity-view-mode-select">' + view_mode_options + '</select>' +
-              '<label for="entity-align-' + entity_type + '">Align:</label>' +
-              '<select id="entity-align-' + entity_type + '" class="entity-align-select">' +
-              '<option value="left">Left</option>' +
-              '<option value="right">Right</option>' +
-              '<option value="center">Center</option>' +
-              '</select>' +
-              '<div class="preview-box"></div>' +
-              '</div>' +
-              '<div id="entity-' + entity_type + '-results">' +
-              '<form id="entity-' + entity_type + '-results-list" class="entity-results-list">No results</form>' +
-              '</div>',
-          },
-        ]
+        elements: elements,
       };
 
       tabs.push(tab);

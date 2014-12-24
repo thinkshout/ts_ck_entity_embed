@@ -1,3 +1,8 @@
+.entity-browser {
+    height: 600px !important;
+    width: 1000px !important;
+}
+
 .entity-results-list {
     float: left;
     height: 250px !important;

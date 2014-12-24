@@ -25,7 +25,7 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
         elements.push({
           type: 'html',
           id: 'entity-' + entity_type + '-results',
-          html: '<iframe src="/admin/ts_ck_entity_embed/view/' + entity_info[entity_type].view_name + '" width="400" height="200"></iframe>',
+          html: '<iframe class="entity-browser" src="/admin/ts_ck_entity_embed/view/' + entity_info[entity_type].view_name + '"></iframe>',
         });
       }
       else {

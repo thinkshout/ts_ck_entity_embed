@@ -116,7 +116,7 @@ function ts_ck_entity_embed_ckeditor_plugin() {
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
+ * Implements hook_form_alter().
  */
 function ts_ck_entity_embed_form_alter(&$form, &$form_state, $form_id) {
   // TODO: Limit to forms with CKEditor enabled.

@@ -28,6 +28,19 @@ function ts_ck_entity_embed_menu() {
   );
 
   /**
+   * Provides a JSON-encoded entity matching a given path.
+   *
+   * Parameters:
+   *   - Entity path
+   */
+  $items['admin/ts_ck_entity_embed/path/%/%/%'] = array(
+    'page callback' => 'ts_ck_entity_embed_path_lookup',
+    'page arguments' => array(3, 4, 5),
+    'access callback' => 'ts_ck_entity_embed_permission',
+    'type' => MENU_CALLBACK,
+  );
+
+  /**
    * Provides the HTML of a rendered view.
    *
    * Parameters:
@@ -308,6 +321,22 @@ function ts_ck_entity_embed_entity_search($entity_type, $string) {
   }
 
   drupal_json_output($entities);
+}
+
+/**
+ * Page callback for entity lookup by path.
+ */
+function ts_ck_entity_embed_path_lookup($entity_type, $path, $delta) {
+  $entity = menu_get_item($path . '/' . $delta);
+
+  $entity_ids = entity_extract_ids($entity_type, $entity['map'][1]);
+
+  $entity_info = array(
+    'entity_id' => $entity_ids[0],
+    'bundle' => $entity_ids[2],
+  );
+
+  return drupal_json_output($entity_info);
 }
 
 /**

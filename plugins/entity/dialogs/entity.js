@@ -114,6 +114,12 @@ jQuery(document).ready(function ($) {
     TSCKEntityEmbedEntityDialog.editor = editor;
     TSCKEntityEmbedEntityDialog.jQuery = $;
 
+    // Set up load handlers for iframe entity browsers.
+    $('.entity-browser').load(function() {
+      console.log("Entity browser loaded.");
+      TSCKEntityEmbedEntityDialog.refreshBrowser($(this));
+    });
+
     $(".cke_dialog_contents").find(".cke_dialog_page_contents").each(function (i) {
 
       var entity_type = $(this).attr("name").replace("tab-", "");
@@ -152,7 +158,20 @@ jQuery(document).ready(function ($) {
 
   },
 
+    TSCKEntityEmbedEntityDialog.refreshBrowser = function (browser_element) {
+      console.log('Refreshing entity browser.');
+
+      // Set up click handlers for entities in browser.
+      browser_element.contents().find('div.entity').click(function(){
+        var about = $(this).attr('about');
+        console.log("Clicked entity: " + about);
+      });
+
+    }
+
     TSCKEntityEmbedEntityDialog.refresh = function () {
+
+      console.log('Refreshing dialog.');
 
       if (TSCKEntityEmbedEntity.selected_entity !== null) {
         console.log('Editing existing entity:');

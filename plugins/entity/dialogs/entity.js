@@ -8,6 +8,10 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
   entity_info = Drupal.settings.ts_ck_entity_embed.entity_info;
 
   tabs = [];
+  buttons = [
+    CKEDITOR.dialog.cancelButton,
+    CKEDITOR.dialog.okButton,
+  ];
 
   if (entity_info) {
 
@@ -64,7 +68,25 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
 
       tabs.push(tab);
 
+      var next_button = {
+        id: 'entity embed next',
+        type: 'button',
+        label: 'Next',
+        title: 'Configure embedded entity',
+        accessKey: 'N',
+        disabled: false,
+        onClick: function()
+        {
+          console.log('clicked next');
+        }
+      }
+
+      buttons.push(next_button);
+
     }
+
+    console.log(buttons);
+
   }
 
   return {
@@ -75,6 +97,8 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
 
     // Dialog window content definition.
     contents: tabs,
+
+    buttons: buttons,
 
     // Dialog load handler.
     onLoad: function () {

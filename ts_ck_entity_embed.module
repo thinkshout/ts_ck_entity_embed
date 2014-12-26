@@ -140,7 +140,10 @@ function ts_ck_entity_embed_form_alter(&$form, &$form_state, $form_id) {
   $attached_js = array(
     array(
       'data' => array(
-        'ts_ck_entity_embed' => array('entity_info' => $entity_info),
+        'ts_ck_entity_embed' => array(
+          'base_path' => drupal_get_path('module', 'ts_ck_entity_embed'),
+          'entity_info' => $entity_info
+        ),
       ),
       'type' => 'setting',
     ),

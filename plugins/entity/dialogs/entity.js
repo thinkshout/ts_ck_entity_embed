@@ -5,6 +5,7 @@
 
 CKEDITOR.dialog.add('entityDialog', function (editor) {
 
+  base_path = Drupal.settings.ts_ck_entity_embed.base_path;
   entity_info = Drupal.settings.ts_ck_entity_embed.entity_info;
 
   tabs = [];
@@ -138,6 +139,13 @@ jQuery(document).ready(function ($) {
     TSCKEntityEmbedEntityDialog.editor = editor;
     TSCKEntityEmbedEntityDialog.jQuery = $;
 
+    $(".entity-browser").each(function () {
+
+      var head = $(this).find("head");
+      head.append($("<link/>", { rel: 'stylesheet', href: base_path + '/includes/ts_ck_entity_embed_browser.css', type: 'text/css' }));
+
+    });
+
     // Set up load handlers for iframe entity browsers.
     $('.entity-browser').load(function() {
       console.log("Entity browser loaded.");
@@ -186,11 +194,18 @@ jQuery(document).ready(function ($) {
 
       console.log('Refreshing entity browser.');
 
+      // Reset selected entity highlighting.
+      browser_element.contents().find('div.entity').each(function () {
+        $(this).removeClass('selected-entity');
+      });
+
       // Set up click handlers for entities in browser.
-      browser_element.contents().find('div.entity').click(function(){
+      browser_element.contents().find('div.entity').click(function () {
 
         var path = $(this).attr('about');
         console.log("Clicked entity: " + path);
+
+        $(this).addClass('selected-entity');
 
         TSCKEntityEmbedEntityDialog.selectBrowserEntity('bean', path);
 

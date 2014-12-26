@@ -1,0 +1,7 @@
+.view-content .entity {
+    border: 4px solid #FFF;
+}
+
+.view-content .selected-entity {
+    border: 4px solid #B63300;
+}

@@ -159,15 +159,35 @@ jQuery(document).ready(function ($) {
   },
 
     TSCKEntityEmbedEntityDialog.refreshBrowser = function (browser_element) {
+
       console.log('Refreshing entity browser.');
 
       // Set up click handlers for entities in browser.
       browser_element.contents().find('div.entity').click(function(){
-        var about = $(this).attr('about');
-        console.log("Clicked entity: " + about);
+
+        var path = $(this).attr('about');
+        console.log("Clicked entity: " + path);
+
+        TSCKEntityEmbedEntityDialog.selectBrowserEntity('bean', path);
+
       });
 
-    }
+    },
+
+    TSCKEntityEmbedEntityDialog.selectBrowserEntity = function (entity_type, path) {
+
+      $.get('/admin/ts_ck_entity_embed/path/' + entity_type + path, function (data) {
+
+        TSCKEntityEmbedEntity.selected_entity = {
+          entity_type: entity_type,
+          entity_id: data.entity_id,
+          view_mode: null,
+          alignment: null,
+        };
+
+      });
+
+    },
 
     TSCKEntityEmbedEntityDialog.refresh = function () {
 

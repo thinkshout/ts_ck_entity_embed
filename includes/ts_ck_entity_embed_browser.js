@@ -10,11 +10,14 @@ function TSCKEntityEmbedEntityBrowser (jQuery, browser_element) {
 
     console.log(this.browser_element);
 
-    this.browser_element.contents().find("div.entity").on("click", this.$.proxy(this.handleEntitySelect, this));
+    this.browser_element.contents().find("div.entity").on("click", this.$.proxy(this.entityClickHandler, this));
 
   };
 
-  this.handleEntitySelect = function (event) {
+  this.entityClickHandler = function (event) {
+
+    // TODO: Replace hard-coded entity type. Probably make it a class property.
+    var entity_type = 'bean';
 
     // Reset selected entity highlighting.
     this.browser_element.contents().find("div.entity").removeClass("selected-entity");
@@ -25,8 +28,19 @@ function TSCKEntityEmbedEntityBrowser (jQuery, browser_element) {
     // Add highlighting to selected entity.
     this.$(event.currentTarget).addClass("selected-entity");
 
-    // TODO: Remove hard-coded entity type.
-    TSCKEntityEmbedEntityDialog.selectBrowserEntity('bean', path);
+    // Get entity information from path.
+    this.$.get('/admin/ts_ck_entity_embed/path/' + entity_type + path, function (data) {
+
+      TSCKEntityEmbedEntity.selected_entity = {
+        entity_type: entity_type,
+        entity_id: data.entity_id,
+        view_mode: null,
+        alignment: null,
+      };
+
+      console.log(TSCKEntityEmbedEntity.selected_entity);
+
+    });
 
   }
 

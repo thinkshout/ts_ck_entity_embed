@@ -201,21 +201,6 @@ jQuery(document).ready(function ($) {
 
   },
 
-    TSCKEntityEmbedEntityDialog.selectBrowserEntity = function (entity_type, path) {
-
-      $.get('/admin/ts_ck_entity_embed/path/' + entity_type + path, function (data) {
-
-        TSCKEntityEmbedEntity.selected_entity = {
-          entity_type: entity_type,
-          entity_id: data.entity_id,
-          view_mode: null,
-          alignment: null,
-        };
-
-      });
-
-    },
-
     TSCKEntityEmbedEntityDialog.refresh = function () {
 
       console.log('Refreshing dialog.');

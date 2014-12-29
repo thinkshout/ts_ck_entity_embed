@@ -335,6 +335,7 @@ function ts_ck_entity_embed_path_lookup($entity_type, $path, $delta) {
   $entity_ids = entity_extract_ids($entity_type, $entity['map'][1]);
 
   $entity_info = array(
+    'entity_type' => $entity_type,
     'entity_id' => $entity_ids[0],
     'bundle' => $entity_ids[2],
   );

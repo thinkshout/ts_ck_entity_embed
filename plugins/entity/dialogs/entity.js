@@ -187,13 +187,13 @@ jQuery(document).ready(function ($) {
 
       console.log('Refreshing entity browser.');
 
-      // Reset selected entity highlighting.
-      browser_element.contents().find('div.entity').each(function () {
-        $(this).removeClass('selected-entity');
-      });
-
       // Set up click handlers for entities in browser.
       browser_element.contents().find('div.entity').click(function () {
+
+        // Reset selected entity highlighting.
+        browser_element.contents().find('div.entity').each(function () {
+          $(this).removeClass('selected-entity');
+        });
 
         var path = $(this).attr('about');
         console.log("Clicked entity: " + path);

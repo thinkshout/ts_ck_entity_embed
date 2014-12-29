@@ -350,7 +350,10 @@ function ts_ck_entity_embed_view_render($view_name, $display_id = 'default') {
 
   $view = views_get_view($view_name);
   if ($view && $view->access($display_id)) {
+    $css_path = '/' . drupal_get_path('module', 'ts_ck_entity_embed') . '/includes/ts_ck_entity_embed_browser.css';
+
     $content = views_embed_view($view_name, $display_id);
+    $content .= '<style type="text/css" media="screen">@import url("' . $css_path . '");</style>';
   }
 
   echo $content;

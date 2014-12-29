@@ -139,13 +139,6 @@ jQuery(document).ready(function ($) {
     TSCKEntityEmbedEntityDialog.editor = editor;
     TSCKEntityEmbedEntityDialog.jQuery = $;
 
-    $(".entity-browser").each(function () {
-
-      var head = $(this).find("head");
-      head.append($("<link/>", { rel: 'stylesheet', href: base_path + '/includes/ts_ck_entity_embed_browser.css', type: 'text/css' }));
-
-    });
-
     // Set up load handlers for iframe entity browsers.
     $('.entity-browser').load(function() {
       console.log("Entity browser loaded.");

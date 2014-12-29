@@ -42,6 +42,6 @@ function TSCKEntityEmbedEntityBrowser (jQuery, browser_element) {
 
     });
 
-  }
+  };
 
 }

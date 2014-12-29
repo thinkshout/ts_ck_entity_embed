@@ -14,6 +14,9 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
     CKEDITOR.dialog.okButton,
   ];
 
+  entity_browsers = [];
+  entity_search_boxes = [];
+
   if (entity_info) {
 
     for (var entity_type in entity_info) {
@@ -86,8 +89,6 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
 
     }
 
-    console.log(buttons);
-
   }
 
   return {
@@ -139,10 +140,27 @@ jQuery(document).ready(function ($) {
     TSCKEntityEmbedEntityDialog.editor = editor;
     TSCKEntityEmbedEntityDialog.jQuery = $;
 
-    // Set up load handlers for iframe entity browsers.
-    $('.entity-browser').load(function() {
-      console.log("Entity browser loaded.");
-      TSCKEntityEmbedEntityDialog.refreshBrowser($(this));
+    // Load entity browser.
+    $.getScript('/' + base_path + '/includes/ts_ck_entity_embed_browser.js').done(function (script, textStatus) {
+
+      console.log("Entity browser script loaded.");
+
+      // Set up load handlers for iframe entity browsers.
+      $('.entity-browser').load(function() {
+
+        console.log("Entity browser content loaded.");
+
+        var entity_browser = new TSCKEntityEmbedEntityBrowser($, $(this));
+        entity_browser.refresh();
+        entity_browsers.push(entity_browser);
+
+      });
+
+    })
+      .fail(function (jqxhr, settings, exception) {
+
+      console.log("Failed to load entity browser script.");
+
     });
 
     $(".cke_dialog_contents").find(".cke_dialog_page_contents").each(function (i) {
@@ -182,29 +200,6 @@ jQuery(document).ready(function ($) {
     });
 
   },
-
-    TSCKEntityEmbedEntityDialog.refreshBrowser = function (browser_element) {
-
-      console.log('Refreshing entity browser.');
-
-      // Set up click handlers for entities in browser.
-      browser_element.contents().find('div.entity').click(function () {
-
-        // Reset selected entity highlighting.
-        browser_element.contents().find('div.entity').each(function () {
-          $(this).removeClass('selected-entity');
-        });
-
-        var path = $(this).attr('about');
-        console.log("Clicked entity: " + path);
-
-        $(this).addClass('selected-entity');
-
-        TSCKEntityEmbedEntityDialog.selectBrowserEntity('bean', path);
-
-      });
-
-    },
 
     TSCKEntityEmbedEntityDialog.selectBrowserEntity = function (entity_type, path) {
 

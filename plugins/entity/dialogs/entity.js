@@ -33,7 +33,7 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
         elements.push({
           type: 'html',
           id: 'entity-' + entity_type + '-results',
-          html: '<iframe class="entity-browser" src="/admin/ts_ck_entity_embed/view/' + entity_info[entity_type].view_name + '"></iframe>',
+          html: '<iframe class="entity-browser" data-type="' + entity_type + '" src="/admin/ts_ck_entity_embed/view/' + entity_info[entity_type].view_name + '"></iframe>',
         });
       }
       else {

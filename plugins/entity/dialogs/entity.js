@@ -261,20 +261,14 @@ jQuery(document).ready(function ($) {
 
       var selected = TSCKEntityEmbedEntity.selected_entity;
 
-      console.log(selected);
-
       $("#entity-view-mode-" + selected.entity_type).val(selected.view_mode);
       $("#entity-align-" + selected.entity_type).val(selected.alignment);
 
-      console.log('/admin/ts_ck_entity_embed/render/' + selected.entity_type + '/' + selected.entity_id + '/' + selected.view_mode + '/' + selected.alignment);
-
       $.get('/admin/ts_ck_entity_embed/render/' + selected.entity_type + '/' + selected.entity_id + '/' + selected.view_mode + '/' + selected.alignment, function (data) {
-
-        console.log(data);
 
         var preview_html = TSCKEntityEmbedEntity.generatePreviewHtml(selected.entity_type, selected.entity_id, selected.view_mode, selected.alignment, data);
 
-        $('.entity-preview .preview-box').html(preview_html);
+        $('#entity-preview #preview-box').html(preview_html);
 
       });
 

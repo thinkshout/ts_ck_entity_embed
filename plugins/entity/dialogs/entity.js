@@ -139,8 +139,6 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
 
     onShow: function () {
 
-      TSCKEntityEmbedEntityDialog.refresh();
-
     },
 
     // Dialog confirmation handler.
@@ -219,6 +217,7 @@ jQuery(document).ready(function ($) {
 
       if (TSCKEntityEmbedEntity.selected_entity != null) {
         TSCKEntityEmbedEntity.selected_entity.view_mode = $(this).val();
+        TSCKEntityEmbedEntityDialog.refreshPreview();
       }
 
     });
@@ -227,6 +226,7 @@ jQuery(document).ready(function ($) {
 
       if (TSCKEntityEmbedEntity.selected_entity != null) {
         TSCKEntityEmbedEntity.selected_entity.alignment = $(this).val();
+        TSCKEntityEmbedEntityDialog.refreshPreview();
       }
 
     });
@@ -251,22 +251,51 @@ jQuery(document).ready(function ($) {
       $(dialog_sections[0]).hide();
       $(dialog_sections[1]).show();
 
+      TSCKEntityEmbedEntityDialog.refreshPreview();
+
     },
 
     TSCKEntityEmbedEntityDialog.refreshPreview = function () {
 
+      console.log("Refreshing entity preview.");
+
       var selected = TSCKEntityEmbedEntity.selected_entity;
+
+      console.log(selected);
 
       $("#entity-view-mode-" + selected.entity_type).val(selected.view_mode);
       $("#entity-align-" + selected.entity_type).val(selected.alignment);
 
+      console.log('/admin/ts_ck_entity_embed/render/' + selected.entity_type + '/' + selected.entity_id + '/' + selected.view_mode + '/' + selected.alignment);
+
       $.get('/admin/ts_ck_entity_embed/render/' + selected.entity_type + '/' + selected.entity_id + '/' + selected.view_mode + '/' + selected.alignment, function (data) {
+
+        console.log(data);
 
         var preview_html = TSCKEntityEmbedEntity.generatePreviewHtml(selected.entity_type, selected.entity_id, selected.view_mode, selected.alignment, data);
 
         $('.entity-preview .preview-box').html(preview_html);
 
       });
+
+    },
+
+    TSCKEntityEmbedEntityDialog.selectEntity = function (entity_type, entity_id, view_mode, alignment) {
+
+      if (view_mode === null) {
+        view_mode = 'default';
+      }
+
+      if (alignment === null) {
+        alignment = 'left';
+      }
+
+      TSCKEntityEmbedEntity.selected_entity = {
+        entity_type: entity_type,
+        entity_id: entity_id,
+        view_mode: view_mode,
+        alignment: alignment,
+      };
 
     },
 

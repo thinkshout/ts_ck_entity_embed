@@ -60,12 +60,7 @@ function TSCKEntityEmbedEntitySearchBox (jQuery, entity_type, search_element, re
 
     console.log('Clicked entity: ' + entity_type + '/' + entity_id);
 
-    TSCKEntityEmbedEntity.selected_entity = {
-      entity_type: entity_type,
-      entity_id: entity_id,
-      view_mode: null,
-      alignment: null,
-    };
+    TSCKEntityEmbedEntityDialog.selectEntity(entity_type, entity_id, null, null);
 
   };
 

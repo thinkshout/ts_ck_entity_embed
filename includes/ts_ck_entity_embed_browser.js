@@ -35,12 +35,7 @@ function TSCKEntityEmbedEntityBrowser (jQuery, browser_element) {
     // Get entity information from path.
     this.$.get('/admin/ts_ck_entity_embed/path/' + this.entity_type + path, function (data) {
 
-      TSCKEntityEmbedEntity.selected_entity = {
-        entity_type: data.entity_type,
-        entity_id: data.entity_id,
-        view_mode: null,
-        alignment: null,
-      };
+      TSCKEntityEmbedEntityDialog.selectEntity(data.entity_type, data.entity_id, null, null);
 
     });
 

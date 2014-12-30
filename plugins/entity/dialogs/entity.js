@@ -138,7 +138,6 @@ jQuery(document).ready(function ($) {
   TSCKEntityEmbedEntityDialog.init = function (editor) {
 
     TSCKEntityEmbedEntityDialog.editor = editor;
-    TSCKEntityEmbedEntityDialog.jQuery = $;
 
     // Load entity browser.
     $.getScript('/' + base_path + '/includes/ts_ck_entity_embed_browser.js').done(function (script, textStatus) {
@@ -188,12 +187,10 @@ jQuery(document).ready(function ($) {
 
       });
 
-
     $(".entity-view-mode-select").change(function () {
 
       if (TSCKEntityEmbedEntity.selected_entity != null) {
         TSCKEntityEmbedEntity.selected_entity.view_mode = $(this).val();
-        TSCKEntityEmbedEntityDialog.refresh();
       }
 
     });
@@ -202,27 +199,28 @@ jQuery(document).ready(function ($) {
 
       if (TSCKEntityEmbedEntity.selected_entity != null) {
         TSCKEntityEmbedEntity.selected_entity.alignment = $(this).val();
-        TSCKEntityEmbedEntityDialog.refresh();
       }
 
     });
 
   },
 
-    TSCKEntityEmbedEntityDialog.refresh = function () {
+    TSCKEntityEmbedEntityDialog.refreshPreview = function () {
 
-      console.log('Refreshing dialog.');
+      var selected = TSCKEntityEmbedEntity.selected_entity;
 
-      if (TSCKEntityEmbedEntity.selected_entity !== null) {
-        console.log('Editing existing entity:');
-        console.log(TSCKEntityEmbedEntity.selected_entity);
+      $("#entity-view-mode-" + selected.entity_type).val(selected.view_mode);
+      $("#entity-align-" + selected.entity_type).val(selected.alignment);
 
-        var selected = TSCKEntityEmbedEntity.selected_entity;
+      $.get('/admin/ts_ck_entity_embed/render/' + selected.entity_type + '/' + selected.entity_id + '/' + selected.view_mode + '/' + selected.alignment, function (data) {
 
-        TSCKEntityEmbedEntity.updateEntityPreview(selected.entity_type, selected.entity_id, selected.view_mode, selected.alignment);
-      }
+        var preview_html = TSCKEntityEmbedEntity.generatePreviewHtml(selected.entity_type, selected.entity_id, selected.view_mode, selected.alignment, data);
 
-    }
+        $('.entity-preview .preview-box').html(preview_html);
+
+      });
+
+    },
 
     TSCKEntityEmbedEntityDialog.insertSelectedEntity = function (editor) {
 
@@ -239,21 +237,6 @@ jQuery(document).ready(function ($) {
 
       TSCKEntityEmbedEntity.selected_element = null;
       TSCKEntityEmbedEntity.selected_entity = null;
-
-    },
-
-    TSCKEntityEmbedEntity.updateEntityPreview = function (entity_type, entity_id, view_mode, alignment) {
-
-      $("#entity-view-mode-" + entity_type).val(view_mode);
-      $("#entity-align-" + entity_type).val(alignment);
-
-      $.get('/admin/ts_ck_entity_embed/render/' + entity_type + '/' + entity_id + '/' + view_mode + '/' + alignment, function (data) {
-
-        var preview_html = TSCKEntityEmbedEntity.generatePreviewHtml(entity_type, entity_id, view_mode, alignment, data);
-
-        $('.entity-preview .preview-box').html(preview_html);
-
-      });
 
     }
 

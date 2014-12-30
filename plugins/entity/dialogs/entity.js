@@ -210,7 +210,18 @@ jQuery(document).ready(function ($) {
 
     });
 
+    TSCKEntityEmbedEntityDialog.showEntitySearch();
+
   },
+
+    TSCKEntityEmbedEntityDialog.showEntitySearch = function () {
+
+      var dialog_sections = $(".cke_dialog_page_contents").find(".cke_dialog_ui_vbox_child");
+
+      $(dialog_sections[0]).show();
+      $(dialog_sections[1]).hide();
+
+    },
 
     TSCKEntityEmbedEntityDialog.showPreview = function () {
 

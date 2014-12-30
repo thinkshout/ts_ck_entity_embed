@@ -94,6 +94,21 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
 
       buttons.push(next_button);
 
+      var back_button = {
+        id: 'entity embed back',
+        type: 'button',
+        label: 'Back',
+        title: 'Select embedded entity',
+        accessKey: 'B',
+        disabled: false,
+        onClick: function()
+        {
+          TSCKEntityEmbedEntityDialog.showEntitySearch();
+        }
+      }
+
+      buttons.push(back_button);
+
     }
 
   }

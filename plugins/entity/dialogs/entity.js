@@ -59,15 +59,21 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
         id: 'entity-preview',
         html:
           '<div id="entity-preview">' +
-          '<label for="entity-view-mode-' + entity_type + '">View mode:</label>' +
-          '<select id="entity-view-mode-' + entity_type + '" class="entity-view-mode-select">' + view_mode_options + '</select>' +
-          '<label for="entity-align-' + entity_type + '">Align:</label>' +
-          '<select id="entity-align-' + entity_type + '" class="entity-align-select">' +
-          '<option value="left">Left</option>' +
-          '<option value="right">Right</option>' +
-          '<option value="center">Center</option>' +
-          '</select>' +
-          '<div class="preview-box"></div>' +
+          '  <div class="entity-fieldset">' +
+          '    <label for="entity-view-mode-' + entity_type + '">View mode:</label>' +
+          '    <select id="entity-view-mode-' + entity_type + '" class="entity-view-mode-select">' + view_mode_options + '</select>' +
+          '  </div>' +
+          '  <div class="entity-fieldset">' +
+          '    <label for="entity-align-' + entity_type + '">Align:</label>' +
+          '    <select id="entity-align-' + entity_type + '" class="entity-align-select">' +
+          '      <option value="left">Left</option>' +
+          '      <option value="right">Right</option>' +
+          '      <option value="center">Center</option>' +
+          '    </select>' +
+          '  </div>' +
+          '  <div id="preview-container">' +
+          '    <div id="preview-box"></div>' +
+          '  </div>' +
           '</div>',
       });
 

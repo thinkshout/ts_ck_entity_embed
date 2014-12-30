@@ -25,27 +25,22 @@
     margin-left: 10px;
 }
 
-#entity-preview {
-    float: right !important;
-    width: 500px !important;
+#entity-preview .entity-fieldset {
+    display: inline-block;
+    margin-right: 20px;
 }
 
-#entity-preview label {
-    clear: left;
-    float: left;
+#entity-preview #preview-box-container {
+    text-align: center;
 }
 
-#entity-preview input, .entity-preview select {
-    float: left;
-}
-
-#entity-preview .preview-box {
+#entity-preview #preview-box {
     border: 1px solid #C0C0C0;
-    clear: left;
-    height: 400px;
-    margin-top: 50px;
+    clear: both;
+    height: 460px;
+    margin: 50px auto 0 auto;
     overflow: auto;
-    width: 460px;
+    width: 800px;
 }
 
 .one-sidebar .fh-entity-embed-left,

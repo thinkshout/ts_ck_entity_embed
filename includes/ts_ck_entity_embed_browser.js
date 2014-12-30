@@ -2,8 +2,14 @@
 function TSCKEntityEmbedEntityBrowser (jQuery, browser_element) {
 
   this.$ = jQuery;
-  this.entity_type = browser_element.data("type");
+  this.entity_type = null;
   this.browser_element = browser_element;
+
+  this.init = function () {
+
+    this.entity_type = this.browser_element.data("type");
+
+  };
 
   this.refresh = function () {
 

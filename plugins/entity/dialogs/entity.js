@@ -151,6 +151,7 @@ jQuery(document).ready(function ($) {
         console.log("Entity browser content loaded.");
 
         var entity_browser = new TSCKEntityEmbedEntityBrowser($, $(this));
+        entity_browser.init();
         entity_browser.refresh();
         entity_browsers.push(entity_browser);
 
@@ -163,23 +164,30 @@ jQuery(document).ready(function ($) {
 
     });
 
-    $(".cke_dialog_contents").find(".cke_dialog_page_contents").each(function (i) {
+    // Load entity search box.
+    $.getScript('/' + base_path + '/includes/ts_ck_entity_embed_search_box.js').done(function (script, textStatus) {
 
-      var entity_type = $(this).attr("name").replace("tab-", "");
+      console.log("Entity search box script loaded.");
 
-      $(this).find('.cke_dialog_ui_input_text').keypress(function () {
+      $(".cke_dialog_contents").find(".cke_dialog_page_contents").each(function (i) {
 
-        if ($(this).val().length != 0) {
-          $.get('/admin/ts_ck_entity_embed/entities/' + entity_type + '/' + $(this).val(), function (data) {
+        var entity_type = $(this).attr("name").replace("tab-", "");
+        var search_element = $(this).find('.cke_dialog_ui_input_text');
+        var results_element = $('#entity-' + entity_type + '-results-list');
 
-            TSCKEntityEmbedEntityDialog.populateResults(entity_type, data);
-
-          });
-        }
+        var entity_search_box = new TSCKEntityEmbedEntitySearchBox($, entity_type, search_element, results_element);
+        entity_search_box.init();
+        entity_search_boxes.push(entity_search_box);
 
       });
 
-    });
+    })
+      .fail(function (jqxhr, settings, exception) {
+
+        console.log("Failed to load entity search box script.");
+
+      });
+
 
     $(".entity-view-mode-select").change(function () {
 
@@ -215,62 +223,6 @@ jQuery(document).ready(function ($) {
       }
 
     }
-
-    TSCKEntityEmbedEntityDialog.populateResults = function (entity_type, data) {
-
-      var results_list_element = $('#entity-' + entity_type + '-results-list');
-
-      if (data.length === 0) {
-        results_list_element.html('No results');
-      } else {
-        results_list_element.html('');
-
-        for (var i = 0; i < data.length; i++) {
-          results_list_element.append(
-            '<input type="radio" id="' + entity_type + '-' + data[i].id + '" name="entity" value="' + entity_type + '-' + data[i].id + '" />' +
-            '<label for="' + entity_type + '-' + data[i].id + '">' + data[i].label + '</label>'
-          );
-
-          var result_element = $("#" + entity_type + "-" + data[i].id);
-
-          result_element.click(function () {
-
-            var id_parts = $(this).attr("id").split("-");
-            var entity_type = id_parts[0];
-            var entity_id = id_parts[1];
-
-            TSCKEntityEmbedEntityDialog.selectEntity(entity_type, entity_id);
-
-          });
-        }
-      }
-
-    },
-
-    TSCKEntityEmbedEntityDialog.selectEntity = function (entity_type, entity_id) {
-
-      var selected = $(".cke_dialog_page_contents input[type=radio]:checked");
-
-      if (selected) {
-        var selected_value = selected.val();
-
-        var value_parts = selected_value.split("-");
-        var entity_type = value_parts[0];
-        var entity_id = value_parts[1];
-        var view_mode = $("#entity-view-mode-" + entity_type).val();
-        var alignment = $("#entity-align-" + entity_type).val();
-
-        TSCKEntityEmbedEntity.updateEntityPreview(entity_type, entity_id, view_mode, alignment);
-
-        TSCKEntityEmbedEntity.selected_entity = {
-          entity_type: entity_type,
-          entity_id: entity_id,
-          view_mode: view_mode,
-          alignment: alignment,
-        };
-      }
-
-    },
 
     TSCKEntityEmbedEntityDialog.insertSelectedEntity = function (editor) {
 

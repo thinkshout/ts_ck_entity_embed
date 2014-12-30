@@ -32,7 +32,7 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
       if (entity_info[entity_type].view_name) {
         elements.push({
           type: 'html',
-          id: 'entity-' + entity_type + '-results',
+          id: 'entity-' + entity_type + '-browser',
           html: '<iframe class="entity-browser" data-type="' + entity_type + '" src="/admin/ts_ck_entity_embed/view/' + entity_info[entity_type].view_name + '"></iframe>',
         });
       }
@@ -47,7 +47,18 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
           type: 'html',
           id: 'entity-' + entity_type + '-results',
           html:
-          '<div id="entity-' + entity_type + '-preview" class="entity-preview">' +
+            '</div>' +
+            '<div id="entity-' + entity_type + '-results">' +
+            '<form id="entity-' + entity_type + '-results-list" class="entity-results-list">No results</form>' +
+            '</div>',
+        });
+      }
+
+      elements.push({
+        type: 'html',
+        id: 'entity-preview',
+        html:
+          '<div id="entity-preview">' +
           '<label for="entity-view-mode-' + entity_type + '">View mode:</label>' +
           '<select id="entity-view-mode-' + entity_type + '" class="entity-view-mode-select">' + view_mode_options + '</select>' +
           '<label for="entity-align-' + entity_type + '">Align:</label>' +
@@ -57,12 +68,8 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
           '<option value="center">Center</option>' +
           '</select>' +
           '<div class="preview-box"></div>' +
-          '</div>' +
-          '<div id="entity-' + entity_type + '-results">' +
-          '<form id="entity-' + entity_type + '-results-list" class="entity-results-list">No results</form>' +
           '</div>',
-        });
-      }
+      });
 
       var tab = {
         id: 'tab-' + entity_type,
@@ -81,7 +88,7 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
         disabled: false,
         onClick: function()
         {
-          console.log('clicked next');
+          TSCKEntityEmbedEntityDialog.showPreview();
         }
       }
 
@@ -204,6 +211,15 @@ jQuery(document).ready(function ($) {
     });
 
   },
+
+    TSCKEntityEmbedEntityDialog.showPreview = function () {
+
+      var dialog_sections = $(".cke_dialog_page_contents").find(".cke_dialog_ui_vbox_child");
+
+      $(dialog_sections[0]).hide();
+      $(dialog_sections[1]).show();
+
+    },
 
     TSCKEntityEmbedEntityDialog.refreshPreview = function () {
 

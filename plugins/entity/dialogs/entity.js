@@ -47,7 +47,6 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
           type: 'html',
           id: 'entity-' + entity_type + '-results',
           html:
-            '</div>' +
             '<div id="entity-' + entity_type + '-results">' +
             '<form id="entity-' + entity_type + '-results-list" class="entity-results-list">No results</form>' +
             '</div>',

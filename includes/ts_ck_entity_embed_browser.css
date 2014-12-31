@@ -9,3 +9,12 @@
 .view-content .selected-entity {
     border: 4px solid #B63300;
 }
+
+ul.pager {
+    padding-left: 0;
+}
+
+ul.pager li {
+    display: inline-block;
+    list-style-type: none;
+}

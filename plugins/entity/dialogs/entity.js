@@ -248,6 +248,13 @@ jQuery(document).ready(function ($) {
       $(dialog_sections[0]).show();
       $(dialog_sections[1]).hide();
 
+      if (TSCKEntityEmbedEntityDialog.selected_entity !== null) {
+        TSCKEntityEmbedEntityDialog.dialog.enableButton('next');
+      }
+
+      TSCKEntityEmbedEntityDialog.dialog.disableButton('back');
+      TSCKEntityEmbedEntityDialog.dialog.disableButton('ok');
+
     },
 
     TSCKEntityEmbedEntityDialog.showPreview = function () {
@@ -258,6 +265,10 @@ jQuery(document).ready(function ($) {
       $(dialog_sections[1]).show();
 
       TSCKEntityEmbedEntityDialog.refreshPreview();
+
+      TSCKEntityEmbedEntityDialog.dialog.disableButton('next');
+      TSCKEntityEmbedEntityDialog.dialog.enableButton('back');
+      TSCKEntityEmbedEntityDialog.dialog.enableButton('ok');
 
     },
 

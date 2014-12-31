@@ -24,10 +24,10 @@ function TSCKEntityEmbedEntityBrowser (jQuery, browser_element) {
   this.entityClickHandler = function (event) {
 
     // Reset selected entity highlighting.
-    this.browser_element.contents().find("div.entity").removeClass("selected-entity");
+    this.browser_element.contents().find("div.entity").removeClass("ts-ck-entity-embed-selected-entity");
 
     // Add highlighting to selected entity.
-    this.$(event.currentTarget).addClass("selected-entity");
+    this.$(event.currentTarget).addClass("ts-ck-entity-embed-selected-entity");
 
     var parent = this.$(event.currentTarget).parent();
 

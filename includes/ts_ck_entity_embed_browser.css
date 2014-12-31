@@ -11,7 +11,7 @@
     padding: 2px;
 }
 
-.view-content .selected-entity {
+.view-content .ts-ck-entity-embed-selected-entity {
     border: 4px solid #B63300;
 }
 

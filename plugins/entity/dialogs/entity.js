@@ -14,18 +14,42 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
     CKEDITOR.dialog.okButton,
   ];
 
+  var next_button = {
+    id: 'next',
+    type: 'button',
+    label: 'Next',
+    title: 'Configure embedded entity',
+    accessKey: 'N',
+    disabled: false,
+    onClick: function()
+    {
+      TSCKEntityEmbedEntityDialog.showPreview();
+    }
+  }
+
+  buttons.push(next_button);
+
+  var back_button = {
+    id: 'back',
+    type: 'button',
+    label: 'Back',
+    title: 'Select embedded entity',
+    accessKey: 'B',
+    disabled: false,
+    onClick: function()
+    {
+      TSCKEntityEmbedEntityDialog.showEntitySearch();
+    }
+  }
+
+  buttons.push(back_button);
+
   entity_browsers = [];
   entity_search_boxes = [];
 
   if (entity_info) {
 
     for (var entity_type in entity_info) {
-
-      var view_modes = entity_info[entity_type].view_modes;
-      var view_mode_options = '';
-      for (var i = 0; i < view_modes.length; i++) {
-        view_mode_options += '<option value="' + view_modes[i] + '">' + view_modes[i] + '</option>'
-      }
 
       var elements = [];
 
@@ -53,29 +77,6 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
         });
       }
 
-      elements.push({
-        type: 'html',
-        id: 'entity-preview',
-        html:
-          '<div id="entity-preview">' +
-          '  <div class="entity-fieldset">' +
-          '    <label for="entity-view-mode-' + entity_type + '">View mode:</label>' +
-          '    <select id="entity-view-mode-' + entity_type + '" class="entity-view-mode-select">' + view_mode_options + '</select>' +
-          '  </div>' +
-          '  <div class="entity-fieldset">' +
-          '    <label for="entity-align-' + entity_type + '">Align:</label>' +
-          '    <select id="entity-align-' + entity_type + '" class="entity-align-select">' +
-          '      <option value="left">Left</option>' +
-          '      <option value="right">Right</option>' +
-          '      <option value="center">Center</option>' +
-          '    </select>' +
-          '  </div>' +
-          '  <div id="preview-container">' +
-          '    <div id="preview-box"></div>' +
-          '  </div>' +
-          '</div>',
-      });
-
       var tab = {
         id: 'tab-' + entity_type,
         label: entity_type,
@@ -83,36 +84,6 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
       };
 
       tabs.push(tab);
-
-      var next_button = {
-        id: 'next',
-        type: 'button',
-        label: 'Next',
-        title: 'Configure embedded entity',
-        accessKey: 'N',
-        disabled: false,
-        onClick: function()
-        {
-          TSCKEntityEmbedEntityDialog.showPreview();
-        }
-      }
-
-      buttons.push(next_button);
-
-      var back_button = {
-        id: 'back',
-        type: 'button',
-        label: 'Back',
-        title: 'Select embedded entity',
-        accessKey: 'B',
-        disabled: false,
-        onClick: function()
-        {
-          TSCKEntityEmbedEntityDialog.showEntitySearch();
-        }
-      }
-
-      buttons.push(back_button);
 
     }
 
@@ -236,16 +207,43 @@ jQuery(document).ready(function ($) {
     TSCKEntityEmbedEntityDialog.dialog.disableButton('next');
     TSCKEntityEmbedEntityDialog.dialog.disableButton('back');
 
+    TSCKEntityEmbedEntityDialog.createEntityPreview();
+
     TSCKEntityEmbedEntityDialog.showEntitySearch();
 
   },
 
+    TSCKEntityEmbedEntityDialog.createEntityPreview = function () {
+
+      var html =
+        '<div id="entity-preview">' +
+        '  <div class="entity-fieldset">' +
+        '    <label for="entity-view-mode">View mode:</label>' +
+        '    <select id="entity-view-mode" class="entity-view-mode-select">' +
+        '      <option value="default">default</option>' +
+        '    </select>' +
+        '  </div>' +
+        '  <div class="entity-fieldset">' +
+        '    <label for="entity-align">Align:</label>' +
+        '    <select id="entity-align" class="entity-align-select">' +
+        '      <option value="left">Left</option>' +
+        '      <option value="right">Right</option>' +
+        '      <option value="center">Center</option>' +
+        '    </select>' +
+        '  </div>' +
+        '  <div id="preview-container">' +
+        '    <div id="preview-box"></div>' +
+        '  </div>' +
+        '</div>';
+
+      $('.cke_dialog_contents_body').append(html);
+
+    },
+
     TSCKEntityEmbedEntityDialog.showEntitySearch = function () {
 
-      var dialog_sections = $(".cke_dialog_page_contents").find(".cke_dialog_ui_vbox_child");
-
-      $(dialog_sections[0]).show();
-      $(dialog_sections[1]).hide();
+      $(".cke_dialog_contents_body .cke_dialog_page_contents").show();
+      $("#entity-preview").hide();
 
       if (TSCKEntityEmbedEntityDialog.selected_entity !== null) {
         TSCKEntityEmbedEntityDialog.dialog.enableButton('next');
@@ -258,10 +256,8 @@ jQuery(document).ready(function ($) {
 
     TSCKEntityEmbedEntityDialog.showPreview = function () {
 
-      var dialog_sections = $(".cke_dialog_page_contents").find(".cke_dialog_ui_vbox_child");
-
-      $(dialog_sections[0]).hide();
-      $(dialog_sections[1]).show();
+      $(".cke_dialog_contents_body .cke_dialog_page_contents").hide();
+      $("#entity-preview").show();
 
       TSCKEntityEmbedEntityDialog.refreshPreview();
 
@@ -277,8 +273,8 @@ jQuery(document).ready(function ($) {
 
       var selected = TSCKEntityEmbedEntity.selected_entity;
 
-      $("#entity-view-mode-" + selected.entity_type).val(selected.view_mode);
-      $("#entity-align-" + selected.entity_type).val(selected.alignment);
+      $("#entity-view-mode").val(selected.view_mode);
+      $("#entity-align").val(selected.alignment);
 
       $.get('/admin/ts_ck_entity_embed/render/' + selected.entity_type + '/' + selected.entity_id + '/' + selected.view_mode + '/' + selected.alignment, function (data) {
 

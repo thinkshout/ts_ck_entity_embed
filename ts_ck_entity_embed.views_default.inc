@@ -11,11 +11,11 @@ function ts_ck_entity_embed_views_default_views() {
   $export = array();
 
   $view = new view();
-  $view->name = 'fh_ck_entity_embed_bean';
+  $view->name = 'ts_ck_entity_embed_bean';
   $view->description = '';
   $view->tag = 'default';
   $view->base_table = 'bean';
-  $view->human_name = 'FH CK Entity Embed Bean';
+  $view->human_name = 'TS CK Entity Embed Bean';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -33,9 +33,12 @@ function ts_ck_entity_embed_views_default_views() {
   $handler->display->display_options['row_plugin'] = 'entity';
   $handler->display->display_options['row_options']['view_mode'] = 'default';
   /* Field: Block: Internal, numeric block ID */
-  $handler->display->display_options['fields']['bid']['id'] = 'bid';
-  $handler->display->display_options['fields']['bid']['table'] = 'bean';
-  $handler->display->display_options['fields']['bid']['field'] = 'bid';
+  $handler->display->display_options['fields']['bid_1']['id'] = 'bid_1';
+  $handler->display->display_options['fields']['bid_1']['table'] = 'bean';
+  $handler->display->display_options['fields']['bid_1']['field'] = 'bid';
+  $handler->display->display_options['fields']['bid_1']['label'] = 'Block ID';
+  $handler->display->display_options['fields']['bid_1']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['bid_1']['separator'] = '';
   /* Filter criterion: Block: Label */
   $handler->display->display_options['filters']['label']['id'] = 'label';
   $handler->display->display_options['filters']['label']['table'] = 'bean';
@@ -66,7 +69,7 @@ function ts_ck_entity_embed_views_default_views() {
     3 => 0,
   );
 
-  $export['fh_ck_entity_embed_bean'] = $view;
+  $export['ts_ck_entity_embed_bean'] = $view;
 
   return $export;
 }

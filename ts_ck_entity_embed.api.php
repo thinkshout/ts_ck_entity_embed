@@ -21,7 +21,7 @@ function hook_ts_ck_entity_embed_entity_info() {
       'render_method' => 'ts_ck_entity_embed_render_bean',
       // The ID of the Drupal view used to search for and select entities.
       // If empty or missing, the 'search_field' property will be used.
-      'view_name' => 'fh_ck_entity_embed_bean',
+      'view_name' => 'ts_ck_entity_embed_bean',
       // The database table field used to search for entities.
       // Usually whatever contains the entity name / title.
       // Ignored if 'view_name' is not empty.

@@ -51,7 +51,7 @@ jQuery(document).ready(function ($) {
 
       if (element_parents) {
         for (var i = 0; i < element_parents.length; i++) {
-          if (element_parents[i].hasClass('entity-preview')) {
+          if (element_parents[i].hasClass('ts-ck-entity-embed-entity-preview')) {
             console.log('Double-clicked on an entity preview element.');
 
             // Cancel the event to prevent any default CKEditor behavior here.
@@ -91,7 +91,7 @@ jQuery(document).ready(function ($) {
           for (var j = 0; j < elements.length; j++) {
             var element = new CKEDITOR.dom.element(elements[j]);
 
-            if (element.hasClass('entity-preview')) {
+            if (element.hasClass('ts-ck-entity-embed-entity-preview')) {
               var element_id = element.getId();
               var element_id_parts = element_id.split('-');
 
@@ -237,7 +237,7 @@ jQuery(document).ready(function ($) {
 
       var element_id = 'entity-preview-' + entity_type + '-' + entity_id + '-' + view_mode + '-' + alignment;
 
-      var preview_html = '<div id="' + element_id + '" class="entity-preview">' + html + '</div>';
+      var preview_html = '<div id="' + element_id + '" class="ts-ck-entity-embed-entity-preview">' + html + '</div>';
 
       return preview_html;
 
@@ -256,7 +256,7 @@ jQuery(document).ready(function ($) {
       for (var i = 0; i < elements.length; i++) {
         var element = new CKEDITOR.dom.element(elements[i]);
 
-        if (element.hasClass('entity-preview')) {
+        if (element.hasClass('ts-ck-entity-embed-entity-preview')) {
           element.setAttributes({
             contenteditable: 'false',
           });

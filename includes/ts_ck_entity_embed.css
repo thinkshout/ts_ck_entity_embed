@@ -2,43 +2,43 @@
     display: none;
 }
 
-.entity-browser {
+.ts-ck-entity-embed-entity-browser {
     height: 600px !important;
     width: 1000px !important;
 }
 
-.entity-results-list {
+.ts-ck-entity-embed-entity-results-list {
     float: left;
     height: 250px !important;
     overflow: auto;
     width: 300px !important;
 }
 
-.entity-results-list input[type="radio"], .entity-results-list label {
+.ts-ck-entity-embed-entity-results-list input[type="radio"], .ts-ck-entity-embed-entity-results-list label {
     margin-top: 8px;
 }
 
-.entity-results-list input[type="radio"] {
+.ts-ck-entity-embed-entity-results-list input[type="radio"] {
     clear: left;
     float: left;
     margin-left: 15px;
 }
 
-.entity-results-list label {
+.ts-ck-entity-embed-entity-results-list label {
     float: left;
     margin-left: 10px;
 }
 
-#entity-preview .entity-fieldset {
+#ts-ck-entity-embed-entity-preview .entity-fieldset {
     display: inline-block;
     margin-right: 20px;
 }
 
-#entity-preview #preview-box-container {
+#ts-ck-entity-embed-entity-preview #ts-ck-entity-embed-preview-box-container {
     text-align: center;
 }
 
-#entity-preview #preview-box {
+#ts-ck-entity-embed-entity-preview #ts-ck-entity-embed-preview-box {
     border: 1px solid #C0C0C0;
     clear: both;
     height: 460px;
@@ -47,10 +47,10 @@
     width: 800px;
 }
 
-.one-sidebar .fh-entity-embed-left,
-.one-sidebar .fh-entity-embed-right,
-.fh-entity-embed-right,
-.fh-entity-embed-left {
+.one-sidebar .ts-ck-entity-embed-left,
+.one-sidebar .ts-ck-entity-embed-right,
+.ts-ck-entity-embed-right,
+.ts-ck-entity-embed-left {
   clear: both;
   float: none;
   max-width: 600px;
@@ -58,21 +58,21 @@
 }
 
 @media (min-width: 768px) {
-  .fh-entity-embed-center {
+  .ts-ck-entity-embed-center {
     clear: both;
     float: none;
     max-width: 600px;
     margin: 0 auto;
   }
 
-  .fh-entity-embed-left {
+  .ts-ck-entity-embed-left {
     clear: both;
     float: left;
     margin: 2em 2em 2em 0;
     max-width: 28%;
   }
 
-  .fh-entity-embed-right {
+  .ts-ck-entity-embed-right {
     clear: both;
     float: right;
     margin: 2em 0 2em 2em;

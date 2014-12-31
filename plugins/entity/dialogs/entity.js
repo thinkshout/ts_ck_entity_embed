@@ -57,7 +57,7 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
         elements.push({
           type: 'html',
           id: 'entity-' + entity_type + '-browser',
-          html: '<iframe class="entity-browser" data-type="' + entity_type + '" src="/admin/ts_ck_entity_embed/view/' + entity_info[entity_type].view_name + '"></iframe>',
+          html: '<iframe class="ts-ck-entity-embed-entity-browser" data-type="' + entity_type + '" src="/admin/ts_ck_entity_embed/view/' + entity_info[entity_type].view_name + '"></iframe>',
         });
       }
       else {
@@ -72,7 +72,7 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
           id: 'entity-' + entity_type + '-results',
           html:
             '<div id="entity-' + entity_type + '-results">' +
-            '<form id="entity-' + entity_type + '-results-list" class="entity-results-list">No results</form>' +
+            '<form id="entity-' + entity_type + '-results-list" class="ts-ck-entity-embed-entity-results-list">No results</form>' +
             '</div>',
         });
       }
@@ -143,7 +143,7 @@ jQuery(document).ready(function ($) {
       console.log("Entity browser script loaded.");
 
       // Set up load handlers for iframe entity browsers.
-      $('.entity-browser').load(function() {
+      $('.ts-ck-entity-embed-entity-browser').load(function() {
 
         console.log("Entity browser content loaded.");
 
@@ -216,7 +216,7 @@ jQuery(document).ready(function ($) {
     TSCKEntityEmbedEntityDialog.createEntityPreview = function () {
 
       var html =
-        '<div id="entity-preview">' +
+        '<div id="ts-ck-entity-embed-entity-preview">' +
         '  <div class="entity-fieldset">' +
         '    <label for="entity-view-mode">View mode:</label>' +
         '    <select id="entity-view-mode" class="entity-view-mode-select">' +
@@ -231,8 +231,8 @@ jQuery(document).ready(function ($) {
         '      <option value="center">Center</option>' +
         '    </select>' +
         '  </div>' +
-        '  <div id="preview-container">' +
-        '    <div id="preview-box"></div>' +
+        '  <div id="ts-ck-entity-embed-preview-box-container">' +
+        '    <div id="ts-ck-entity-embed-preview-box"></div>' +
         '  </div>' +
         '</div>';
 
@@ -243,7 +243,7 @@ jQuery(document).ready(function ($) {
     TSCKEntityEmbedEntityDialog.showEntitySearch = function () {
 
       $(".cke_dialog_contents_body .cke_dialog_page_contents").show();
-      $("#entity-preview").hide();
+      $("#ts-ck-entity-embed-entity-preview").hide();
 
       if (TSCKEntityEmbedEntityDialog.selected_entity !== null) {
         TSCKEntityEmbedEntityDialog.dialog.enableButton('next');
@@ -257,7 +257,7 @@ jQuery(document).ready(function ($) {
     TSCKEntityEmbedEntityDialog.showPreview = function () {
 
       $(".cke_dialog_contents_body .cke_dialog_page_contents").hide();
-      $("#entity-preview").show();
+      $("#ts-ck-entity-embed-entity-preview").show();
 
       TSCKEntityEmbedEntityDialog.refreshPreview();
 
@@ -280,7 +280,7 @@ jQuery(document).ready(function ($) {
 
         var preview_html = TSCKEntityEmbedEntity.generatePreviewHtml(selected.entity_type, selected.entity_id, selected.view_mode, selected.alignment, data);
 
-        $('#entity-preview #preview-box').html(preview_html);
+        $('#ts-ck-entity-embed-entity-preview #ts-ck-entity-embed-preview-box').html(preview_html);
 
       });
 

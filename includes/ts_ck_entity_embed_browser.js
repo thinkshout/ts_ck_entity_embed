@@ -26,18 +26,16 @@ function TSCKEntityEmbedEntityBrowser (jQuery, browser_element) {
     // Reset selected entity highlighting.
     this.browser_element.contents().find("div.entity").removeClass("selected-entity");
 
-    var path = this.$(event.currentTarget).attr("about");
-    console.log('Clicked entity: ' + path);
-
     // Add highlighting to selected entity.
     this.$(event.currentTarget).addClass("selected-entity");
 
-    // Get entity information from path.
-    this.$.get('/admin/ts_ck_entity_embed/path/' + this.entity_type + path, function (data) {
+    var parent = this.$(event.currentTarget).parent();
 
-      TSCKEntityEmbedEntityDialog.selectEntity(data.entity_type, data.entity_id, null, null);
+    var id_parts = parent.attr("id").split("-");
+    var entity_type = id_parts[0];
+    var entity_id = id_parts[1];
 
-    });
+    TSCKEntityEmbedEntityDialog.selectEntity(entity_type, entity_id, null, null);
 
   };
 

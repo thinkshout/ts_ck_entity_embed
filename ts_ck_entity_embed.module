@@ -28,19 +28,6 @@ function ts_ck_entity_embed_menu() {
   );
 
   /**
-   * Provides a JSON-encoded entity matching a given path.
-   *
-   * Parameters:
-   *   - Entity path
-   */
-  $items['admin/ts_ck_entity_embed/path/%/%/%'] = array(
-    'page callback' => 'ts_ck_entity_embed_path_lookup',
-    'page arguments' => array(3, 4, 5),
-    'access callback' => 'ts_ck_entity_embed_permission',
-    'type' => MENU_CALLBACK,
-  );
-
-  /**
    * Provides the HTML of a rendered view.
    *
    * Parameters:
@@ -177,6 +164,32 @@ function ts_ck_entity_embed_filter_info() {
   );
 
   return $filters;
+}
+
+/**
+ * Implements hook_views_pre_render()
+ */
+function ts_ck_entity_embed_views_pre_render(&$view) {
+  $entity_info = ts_ck_entity_embed_get_entity_info();
+
+  $valid_view = FALSE;
+  foreach ($entity_info as $entity_type => $info) {
+    if (isset($info['view_name']) && ($info['view_name'] == $view->name)) {
+      $valid_view = TRUE;
+      continue;
+    }
+  }
+
+  if ($valid_view) {
+    foreach ($view->style_plugin->row_plugin->rendered_content as $name => $content) {
+      $entity = $content[$view->base_table][$name]['#entity'];
+
+      $container_id = $view->base_table . '-' . $entity->{$view->base_field};
+
+      $view->style_plugin->row_plugin->rendered_content[$name]['#prefix'] = '<div id="' . $container_id . '">';
+      $view->style_plugin->row_plugin->rendered_content[$name]['#suffix'] = '</div>';
+    }
+  }
 }
 
 /**
@@ -324,23 +337,6 @@ function ts_ck_entity_embed_entity_search($entity_type, $string) {
   }
 
   drupal_json_output($entities);
-}
-
-/**
- * Page callback for entity lookup by path.
- */
-function ts_ck_entity_embed_path_lookup($entity_type, $path, $delta) {
-  $entity = menu_get_item($path . '/' . $delta);
-
-  $entity_ids = entity_extract_ids($entity_type, $entity['map'][1]);
-
-  $entity_info = array(
-    'entity_type' => $entity_type,
-    'entity_id' => $entity_ids[0],
-    'bundle' => $entity_ids[2],
-  );
-
-  return drupal_json_output($entity_info);
 }
 
 /**

@@ -1,3 +1,7 @@
+.contextual-links-wrapper {
+    display: none;
+}
+
 .view-content .views-view-grid tr {
     vertical-align: text-top !important;
 }

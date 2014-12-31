@@ -1,3 +1,7 @@
+.cke_dialog_contents .cke_disabled {
+    display: none;
+}
+
 .entity-browser {
     height: 600px !important;
     width: 1000px !important;

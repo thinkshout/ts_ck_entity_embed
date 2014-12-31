@@ -154,6 +154,7 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
 
 var TSCKEntityEmbedEntityDialog = {
   editor: null,
+  dialog: null,
   jQuery: null,
   selected_entity: null,
   selected_element: null,
@@ -164,6 +165,7 @@ jQuery(document).ready(function ($) {
   TSCKEntityEmbedEntityDialog.init = function (editor) {
 
     TSCKEntityEmbedEntityDialog.editor = editor;
+    TSCKEntityEmbedEntityDialog.dialog = CKEDITOR.dialog.getCurrent();
 
     // Load entity browser.
     $.getScript('/' + base_path + '/includes/ts_ck_entity_embed_browser.js').done(function (script, textStatus) {
@@ -230,6 +232,8 @@ jQuery(document).ready(function ($) {
       }
 
     });
+
+    TSCKEntityEmbedEntityDialog.dialog.disableButton('ok');
 
     TSCKEntityEmbedEntityDialog.showEntitySearch();
 

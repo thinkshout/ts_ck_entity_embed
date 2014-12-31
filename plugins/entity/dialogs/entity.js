@@ -86,7 +86,7 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
       tabs.push(tab);
 
       var next_button = {
-        id: 'entity embed next',
+        id: 'next',
         type: 'button',
         label: 'Next',
         title: 'Configure embedded entity',
@@ -101,7 +101,7 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
       buttons.push(next_button);
 
       var back_button = {
-        id: 'entity embed back',
+        id: 'back',
         type: 'button',
         label: 'Back',
         title: 'Select embedded entity',
@@ -234,6 +234,8 @@ jQuery(document).ready(function ($) {
     });
 
     TSCKEntityEmbedEntityDialog.dialog.disableButton('ok');
+    TSCKEntityEmbedEntityDialog.dialog.disableButton('next');
+    TSCKEntityEmbedEntityDialog.dialog.disableButton('back');
 
     TSCKEntityEmbedEntityDialog.showEntitySearch();
 
@@ -294,6 +296,8 @@ jQuery(document).ready(function ($) {
         view_mode: view_mode,
         alignment: alignment,
       };
+
+      TSCKEntityEmbedEntityDialog.dialog.enableButton('next');
 
     },
 

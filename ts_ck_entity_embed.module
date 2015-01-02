@@ -181,13 +181,16 @@ function ts_ck_entity_embed_views_pre_render(&$view) {
   }
 
   if ($valid_view) {
+    $result_index = 0;
     foreach ($view->style_plugin->row_plugin->rendered_content as $name => $content) {
-      $entity = $content[$view->base_table][$name]['#entity'];
+      $entity = $view->style_plugin->view->result[$result_index];
 
       $container_id = $view->base_table . '-' . $entity->{$view->base_field};
 
       $view->style_plugin->row_plugin->rendered_content[$name]['#prefix'] = '<div id="' . $container_id . '" class="ts-ck-entity-embed-browser-entity">';
       $view->style_plugin->row_plugin->rendered_content[$name]['#suffix'] = '</div>';
+
+      $result_index++;
     }
   }
 }

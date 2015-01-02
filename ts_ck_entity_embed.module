@@ -186,7 +186,7 @@ function ts_ck_entity_embed_views_pre_render(&$view) {
 
       $container_id = $view->base_table . '-' . $entity->{$view->base_field};
 
-      $view->style_plugin->row_plugin->rendered_content[$name]['#prefix'] = '<div id="' . $container_id . '">';
+      $view->style_plugin->row_plugin->rendered_content[$name]['#prefix'] = '<div id="' . $container_id . '" class="ts-ck-entity-embed-browser-entity">';
       $view->style_plugin->row_plugin->rendered_content[$name]['#suffix'] = '</div>';
     }
   }

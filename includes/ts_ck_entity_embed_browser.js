@@ -17,21 +17,20 @@ function TSCKEntityEmbedEntityBrowser (jQuery, browser_element) {
 
     console.log(this.browser_element);
 
-    this.browser_element.contents().find("div.entity").on("click", this.$.proxy(this.entityClickHandler, this));
+    this.browser_element.contents().find("div.ts-ck-entity-embed-browser-entity").on("click", this.$.proxy(this.entityClickHandler, this));
 
   };
 
   this.entityClickHandler = function (event) {
 
     // Reset selected entity highlighting.
-    this.browser_element.contents().find("div.entity").removeClass("ts-ck-entity-embed-selected-entity");
+    this.browser_element.contents().find("div.ts-ck-entity-embed-browser-entity").removeClass("ts-ck-entity-embed-selected-entity");
 
     // Add highlighting to selected entity.
     this.$(event.currentTarget).addClass("ts-ck-entity-embed-selected-entity");
 
-    var parent = this.$(event.currentTarget).parent();
+    var id_parts = this.$(event.currentTarget).attr("id").split("-");
 
-    var id_parts = parent.attr("id").split("-");
     var entity_type = id_parts[0];
     var entity_id = id_parts[1];
 

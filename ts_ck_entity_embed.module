@@ -8,7 +8,7 @@
 include_once 'ts_ck_entity_embed.features.inc';
 
 /**
- * Implements hook_menu().
+ * Implements hook_menu()
  */
 function ts_ck_entity_embed_menu() {
   $items = array();
@@ -60,7 +60,7 @@ function ts_ck_entity_embed_menu() {
 }
 
 /**
- * Implements hook_hook_info().
+ * Implements hook_hook_info()
  */
 function ts_ck_entity_embed_hook_info() {
   $hooks = array(
@@ -73,7 +73,7 @@ function ts_ck_entity_embed_hook_info() {
 }
 
 /**
- * Implements hook_permission().
+ * Implements hook_permission()
  */
 function ts_ck_entity_embed_permission() {
   return array(
@@ -84,7 +84,7 @@ function ts_ck_entity_embed_permission() {
 }
 
 /**
- * Implements hook_ckeditor_settings_alter().
+ * Implements hook_ckeditor_settings_alter()
  */
 function ts_ck_entity_embed_ckeditor_settings_alter(&$settings, $conf) {
   // Prevent CKEditor stripping IDs and classes from elements.
@@ -95,7 +95,7 @@ function ts_ck_entity_embed_ckeditor_settings_alter(&$settings, $conf) {
 }
 
 /**
- * Implements hook_ckeditor_plugin().
+ * Implements hook_ckeditor_plugin()
  */
 function ts_ck_entity_embed_ckeditor_plugin() {
   $plugins = array();
@@ -116,7 +116,7 @@ function ts_ck_entity_embed_ckeditor_plugin() {
 }
 
 /**
- * Implements hook_form_alter().
+ * Implements hook_form_alter()
  */
 function ts_ck_entity_embed_form_alter(&$form, &$form_state, $form_id) {
   // TODO: Limit to forms with CKEditor enabled.
@@ -154,7 +154,7 @@ function ts_ck_entity_embed_form_alter(&$form, &$form_state, $form_id) {
 }
 
 /**
- * Implements hook_filter_info().
+ * Implements hook_filter_info()
  */
 function ts_ck_entity_embed_filter_info() {
   $filters['ckeditor_entity_embed'] = array(

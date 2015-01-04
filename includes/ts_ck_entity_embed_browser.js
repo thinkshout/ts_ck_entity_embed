@@ -17,6 +17,10 @@ function TSCKEntityEmbedEntityBrowser (jQuery, browser_element) {
 
     console.log(this.browser_element);
 
+    // Disable any links that appear in elements in the browser.
+    this.browser_element.contents().find("div.ts-ck-entity-embed-browser-entity a").click(function () { return false; });
+
+    // Set up click handler for elements in the browser.
     this.browser_element.contents().find("div.ts-ck-entity-embed-browser-entity").on("click", this.$.proxy(this.entityClickHandler, this));
 
   };

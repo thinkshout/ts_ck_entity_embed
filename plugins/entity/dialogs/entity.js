@@ -209,7 +209,7 @@ jQuery(document).ready(function ($) {
 
     TSCKEntityEmbedEntityDialog.createEntityPreview();
 
-    TSCKEntityEmbedEntityDialog.showEntitySearch();
+    TSCKEntityEmbedEntityDialog.hidePreview();
 
   },
 
@@ -264,6 +264,12 @@ jQuery(document).ready(function ($) {
       TSCKEntityEmbedEntityDialog.dialog.disableButton('next');
       TSCKEntityEmbedEntityDialog.dialog.enableButton('back');
       TSCKEntityEmbedEntityDialog.dialog.enableButton('ok');
+
+    },
+
+    TSCKEntityEmbedEntityDialog.hidePreview = function () {
+
+      $("#ts-ck-entity-embed-entity-preview").hide();
 
     },
 

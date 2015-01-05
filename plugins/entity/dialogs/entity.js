@@ -77,9 +77,16 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
         });
       }
 
+      if (entity_info[entity_type].tab_label) {
+        var tab_label = entity_info[entity_type].tab_label;
+      }
+      else {
+        var tab_label = entity_type;
+      }
+
       var tab = {
         id: 'tab-' + entity_type,
-        label: entity_type,
+        label: tab_label,
         elements: elements,
       };
 

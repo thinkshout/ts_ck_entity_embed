@@ -17,6 +17,8 @@
 function hook_ts_ck_entity_embed_entity_info() {
   $entity_info = array(
     'bean' => array(
+      // The label to display on the dialog tab.
+      'tab_label' => 'Bean',
       // The method used to render the entity when embedded.
       'render_method' => 'ts_ck_entity_embed_render_bean',
       // The ID of the Drupal view used to search for and select entities.

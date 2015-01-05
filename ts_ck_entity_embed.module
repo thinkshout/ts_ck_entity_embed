@@ -283,6 +283,7 @@ function ts_ck_entity_embed_get_entity_info() {
 function ts_ck_entity_embed_default_entity_info() {
   $entity_info = array(
     'bean' => array(
+      'tab_label' => 'Bean',
       'render_method' => 'ts_ck_entity_embed_render_bean',
       'view_name' => 'ts_ck_entity_embed_bean',
       'view_modes' => ts_ck_entity_embed_get_view_modes('bean'),

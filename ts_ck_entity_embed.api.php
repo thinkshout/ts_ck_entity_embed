@@ -33,15 +33,3 @@ function hook_ts_ck_entity_embed_entity_info() {
 
   return $entity_info;
 }
-
-/**
- * Renders a bean entity.
- *
- * @param object $entity
- *   The bean entity object.
- * @param string $view_mode
- *   The view mode to using when rendering.
- */
-function ts_ck_entity_embed_render_bean($entity, $view_mode) {
-  return bean_view($entity, $view_mode);
-}

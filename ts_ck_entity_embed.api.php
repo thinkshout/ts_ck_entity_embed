@@ -33,3 +33,10 @@ function hook_ts_ck_entity_embed_entity_info() {
 
   return $entity_info;
 }
+
+/**
+ * Allows embeddable entity information to be modified.
+ */
+function hook_ts_ck_entity_embed_entity_info_alter(&$entity_info) {
+  $entity_info['bean']['render_method'] = 'custom_bean_render_method';
+}

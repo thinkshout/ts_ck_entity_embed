@@ -192,24 +192,6 @@ jQuery(document).ready(function ($) {
 
       });
 
-    $(".entity-view-mode-select").change(function () {
-
-      if (TSCKEntityEmbedEntity.selected_entity != null) {
-        TSCKEntityEmbedEntity.selected_entity.view_mode = $(this).val();
-        TSCKEntityEmbedEntityDialog.refreshPreview();
-      }
-
-    });
-
-    $(".entity-align-select").change(function () {
-
-      if (TSCKEntityEmbedEntity.selected_entity != null) {
-        TSCKEntityEmbedEntity.selected_entity.alignment = $(this).val();
-        TSCKEntityEmbedEntityDialog.refreshPreview();
-      }
-
-    });
-
     TSCKEntityEmbedEntityDialog.dialog.disableButton('ok');
     TSCKEntityEmbedEntityDialog.dialog.disableButton('next');
     TSCKEntityEmbedEntityDialog.dialog.disableButton('back');
@@ -244,6 +226,24 @@ jQuery(document).ready(function ($) {
         '</div>';
 
       $('.cke_dialog_contents_body').append(html);
+
+      $("#entity-view-mode").change(function () {
+
+        if (TSCKEntityEmbedEntity.selected_entity != null) {
+          TSCKEntityEmbedEntity.selected_entity.view_mode = $(this).val();
+          TSCKEntityEmbedEntityDialog.refreshPreview();
+        }
+
+      });
+
+      $("#entity-align").change(function () {
+
+        if (TSCKEntityEmbedEntity.selected_entity != null) {
+          TSCKEntityEmbedEntity.selected_entity.alignment = $(this).val();
+          TSCKEntityEmbedEntityDialog.refreshPreview();
+        }
+
+      });
 
     },
 
@@ -293,13 +293,11 @@ jQuery(document).ready(function ($) {
         $("#entity-view-mode").append('<option value="' + view_modes[i] + '">' + view_modes[i] + '</option>');
       }
 
-      if (selected.view_mode !== null) {
-        $("#entity-view-mode").val(selected.view_mode);
-      }
-      else {
-        $("#entity-view-mode").val(view_modes[0]);
+      if (selected.view_mode === null) {
+        selected.view_mode = view_modes[0];
       }
 
+      $("#entity-view-mode").val(selected.view_mode);
       $("#entity-align").val(selected.alignment);
 
       $.get('/admin/ts_ck_entity_embed/render/' + selected.entity_type + '/' + selected.entity_id + '/' + selected.view_mode + '/' + selected.alignment, function (data) {

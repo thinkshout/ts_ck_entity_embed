@@ -314,9 +314,9 @@ jQuery(document).ready(function ($) {
 
     TSCKEntityEmbedEntityDialog.selectEntity = function (entity_type, entity_id, view_mode, alignment) {
 
-      if (view_mode === null) {
-        view_mode = 'default';
-      }
+      //if (view_mode === null) {
+        //view_mode = 'default';
+      //}
 
       if (alignment === null) {
         alignment = 'left';

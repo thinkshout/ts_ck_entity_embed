@@ -279,7 +279,9 @@ function ts_ck_entity_embed_get_entity_info() {
     foreach (module_implements('ts_ck_entity_embed_entity_info') as $module) {
       foreach (module_invoke($module, 'ts_ck_entity_embed_entity_info') as $entity_type => $info) {
         $entity_info[$entity_type] = $info;
-        $entity_info[$entity_type]['view_modes'] = ts_ck_entity_embed_get_view_modes($entity_type);
+        if (!isset($entity_info[$entity_type]['view_modes']) || empty($entity_info[$entity_type]['view_modes'])) {
+          $entity_info[$entity_type]['view_modes'] = ts_ck_entity_embed_get_view_modes($entity_type);
+        }
       }
     }
   }

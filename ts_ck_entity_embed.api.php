@@ -28,6 +28,9 @@ function hook_ts_ck_entity_embed_entity_info() {
       // Usually whatever contains the entity name / title.
       // Ignored if 'view_name' is not empty.
       'search_field' => 'label',
+      // Optional array of view modes that may be used when embedding entity.
+      // Defaults to all view modes when missing or empty.
+      'view_modes' => array(),
     ),
   );
 

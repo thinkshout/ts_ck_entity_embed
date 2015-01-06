@@ -286,7 +286,20 @@ jQuery(document).ready(function ($) {
 
       var selected = TSCKEntityEmbedEntity.selected_entity;
 
-      $("#entity-view-mode").val(selected.view_mode);
+      var view_modes = entity_info[selected.entity_type].view_modes;
+
+      $("#entity-view-mode").html('');
+      for (var i = 0; i < view_modes.length; i++) {
+        $("#entity-view-mode").append('<option value="' + view_modes[i] + '">' + view_modes[i] + '</option>');
+      }
+
+      if (selected.view_mode !== null) {
+        $("#entity-view-mode").val(selected.view_mode);
+      }
+      else {
+        $("#entity-view-mode").val(view_modes[0]);
+      }
+
       $("#entity-align").val(selected.alignment);
 
       $.get('/admin/ts_ck_entity_embed/render/' + selected.entity_type + '/' + selected.entity_id + '/' + selected.view_mode + '/' + selected.alignment, function (data) {

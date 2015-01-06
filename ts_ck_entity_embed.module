@@ -119,6 +119,18 @@ function ts_ck_entity_embed_ckeditor_plugin() {
  * Implements hook_form_alter()
  */
 function ts_ck_entity_embed_form_alter(&$form, &$form_state, $form_id) {
+
+  $entity_info = ts_ck_entity_embed_get_entity_info();
+
+  foreach ($entity_info as $entity_type => $info) {
+    if (isset($info['view_name'])) {
+      if ($form['#id'] == 'views-exposed-form-' . str_replace('_', '-', $info['view_name']) . '-default') {
+        $form['#action'] = '/' . $_GET['q'];
+        continue;
+      }
+    }
+  }
+
   // TODO: Limit to forms with CKEditor enabled.
 
   // Attach embeddable entity info to form.

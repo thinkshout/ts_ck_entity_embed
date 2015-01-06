@@ -14,7 +14,8 @@
     width: 300px !important;
 }
 
-.ts-ck-entity-embed-entity-results-list input[type="radio"], .ts-ck-entity-embed-entity-results-list label {
+.ts-ck-entity-embed-entity-results-list input[type="radio"],
+.ts-ck-entity-embed-entity-results-list label {
     margin-top: 8px;
 }
 
@@ -77,4 +78,3 @@
     max-width: 28%;
   }
 }
-

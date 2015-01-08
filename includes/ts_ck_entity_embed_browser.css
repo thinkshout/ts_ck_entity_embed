@@ -26,6 +26,11 @@
     border: 4px solid #0c8689;
 }
 
+.ts-ck-entity-embed-entity-preview .ts-ck-entity-embed-center {
+  text-align: center;
+  margin: 0 auto;
+}
+
 .views-exposed-form .views-exposed-widget {
     display: inline-block;
     margin-right: 20px;

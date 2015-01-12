@@ -341,6 +341,9 @@ jQuery(document).ready(function ($) {
 
         $('#ts-ck-entity-embed-entity-preview #ts-ck-entity-embed-preview-box').html(preview_html);
 
+        // Disable links within entity.
+        $('#ts-ck-entity-embed-entity-preview #ts-ck-entity-embed-preview-box').find("a").click(function () { return false; });
+
       });
 
     },

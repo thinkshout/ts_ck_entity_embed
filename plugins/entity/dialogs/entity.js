@@ -116,12 +116,20 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
 
     onShow: function () {
 
+      TSCKEntityEmbedEntityDialog.refresh();
+
     },
 
     // Dialog confirmation handler.
     onOk: function () {
 
       TSCKEntityEmbedEntityDialog.insertSelectedEntity(editor);
+
+    },
+
+    onCancel: function () {
+
+      TSCKEntityEmbedEntityDialog.reset();
 
     }
 
@@ -201,6 +209,22 @@ jQuery(document).ready(function ($) {
     TSCKEntityEmbedEntityDialog.hidePreview();
 
   },
+
+    TSCKEntityEmbedEntityDialog.refresh = function (editor) {
+
+      if (TSCKEntityEmbedEntity.selected_element !== null) {
+        console.log("Existing entity selected, displaying preview.");
+        TSCKEntityEmbedEntityDialog.showPreview();
+      }
+
+    },
+
+    TSCKEntityEmbedEntityDialog.reset = function (editor) {
+
+      TSCKEntityEmbedEntity.selected_element = null;
+      TSCKEntityEmbedEntity.selected_entity = null;
+
+    },
 
     TSCKEntityEmbedEntityDialog.createEntityPreview = function () {
 

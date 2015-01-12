@@ -13,15 +13,13 @@ function TSCKEntityEmbedEntityBrowser (jQuery, browser_element) {
 
   this.refresh = function () {
 
-    console.log('Refreshing entity browser.');
-
-    console.log(this.browser_element);
-
-    // Disable any links that appear in elements in the browser.
-    this.browser_element.contents().find("div.ts-ck-entity-embed-browser-entity a").click(function () { return false; });
+    console.log('Refreshing entity browser: ' + this.browser_element[0].id);
 
     // Set up click handler for elements in the browser.
     this.browser_element.contents().find("div.ts-ck-entity-embed-browser-entity").on("click", this.$.proxy(this.entityClickHandler, this));
+
+    // Override any links that appear in elements in the browser.
+    this.browser_element.contents().find("div.ts-ck-entity-embed-browser-entity a").off("click").on("click", this.$.proxy(this.entityLinkClickHandler, this));
 
   };
 
@@ -39,6 +37,17 @@ function TSCKEntityEmbedEntityBrowser (jQuery, browser_element) {
     var entity_id = id_parts[1];
 
     TSCKEntityEmbedEntityDialog.selectEntity(entity_type, entity_id, null, null);
+
+  };
+
+  this.entityLinkClickHandler = function (event) {
+
+    event.preventDefault();
+
+    var entity_element = this.$(this).closest("div.ts-ck-entity-embed-browser-entity");
+    if (entity_element) {
+      entity_element.trigger("click");
+    }
 
   };
 

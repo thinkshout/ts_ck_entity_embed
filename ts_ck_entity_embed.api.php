@@ -31,6 +31,13 @@ function hook_ts_ck_entity_embed_entity_info() {
       // Optional array of view modes that may be used when embedding entity.
       // Defaults to all view modes when missing or empty.
       'view_modes' => array(),
+      // Array of available alignment options. Valid options are:
+      // 'left' 'center' 'right'
+      'alignment_options' => array(
+        'left',
+        'right',
+        'center',
+      ),
     ),
   );
 

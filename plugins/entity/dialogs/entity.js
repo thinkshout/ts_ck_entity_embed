@@ -321,6 +321,17 @@ jQuery(document).ready(function ($) {
         selected.view_mode = view_modes[0];
       }
 
+      var alignment_options = entity_info[selected.entity_type].alignment_options;
+
+      $("#entity-align").html('');
+      for (var i = 0; i < alignment_options.length; i++) {
+        $("#entity-align").append('<option value="' + alignment_options[i] + '">' + alignment_options[i] + '</option>');
+      }
+
+      if (selected.alignment === null) {
+        selected.alignment = alignment_options[0];
+      }
+
       $("#entity-view-mode").val(selected.view_mode);
       $("#entity-align").val(selected.alignment);
 
@@ -335,10 +346,6 @@ jQuery(document).ready(function ($) {
     },
 
     TSCKEntityEmbedEntityDialog.selectEntity = function (entity_type, entity_id, view_mode, alignment) {
-
-      //if (view_mode === null) {
-        //view_mode = 'default';
-      //}
 
       if (alignment === null) {
         alignment = 'left';

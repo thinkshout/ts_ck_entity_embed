@@ -44,9 +44,9 @@ jQuery(document).ready(function ($) {
 
     TSCKEntityEmbedEntity.replaceTokens(editor);
 
-    editor.on('doubleclick', function(evt) {
+    editor.on('doubleclick', function (event) {
 
-      var element = evt.data.element;
+      var element = event.data.element;
       var element_parents = element.getParents();
 
       if (element_parents) {
@@ -55,18 +55,18 @@ jQuery(document).ready(function ($) {
             console.log('Double-clicked on an entity preview element.');
 
             // Cancel the event to prevent any default CKEditor behavior here.
-            evt.cancel();
+            event.cancel();
 
             TSCKEntityEmbedEntity.selected_element = element_parents[i];
 
             var element_id_parts = element_parents[i].getId().split('-');
 
-            TSCKEntityEmbedEntity.selected_entity = {
-              entity_type: element_id_parts[2],
-              entity_id: element_id_parts[3],
-              view_mode: element_id_parts[4],
-              alignment: element_id_parts[5],
-            };
+            var entity_type = element_id_parts[2];
+            var entity_id = element_id_parts[3];
+            var view_mode = element_id_parts[4];
+            var alignment = element_id_parts[5];
+
+            TSCKEntityEmbedEntity.selectEntity(entity_type, entity_id, view_mode, alignment)
 
             editor.execCommand('entity');
 
@@ -262,6 +262,17 @@ jQuery(document).ready(function ($) {
           });
         }
       }
+
+    },
+
+    TSCKEntityEmbedEntity.selectEntity = function (entity_type, entity_id, view_mode, alignment) {
+
+      TSCKEntityEmbedEntity.selected_entity = {
+        entity_type: entity_type,
+        entity_id: entity_id,
+        view_mode: view_mode,
+        alignment: alignment,
+      };
 
     }
 

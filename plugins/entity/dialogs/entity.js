@@ -320,12 +320,7 @@ jQuery(document).ready(function ($) {
         alignment = 'left';
       }
 
-      TSCKEntityEmbedEntity.selected_entity = {
-        entity_type: entity_type,
-        entity_id: entity_id,
-        view_mode: view_mode,
-        alignment: alignment,
-      };
+      TSCKEntityEmbedEntity.selectEntity(entity_type, entity_id, view_mode, alignment);
 
       TSCKEntityEmbedEntityDialog.dialog.enableButton('next');
 

@@ -337,7 +337,9 @@ jQuery(document).ready(function ($) {
 
       $.get('/admin/ts_ck_entity_embed/render/' + selected.entity_type + '/' + selected.entity_id + '/' + selected.view_mode + '/' + selected.alignment, function (data) {
 
-        var preview_html = TSCKEntityEmbedEntity.generatePreviewHtml(selected.entity_type, selected.entity_id, selected.view_mode, selected.alignment, data);
+        var preview_html = '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi semper malesuada semper. Mauris aliquam dui ante, in bibendum leo consequat et. Vestibulum tortor dui, consectetur et odio et, fringilla tempor odio. Nam blandit vestibulum metus eget consectetur. Nam consequat dignissim nunc nec sagittis. Aenean a eleifend felis. Praesent vel est sed lectus pulvinar ultricies. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Pellentesque non facilisis dolor.</p>';
+        preview_html += TSCKEntityEmbedEntity.generatePreviewHtml(selected.entity_type, selected.entity_id, selected.view_mode, selected.alignment, data);
+        preview_html += '<p>Praesent consectetur tortor eget libero rhoncus posuere. Duis finibus ligula sit amet viverra feugiat. Duis at risus feugiat, ullamcorper leo in, tincidunt sapien. Integer vulputate posuere turpis in blandit. Sed accumsan viverra nibh, at laoreet libero feugiat a. Mauris est est, luctus sed nulla eu, porta malesuada augue. Nunc iaculis quam non mollis pellentesque. Sed hendrerit accumsan sapien. Pellentesque ultricies congue justo, at euismod quam placerat sed. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Quisque dolor massa, luctus sagittis est at, dictum aliquam augue. Morbi porta in est feugiat semper. Pellentesque at malesuada quam.</p>';
 
         $('#ts-ck-entity-embed-entity-preview #ts-ck-entity-embed-preview-box').html(preview_html);
 

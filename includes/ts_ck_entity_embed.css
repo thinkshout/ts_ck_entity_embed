@@ -1,3 +1,7 @@
+.cke_reset_all, .cke_reset_all * {
+    white-space: normal !important;
+}
+
 .cke_dialog_contents .cke_disabled {
     display: none;
 }
@@ -35,16 +39,21 @@
     margin-right: 20px;
 }
 
-#ts-ck-entity-embed-entity-preview #ts-ck-entity-embed-preview-box-container {
+#ts-ck-entity-embed-preview-box-container {
     text-align: center;
 }
 
-#ts-ck-entity-embed-entity-preview #ts-ck-entity-embed-preview-box {
+#ts-ck-entity-embed-preview-box {
     border: 1px solid #C0C0C0;
     clear: both;
     height: 460px;
     margin: 50px auto 0 auto;
-    overflow: auto;
+    padding: 10px;
+    width: 800px;
+}
+
+#ts-ck-entity-embed-preview-box p {
+    margin: 5px;
 }
 
 .ts-ck-entity-embed-right,

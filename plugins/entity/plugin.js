@@ -20,6 +20,19 @@ CKEDITOR.plugins.add('entity', {
       toolbar: 'insert'
     });
 
+    editor.on('mode', function ( event ) {
+
+      if (event.editor.mode == 'source') {
+        console.log("Switched to source mode.");
+      }
+      else {
+        console.log("Switched to HTML mode.");
+
+        TSCKEntityEmbedEntity.replaceTokens(event.editor);
+      }
+
+    });
+
     // Register the file containing the dialog window code.
     CKEDITOR.dialog.add('entityDialog', this.path + 'dialogs/entity.js');
 
@@ -41,8 +54,6 @@ jQuery(document).ready(function ($) {
   TSCKEntityEmbedEntity.init = function (editor) {
 
     TSCKEntityEmbedEntity.editors.push(editor);
-
-    TSCKEntityEmbedEntity.replaceTokens(editor);
 
     editor.on('doubleclick', function (event) {
 
@@ -86,35 +97,44 @@ jQuery(document).ready(function ($) {
         for (var i = 0; i < TSCKEntityEmbedEntity.editors.length; i++) {
           var editor = TSCKEntityEmbedEntity.editors[i];
 
-          var elements = editor.document.$.getElementsByTagName("div");
-
-          for (var j = 0; j < elements.length; j++) {
-            var element = new CKEDITOR.dom.element(elements[j]);
-
-            if (element.hasClass('ts-ck-entity-embed-entity-preview')) {
-              var element_id = element.getId();
-              var element_id_parts = element_id.split('-');
-
-              var entity_type = element_id_parts[2];
-              var entity_id = element_id_parts[3];
-              var view_mode = element_id_parts[4];
-              var alignment = element_id_parts[5];
-
-              var token = TSCKEntityEmbedEntity.generateToken(entity_type, entity_id, view_mode, alignment);
-
-              var token_element = CKEDITOR.dom.element.createFromHtml(token);
-
-              token_element.insertAfter(element);
-
-              element.remove();
-            }
-          }
+          TSCKEntityEmbedEntity.insertTokens(editor);
         }
 
       });
     }
 
   },
+
+    TSCKEntityEmbedEntity.insertTokens = function (editor) {
+
+      console.log('TSCKEntityEmbedEntity.insertTokens');
+      console.log(editor);
+
+      var elements = editor.document.$.getElementsByTagName("div");
+
+      for (var j = 0; j < elements.length; j++) {
+        var element = new CKEDITOR.dom.element(elements[j]);
+
+        if (element.hasClass('ts-ck-entity-embed-entity-preview')) {
+          var element_id = element.getId();
+          var element_id_parts = element_id.split('-');
+
+          var entity_type = element_id_parts[2];
+          var entity_id = element_id_parts[3];
+          var view_mode = element_id_parts[4];
+          var alignment = element_id_parts[5];
+
+          var token = TSCKEntityEmbedEntity.generateToken(entity_type, entity_id, view_mode, alignment);
+
+          var token_element = CKEDITOR.dom.element.createFromHtml(token);
+
+          token_element.insertAfter(element);
+
+          element.remove();
+        }
+      }
+
+    },
 
     TSCKEntityEmbedEntity.replaceTokens = function (editor) {
 

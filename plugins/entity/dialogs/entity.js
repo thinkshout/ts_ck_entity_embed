@@ -46,6 +46,7 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
 
   entity_browsers = [];
   entity_search_boxes = [];
+  entity_preview = null;
 
   if (entity_info) {
 
@@ -204,9 +205,22 @@ jQuery(document).ready(function ($) {
     TSCKEntityEmbedEntityDialog.dialog.disableButton('next');
     TSCKEntityEmbedEntityDialog.dialog.disableButton('back');
 
-    TSCKEntityEmbedEntityDialog.createEntityPreview();
+    $.getScript('/' + base_path + '/includes/ts_ck_entity_embed_preview.js').done(function (script, textStatus) {
 
-    TSCKEntityEmbedEntityDialog.hidePreview();
+      console.log("Entity preview script loaded.");
+
+      TSCKEntityEmbedEntityDialog.createEntityPreview();
+      TSCKEntityEmbedEntityDialog.hidePreview();
+
+      entity_preview = new TSCKEntityEmbedEntityPreview($, $('#ts-ck-entity-embed-preview-box'));
+      entity_preview.init();
+
+    })
+      .fail(function (jqxhr, settings, exception) {
+
+        console.log("Failed to load entity preview script.");
+
+      });
 
   },
 
@@ -304,8 +318,6 @@ jQuery(document).ready(function ($) {
 
     TSCKEntityEmbedEntityDialog.refreshPreview = function () {
 
-      console.log("Refreshing entity preview.");
-
       var selected = TSCKEntityEmbedEntity.selected_entity;
 
       var view_modes = entity_info[selected.entity_type].view_modes;
@@ -333,9 +345,7 @@ jQuery(document).ready(function ($) {
       $("#entity-view-mode").val(selected.view_mode);
       $("#entity-align").val(selected.alignment);
 
-      var preview_url = '/admin/ts_ck_entity_embed/preview/render/' + selected.entity_type + '/' + selected.entity_id + '/' + selected.view_mode + '/' + selected.alignment;
-
-      $("#ts-ck-entity-embed-preview-box").attr('src', preview_url);
+      entity_preview.refresh(selected);
 
     },
 

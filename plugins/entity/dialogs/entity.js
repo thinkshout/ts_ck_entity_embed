@@ -215,6 +215,8 @@ jQuery(document).ready(function ($) {
       entity_preview = new TSCKEntityEmbedEntityPreview($, $('#ts-ck-entity-embed-preview-box'));
       entity_preview.init();
 
+      TSCKEntityEmbedEntityDialog.refresh(TSCKEntityEmbedEntityDialog.editor);
+
     })
       .fail(function (jqxhr, settings, exception) {
 
@@ -226,9 +228,13 @@ jQuery(document).ready(function ($) {
 
     TSCKEntityEmbedEntityDialog.refresh = function (editor) {
 
-      if (TSCKEntityEmbedEntity.selected_element !== null) {
-        console.log("Existing entity selected, displaying preview.");
-        TSCKEntityEmbedEntityDialog.showPreview();
+      if (editor != null) {
+        console.log("Refreshing editor: " + editor.name);
+
+        if ((entity_preview !== null) && (TSCKEntityEmbedEntity.selected_element !== null)) {
+          console.log("Existing entity selected, displaying preview.");
+          TSCKEntityEmbedEntityDialog.showPreview();
+        }
       }
 
     },

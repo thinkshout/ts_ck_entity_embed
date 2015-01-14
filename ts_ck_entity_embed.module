@@ -444,12 +444,14 @@ function ts_ck_entity_embed_entity_render($entity_type, $entity_id, $view_mode, 
  * Page callback for entity preview render URL.
  */
 function ts_ck_entity_embed_entity_preview_render($entity_type, $entity_id, $view_mode, $alignment) {
-  $content = '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi semper malesuada semper. Mauris aliquam dui ante, in bibendum leo consequat et. Vestibulum tortor dui, consectetur et odio et, fringilla tempor odio. Nam blandit vestibulum metus eget consectetur. Nam consequat dignissim nunc nec sagittis. Aenean a eleifend felis. Praesent vel est sed lectus pulvinar ultricies. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Pellentesque non facilisis dolor.</p>';
+  $content = '<div id="content">';
+  $content .= '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi semper malesuada semper. Mauris aliquam dui ante, in bibendum leo consequat et. Vestibulum tortor dui, consectetur et odio et, fringilla tempor odio. Nam blandit vestibulum metus eget consectetur. Nam consequat dignissim nunc nec sagittis. Aenean a eleifend felis. Praesent vel est sed lectus pulvinar ultricies. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Pellentesque non facilisis dolor.</p>';
 
   $content .= ts_ck_entity_embed_entity_render($entity_type, $entity_id, $view_mode, $alignment, TRUE);
 
   $content .= '<p>Praesent consectetur tortor eget libero rhoncus posuere. Duis finibus ligula sit amet viverra feugiat. Duis at risus feugiat, ullamcorper leo in, tincidunt sapien. Integer vulputate posuere turpis in blandit. Sed accumsan viverra nibh, at laoreet libero feugiat a. Mauris est est, luctus sed nulla eu, porta malesuada augue. Nunc iaculis quam non mollis pellentesque. Sed hendrerit accumsan sapien. Pellentesque ultricies congue justo, at euismod quam placerat sed. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Quisque dolor massa, luctus sagittis est at, dictum aliquam augue. Morbi porta in est feugiat semper. Pellentesque at malesuada quam.</p>';
   $content .= '<p>Quisque fringilla sit amet ante eget tristique. Maecenas maximus ullamcorper augue, et sagittis metus ullamcorper eu. Etiam sit amet aliquet metus. Fusce posuere ligula vitae euismod ultrices. Proin et tortor vel dolor aliquam scelerisque et vitae lectus. Suspendisse potenti. Curabitur libero velit, volutpat eget nunc sed, mattis dictum erat. Cras ut aliquam urna, non commodo ante. Nam vulputate, dolor eu sodales sodales, neque justo auctor metus, et elementum arcu ex ornare libero. Proin vel tortor ac turpis dapibus tristique suscipit et felis. Quisque eget nisl arcu. Donec ex arcu, dapibus sed lobortis eu, posuere non dolor.</p>';
+  $content .= '</div>';
 
   $css_paths = ts_ck_entity_embed_get_editor_css();
 

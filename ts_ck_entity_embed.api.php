@@ -50,3 +50,18 @@ function hook_ts_ck_entity_embed_entity_info() {
 function hook_ts_ck_entity_embed_entity_info_alter(&$entity_info) {
   $entity_info['bean']['render_method'] = 'custom_bean_render_method';
 }
+
+/**
+ * Provides an array of CSS file paths to include in the editor and entity
+ * preview window. Useful for styling embedded entities with the site's theme.
+ *
+ * @return array
+ *   Array of CSS file paths.
+ */
+function hook_ts_ck_entity_embed_editor_css() {
+  $files = array(
+    drupal_get_path('theme', 'custom_theme') . '/css/style.css',
+  );
+
+  return $files;
+}

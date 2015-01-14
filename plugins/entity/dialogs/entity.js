@@ -244,9 +244,7 @@ jQuery(document).ready(function ($) {
         '      <option value="center">Center</option>' +
         '    </select>' +
         '  </div>' +
-        '  <div id="ts-ck-entity-embed-preview-box-container">' +
-        '    <div id="ts-ck-entity-embed-preview-box"></div>' +
-        '  </div>' +
+          '<iframe id="ts-ck-entity-embed-preview-box" src=""></iframe>' +
         '</div>';
 
       $('.cke_dialog_contents_body').append(html);
@@ -335,19 +333,9 @@ jQuery(document).ready(function ($) {
       $("#entity-view-mode").val(selected.view_mode);
       $("#entity-align").val(selected.alignment);
 
-      $.get('/admin/ts_ck_entity_embed/render/' + selected.entity_type + '/' + selected.entity_id + '/' + selected.view_mode + '/' + selected.alignment, function (data) {
+      var preview_url = '/admin/ts_ck_entity_embed/preview/render/' + selected.entity_type + '/' + selected.entity_id + '/' + selected.view_mode + '/' + selected.alignment;
 
-        var preview_html = '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi semper malesuada semper. Mauris aliquam dui ante, in bibendum leo consequat et. Vestibulum tortor dui, consectetur et odio et, fringilla tempor odio. Nam blandit vestibulum metus eget consectetur. Nam consequat dignissim nunc nec sagittis. Aenean a eleifend felis. Praesent vel est sed lectus pulvinar ultricies. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Pellentesque non facilisis dolor.</p>';
-        preview_html += TSCKEntityEmbedEntity.generatePreviewHtml(selected.entity_type, selected.entity_id, selected.view_mode, selected.alignment, data);
-        preview_html += '<p>Praesent consectetur tortor eget libero rhoncus posuere. Duis finibus ligula sit amet viverra feugiat. Duis at risus feugiat, ullamcorper leo in, tincidunt sapien. Integer vulputate posuere turpis in blandit. Sed accumsan viverra nibh, at laoreet libero feugiat a. Mauris est est, luctus sed nulla eu, porta malesuada augue. Nunc iaculis quam non mollis pellentesque. Sed hendrerit accumsan sapien. Pellentesque ultricies congue justo, at euismod quam placerat sed. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Quisque dolor massa, luctus sagittis est at, dictum aliquam augue. Morbi porta in est feugiat semper. Pellentesque at malesuada quam.</p>';
-        preview_html += '<p>Quisque fringilla sit amet ante eget tristique. Maecenas maximus ullamcorper augue, et sagittis metus ullamcorper eu. Etiam sit amet aliquet metus. Fusce posuere ligula vitae euismod ultrices. Proin et tortor vel dolor aliquam scelerisque et vitae lectus. Suspendisse potenti. Curabitur libero velit, volutpat eget nunc sed, mattis dictum erat. Cras ut aliquam urna, non commodo ante. Nam vulputate, dolor eu sodales sodales, neque justo auctor metus, et elementum arcu ex ornare libero. Proin vel tortor ac turpis dapibus tristique suscipit et felis. Quisque eget nisl arcu. Donec ex arcu, dapibus sed lobortis eu, posuere non dolor.</p>';
-
-        $('#ts-ck-entity-embed-entity-preview #ts-ck-entity-embed-preview-box').html(preview_html);
-
-        // Disable links within entity.
-        $('#ts-ck-entity-embed-entity-preview #ts-ck-entity-embed-preview-box').find("a").click(function () { return false; });
-
-      });
+      $("#ts-ck-entity-embed-preview-box").attr('src', preview_url);
 
     },
 

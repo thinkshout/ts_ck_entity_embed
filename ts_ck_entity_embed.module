@@ -436,6 +436,9 @@ function ts_ck_entity_embed_entity_render($entity_type, $entity_id, $view_mode, 
     }
   }
 
+  $content = preg_replace('/<a(.*?)href="(.*?)"(.*?)>/', '', $content);
+  $content = preg_replace('/<\/a>/', '', $content);
+
   if ($return_content) {
     return $content;
   }

@@ -169,6 +169,7 @@ function ts_ck_entity_embed_form_alter(&$form, &$form_state, $form_id) {
       'data' => array(
         'ts_ck_entity_embed' => array(
           'base_path' => drupal_get_path('module', 'ts_ck_entity_embed'),
+          'js_files' => ts_ck_entity_embed_get_editor_js(),
           'entity_info' => $entity_info
         ),
       ),

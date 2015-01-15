@@ -65,3 +65,18 @@ function hook_ts_ck_entity_embed_editor_css() {
 
   return $files;
 }
+
+/**
+ * Provides an array of JS file paths to include in the editor and entity
+ * preview window.
+ *
+ * @return array
+ *   Array of JS file paths.
+ */
+function hook_ts_ck_entity_embed_editor_js() {
+  $files = array(
+    drupal_get_path('theme', 'custom_theme') . '/js/entity.js',
+  );
+
+  return $files;
+}

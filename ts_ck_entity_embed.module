@@ -109,6 +109,8 @@ function ts_ck_entity_embed_ckeditor_settings_alter(&$settings, $conf) {
   // Prevent CKEditor stripping images from the Picture module.
   $settings['extraAllowedContent'] .= ';object;picture;source;*[media]';
 
+  $settings['fillEmptyBlocks'] = FALSE;
+
   // Add custom CSS files.
   $css_paths = ts_ck_entity_embed_get_editor_css();
   //$settings['contentsCss'] = '/' . $css_paths[0];

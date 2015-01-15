@@ -167,7 +167,7 @@ jQuery(document).ready(function ($) {
 
         var preview_html = TSCKEntityEmbedEntity.generatePreviewHtml(entity_type, entity_id, view_mode, alignment, data);
 
-        editor.insertHtml(preview_html);
+        editor.insertHtml('<p>' + preview_html + '</p>');
 
         TSCKEntityEmbedEntity.prepareElements(editor);
 

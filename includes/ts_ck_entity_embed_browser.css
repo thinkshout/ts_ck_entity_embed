@@ -13,9 +13,17 @@
 .view-content .ts-ck-entity-embed-browser-entity {
     border: 2px solid #f1f1f1;
     padding: 2px;
-    min-height: 220px;
-    max-height: 220px;
+    min-height: 210px;
+    min-width: 200px;
+    max-height: 210px;
+    min-width: 200px;
     overflow: hidden;
+    padding: 10px;
+    text-align: center;
+}
+
+.view-content .ts-ck-entity-embed-browser-entity div {
+    margin: 10px auto 10px auto;
 }
 
 .view-content .ts-ck-entity-embed-browser-entity img {

@@ -20,7 +20,7 @@ CKEDITOR.plugins.add('entity', {
       toolbar: 'insert'
     });
 
-    editor.on('mode', function ( event ) {
+    editor.on('mode', function (event) {
 
       if (event.editor.mode == 'source') {
         console.log("Switched to source mode.");
@@ -46,7 +46,7 @@ var TSCKEntityEmbedEntity = {
   editor_token_counts: [],
   editor_entity_previews: [],
   selected_element: null,
-  selected_entity: null,
+  selected_entity: null
 };
 
 jQuery(document).ready(function ($) {
@@ -77,7 +77,7 @@ jQuery(document).ready(function ($) {
             var view_mode = element_id_parts[4];
             var alignment = element_id_parts[5];
 
-            TSCKEntityEmbedEntity.selectEntity(entity_type, entity_id, view_mode, alignment)
+            TSCKEntityEmbedEntity.selectEntity(entity_type, entity_id, view_mode, alignment);
 
             editor.execCommand('entity');
 

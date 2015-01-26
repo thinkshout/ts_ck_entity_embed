@@ -117,7 +117,7 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
 
     onShow: function () {
 
-      TSCKEntityEmbedEntityDialog.refresh();
+      TSCKEntityEmbedEntityDialog.refresh(editor);
 
     },
 
@@ -234,6 +234,10 @@ jQuery(document).ready(function ($) {
         if ((entity_preview !== null) && (TSCKEntityEmbedEntity.selected_element !== null)) {
           console.log("Existing entity selected, displaying preview.");
           TSCKEntityEmbedEntityDialog.showPreview();
+        }
+        else
+        {
+          TSCKEntityEmbedEntityDialog.showEntitySearch();
         }
       }
 

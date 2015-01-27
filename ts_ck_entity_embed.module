@@ -514,7 +514,7 @@ function ts_ck_entity_embed_entity_render_multiple($entity_data_str) {
         $entity = entity_load_single($data->entity_type, $data->entity_id);
 
         if ($entity !== FALSE) {
-          $entity_key = $data->entity_type . '_' . $data->entity_id . '_' . $data->view_mode . '_' . $data->alignment;
+          $entity_key = $data->entity_type . '|' . $data->entity_id . '|' . $data->view_mode . '|' . $data->alignment;
 
           if (!isset($content[$entity_key])) {
             $rendered_content = $render_method($entity, $data->view_mode, TRUE);

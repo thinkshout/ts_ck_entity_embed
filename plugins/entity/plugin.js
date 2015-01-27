@@ -138,9 +138,6 @@ jQuery(document).ready(function ($) {
 
     TSCKEntityEmbedEntity.replaceTokens = function (editor) {
 
-      // Cache loaded entity previews.
-      TSCKEntityEmbedEntity.editor_entity_previews[editor.id] = [];
-
       // Regex pattern to match entity tokens.
       var pattern = /\[ts_ck_entity_embed\|entity_type=\w+\|entity_id=\d+\|view_mode=\w+\|alignment=\w+\]/g;
 
@@ -149,14 +146,68 @@ jQuery(document).ready(function ($) {
       var matches = html.match(pattern);
 
       if (matches) {
-        // Track token parsing progress.
-        TSCKEntityEmbedEntity.editor_token_counts[editor.id] = [];
-        TSCKEntityEmbedEntity.editor_token_counts[editor.id]['total'] = matches.length;
-        TSCKEntityEmbedEntity.editor_token_counts[editor.id]['parsed'] = 0;
+        var entity_data = [];
+
+        // Regex pattern to match entity token components.
+        var token_pattern = /ts_ck_entity_embed\|entity_type=(\w+)\|entity_id=(\d+)\|view_mode=(\w+)\|alignment=(\w+)/;
 
         for (var i = 0; i < matches.length; i++) {
-          TSCKEntityEmbedEntity.cacheEntityTokenReplacement(editor, matches[i]);
+          var token_matches = matches[i].match(token_pattern);
+
+          entity_data.push(
+            {
+              entity_type: token_matches[1],
+              entity_id: token_matches[2],
+              view_mode: token_matches[3],
+              alignment: token_matches[4]
+            }
+          );
         }
+
+        $.get('/admin/ts_ck_entity_embed/render-multiple/' + JSON.stringify(entity_data), function (data) {
+
+          if (data) {
+            // Replace all parsed tokens with preview HTML in the editor.
+
+            var entity_markup = JSON.parse(data);
+
+            var html = editor.getData();
+
+            for (var key in entity_markup) {
+              var key_parts = key.split('|');
+
+              var token = '[ts_ck_entity_embed'
+                + '|entity_type=' + key_parts[0]
+                + '|entity_id=' + key_parts[1]
+                + '|view_mode=' + key_parts[2]
+                + '|alignment=' + key_parts[3]
+                + ']';
+
+              var regex_token = token.replace('\[', '\\[');
+              regex_token = regex_token.replace('\]', '\\]');
+              regex_token = regex_token.split('|').join('\\|');
+
+              var regex = new RegExp(regex_token, 'g');
+
+              var embedded_html = entity_markup[key];
+
+              embedded_html = embedded_html.replace(/srcset=/g, 'src=');
+
+              html = html.replace(regex, embedded_html);
+            }
+
+            editor.setData(html, {
+              callback: function() {
+                if (this.checkDirty()) {
+                  console.log("Set updated HTML in editor.");
+
+                  TSCKEntityEmbedEntity.prepareElements(this);
+                }
+              }
+            });
+          }
+
+        });
       }
 
     },
@@ -186,68 +237,6 @@ jQuery(document).ready(function ($) {
         new_element.replace(element);
 
         TSCKEntityEmbedEntity.prepareElements(editor);
-
-      });
-
-    },
-
-    TSCKEntityEmbedEntity.cacheEntityTokenReplacement = function (editor, token) {
-
-      // Regex pattern to match entity token components.
-      var token_pattern = /ts_ck_entity_embed\|entity_type=(\w+)\|entity_id=(\d+)\|view_mode=(\w+)\|alignment=(\w+)/;
-
-      var token_matches = token.match(token_pattern);
-
-      var entity_type = token_matches[1];
-      var entity_id = token_matches[2];
-      var view_mode = token_matches[3];
-      var alignment = token_matches[4];
-
-      $.get('/admin/ts_ck_entity_embed/render/' + entity_type + '/' + entity_id + '/' + view_mode + '/' + alignment, function (data) {
-
-        var preview_html = TSCKEntityEmbedEntity.generatePreviewHtml(entity_type, entity_id, view_mode, alignment, data);
-
-        var token = TSCKEntityEmbedEntity.generateToken(entity_type, entity_id, view_mode, alignment);
-
-        TSCKEntityEmbedEntity.editor_entity_previews[editor.id][token] = preview_html;
-
-        TSCKEntityEmbedEntity.editor_token_counts[editor.id]['parsed']++;
-
-        // Handle token replacement when all tokens have been parsed / cached.
-        if (TSCKEntityEmbedEntity.editor_token_counts[editor.id]['parsed'] == TSCKEntityEmbedEntity.editor_token_counts[editor.id]['total']) {
-          console.log("Parsed all tokens for editor ID: " + editor.id);
-
-          // Replace all parsed tokens with preview HTML in the editor.
-          var html = editor.getData();
-
-          for (var token in TSCKEntityEmbedEntity.editor_entity_previews[editor.id]) {
-            if (!TSCKEntityEmbedEntity.editor_entity_previews[editor.id].hasOwnProperty(token)) {
-              continue;
-            }
-
-            var regex_token = token.replace('\[', '\\[');
-            regex_token = regex_token.replace('\]', '\\]');
-            regex_token = regex_token.split('|').join('\\|');
-
-            var regex = new RegExp(regex_token, 'g');
-
-            var embedded_html = TSCKEntityEmbedEntity.editor_entity_previews[editor.id][token];
-
-            embedded_html = embedded_html.replace(/srcset=/g, 'src=');
-
-            html = html.replace(regex, embedded_html);
-          }
-
-          editor.setData(html, {
-            callback: function() {
-              if (this.checkDirty()) {
-                console.log("Set updated HTML in editor.");
-
-                TSCKEntityEmbedEntity.prepareElements(this);
-              }
-            }
-          });
-        }
 
       });
 

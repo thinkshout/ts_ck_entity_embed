@@ -57,6 +57,25 @@ function ts_ck_entity_embed_menu() {
   );
 
   /**
+   * Provides the HTML of multiple rendered entities.
+   *
+   * Parameters:
+   *   - JSON array of objects in the following format:
+   *     {
+   *       "entity_type": "bean",
+   *       "entity_id": 1,
+   *       "view_mode": "default",
+   *       "alignment": "left"
+   *     }
+   */
+  $items['admin/ts_ck_entity_embed/render-multiple/%'] = array(
+    'page callback' => 'ts_ck_entity_embed_entity_render_multiple',
+    'page arguments' => array(3),
+    'access callback' => 'ts_ck_entity_embed_permission',
+    'type' => MENU_CALLBACK,
+  );
+
+  /**
    * Provides the HTML of a rendered entity preview.
    *
    * Parameters:
@@ -475,6 +494,43 @@ function ts_ck_entity_embed_entity_render($entity_type, $entity_id, $view_mode, 
   else {
     echo $content;
   }
+}
+
+/**
+ * Page callback for entity render multiple URL.
+ */
+function ts_ck_entity_embed_entity_render_multiple($entity_data_str) {
+  $content = array();
+
+  $entity_info = ts_ck_entity_embed_get_entity_info();
+
+  $entity_data = json_decode($entity_data_str);
+
+  foreach ($entity_data as $data) {
+    if (isset($entity_info[$data->entity_type])) {
+      $render_method = $entity_info[$data->entity_type]['render_method'];
+      if (function_exists($render_method)) {
+
+        $entity = entity_load_single($data->entity_type, $data->entity_id);
+
+        if ($entity !== FALSE) {
+          $entity_key = $data->entity_type . '_' . $data->entity_id . '_' . $data->view_mode . '_' . $data->alignment;
+
+          if (!isset($content[$entity_key])) {
+            $rendered_content = $render_method($entity, $data->view_mode, TRUE);
+
+            $rendered_content = preg_replace('/<a(.*?)href="(.*?)"(.*?)>/', '', $rendered_content);
+            $rendered_content = preg_replace('/<\/a>/', '', $rendered_content);
+
+            $content[$entity_key] = ts_ck_entity_embed_wrap_content_alignment($rendered_content, $data->alignment);
+          }
+        }
+
+      }
+    }
+  }
+
+  echo json_encode($content);
 }
 
 /**

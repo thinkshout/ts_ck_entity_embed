@@ -168,7 +168,6 @@ jQuery(document).ready(function ($) {
 
           if (data) {
             // Replace all parsed tokens with preview HTML in the editor.
-
             var entity_markup = JSON.parse(data);
 
             var html = editor.getData();
@@ -176,20 +175,16 @@ jQuery(document).ready(function ($) {
             for (var key in entity_markup) {
               var key_parts = key.split('|');
 
-              var token = '[ts_ck_entity_embed'
-                + '|entity_type=' + key_parts[0]
-                + '|entity_id=' + key_parts[1]
-                + '|view_mode=' + key_parts[2]
-                + '|alignment=' + key_parts[3]
-                + ']';
-
-              var regex_token = token.replace('\[', '\\[');
-              regex_token = regex_token.replace('\]', '\\]');
-              regex_token = regex_token.split('|').join('\\|');
+              var regex_token = '\\[ts_ck_entity_embed'
+                + '\\|entity_type=' + key_parts[0]
+                + '\\|entity_id=' + key_parts[1]
+                + '\\|view_mode=' + key_parts[2]
+                + '\\|alignment=' + key_parts[3]
+                + '\\]';
 
               var regex = new RegExp(regex_token, 'g');
 
-              var embedded_html = entity_markup[key];
+              var embedded_html = TSCKEntityEmbedEntity.generatePreviewHtml(key_parts[0], key_parts[1], key_parts[2], key_parts[3], entity_markup[key]);
 
               embedded_html = embedded_html.replace(/srcset=/g, 'src=');
 

@@ -21,6 +21,14 @@ function TSCKEntityEmbedEntityBrowser (jQuery, browser_element) {
     // Override any links that appear in elements in the browser.
     this.browser_element.contents().find("div.ts-ck-entity-embed-browser-entity a").off("click").on("click", this.$.proxy(this.entityLinkClickHandler, this));
 
+    // Remove loading indicator.
+    this.browser_element.contents().find(".ts-ck-entity-embed-loading").remove();
+
+    // Display view elements.
+    this.browser_element.contents().find(".view-filters").show();
+    this.browser_element.contents().find(".view-content").show();
+    this.browser_element.contents().find(".pager").show();
+
   };
 
   this.entityClickHandler = function (event) {

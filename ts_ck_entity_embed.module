@@ -457,6 +457,8 @@ function ts_ck_entity_embed_view_render($view_name, $display_id = 'default') {
 
     $content = views_embed_view($view_name, $display_id);
     $content .= '<style type="text/css" media="screen">@import url("' . $css_path . '");</style>';
+
+    $content .= '<div class="ts-ck-entity-embed-loading">Loading...</div>';
   }
 
   echo $content;

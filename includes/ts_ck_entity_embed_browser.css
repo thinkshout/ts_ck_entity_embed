@@ -1,4 +1,11 @@
-.contextual-links-wrapper {
+.ts-ck-entity-embed-loading {
+    text-align: center;
+}
+
+.contextual-links-wrapper,
+.view-filters,
+.view-content,
+.pager {
     display: none;
 }
 

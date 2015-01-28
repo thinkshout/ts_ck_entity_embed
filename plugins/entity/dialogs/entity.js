@@ -9,10 +9,7 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
   entity_info = Drupal.settings.ts_ck_entity_embed.entity_info;
 
   tabs = [];
-  buttons = [
-    CKEDITOR.dialog.cancelButton,
-    CKEDITOR.dialog.okButton,
-  ];
+  buttons = [];
 
   var next_button = {
     id: 'next',
@@ -58,6 +55,9 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
   }
 
   buttons.push(remove_button);
+
+  buttons.push(CKEDITOR.dialog.cancelButton);
+  buttons.push(CKEDITOR.dialog.okButton);
 
   entity_browsers = [];
   entity_search_boxes = [];
@@ -318,8 +318,12 @@ jQuery(document).ready(function ($) {
         TSCKEntityEmbedEntityDialog.dialog.enableButton('next');
       }
 
+
       TSCKEntityEmbedEntityDialog.dialog.disableButton('back');
       TSCKEntityEmbedEntityDialog.dialog.disableButton('ok');
+      TSCKEntityEmbedEntityDialog.dialog.disableButton('remove');
+
+      TSCKEntityEmbedEntityDialog.dialog.enableButton('cancel');
 
     },
 
@@ -330,11 +334,13 @@ jQuery(document).ready(function ($) {
 
       TSCKEntityEmbedEntityDialog.refreshPreview();
 
+      TSCKEntityEmbedEntityDialog.dialog.disableButton('cancel');
       TSCKEntityEmbedEntityDialog.dialog.disableButton('next');
+
       TSCKEntityEmbedEntityDialog.dialog.enableButton('back');
       TSCKEntityEmbedEntityDialog.dialog.enableButton('ok');
 
-      if (TSCKEntityEmbedEntity.selected_entity !== null) {
+      if (TSCKEntityEmbedEntity.selected_element !== null) {
         TSCKEntityEmbedEntityDialog.dialog.enableButton('remove');
       }
 
@@ -416,6 +422,8 @@ jQuery(document).ready(function ($) {
       }
 
       CKEDITOR.dialog.getCurrent().hide();
+
+      TSCKEntityEmbedEntityDialog.reset();
 
     }
 

@@ -44,6 +44,21 @@ CKEDITOR.dialog.add('entityDialog', function (editor) {
 
   buttons.push(back_button);
 
+  var remove_button = {
+    id: 'remove',
+    type: 'button',
+    label: 'Remove',
+    title: 'Remove embedded entity',
+    accessKey: 'R',
+    disabled: false,
+    onClick: function()
+    {
+      TSCKEntityEmbedEntityDialog.removeEntity();
+    }
+  }
+
+  buttons.push(remove_button);
+
   entity_browsers = [];
   entity_search_boxes = [];
   entity_preview = null;
@@ -204,6 +219,7 @@ jQuery(document).ready(function ($) {
     TSCKEntityEmbedEntityDialog.dialog.disableButton('ok');
     TSCKEntityEmbedEntityDialog.dialog.disableButton('next');
     TSCKEntityEmbedEntityDialog.dialog.disableButton('back');
+    TSCKEntityEmbedEntityDialog.dialog.disableButton('remove');
 
     $.getScript('/' + base_path + '/includes/ts_ck_entity_embed_preview.js').done(function (script, textStatus) {
 
@@ -318,6 +334,10 @@ jQuery(document).ready(function ($) {
       TSCKEntityEmbedEntityDialog.dialog.enableButton('back');
       TSCKEntityEmbedEntityDialog.dialog.enableButton('ok');
 
+      if (TSCKEntityEmbedEntity.selected_entity !== null) {
+        TSCKEntityEmbedEntityDialog.dialog.enableButton('remove');
+      }
+
     },
 
     TSCKEntityEmbedEntityDialog.hidePreview = function () {
@@ -386,6 +406,16 @@ jQuery(document).ready(function ($) {
 
       TSCKEntityEmbedEntity.selected_element = null;
       TSCKEntityEmbedEntity.selected_entity = null;
+
+    },
+
+    TSCKEntityEmbedEntityDialog.removeEntity = function (editor) {
+
+      if (TSCKEntityEmbedEntity.selected_element !== null) {
+        TSCKEntityEmbedEntity.removeEntityPreviewHtml(TSCKEntityEmbedEntity.selected_element);
+      }
+
+      CKEDITOR.dialog.getCurrent().hide();
 
     }
 

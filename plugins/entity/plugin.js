@@ -237,6 +237,12 @@ jQuery(document).ready(function ($) {
 
     },
 
+    TSCKEntityEmbedEntity.removeEntityPreviewHtml = function (element) {
+
+      element.remove();
+
+    },
+
     TSCKEntityEmbedEntity.generatePreviewHtml = function (entity_type, entity_id, view_mode, alignment, html) {
 
       var element_id = 'entity-preview-' + entity_type + '-' + entity_id + '-' + view_mode + '-' + alignment;

@@ -131,7 +131,11 @@ function ts_ck_entity_embed_ckeditor_settings_alter(&$settings, $conf) {
   // Prevent CKEditor stripping images from the Picture module.
   $settings['extraAllowedContent'] .= ';picture;source;*[media]';
 
+  // Prevent extra newlines around emedded entities.
   $settings['fillEmptyBlocks'] = FALSE;
+
+  // Prevent magicline plugin interfering with embedded entities.
+  $settings['removePlugins'] = 'magicline';
 
   // Add custom CSS files.
   $css_paths = ts_ck_entity_embed_get_editor_css();

@@ -453,10 +453,18 @@ function ts_ck_entity_embed_view_render($view_name, $display_id = 'default') {
 
   $view = views_get_view($view_name);
   if ($view && $view->access($display_id)) {
-    $css_path = '/' . drupal_get_path('module', 'ts_ck_entity_embed') . '/includes/ts_ck_entity_embed_browser.css';
+    $custom_css_path = '/' . drupal_get_path('module', 'ts_ck_entity_embed') . '/includes/ts_ck_entity_embed_browser.css';
+    $content = '<style type="text/css" media="screen">@import url("' . $custom_css_path . '");</style>';
 
-    $content = views_embed_view($view_name, $display_id);
-    $content .= '<style type="text/css" media="screen">@import url("' . $css_path . '");</style>';
+    $content .= drupal_get_css();
+    $content .= drupal_get_js();
+
+    $view = views_get_view($view_name);
+    if ($view && $view->access($display_id)) {
+      $view->pre_execute();
+      $view->execute();
+      $content .= $view->render($display_id);
+    }
 
     $content .= '<div class="ts-ck-entity-embed-loading">Loading...</div>';
   }

@@ -19,6 +19,8 @@ function TSCKEntityEmbedEntityPreview (jQuery, preview_element) {
     else {
       console.log('Refreshing entity preview: ' + this.preview_element[0].id);
 
+      this.preview_element.contents().find("body").html("<div style=\"text-align: center\">Loading...</div>");
+
       var preview_url = '/admin/ts_ck_entity_embed/preview/render/' + entity.entity_type + '/' + entity.entity_id + '/' + entity.view_mode + '/' + entity.alignment;
 
       this.preview_element.attr('src', preview_url);

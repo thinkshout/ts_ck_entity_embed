@@ -24,6 +24,8 @@ CKEDITOR.plugins.add('entity', {
 
       if (event.editor.mode == 'source') {
         console.log("Switched to source mode.");
+
+        TSCKEntityEmbedEntity.insertTokensFromSource(event.editor);
       }
       else {
         console.log("Switched to HTML mode.");
@@ -104,6 +106,31 @@ jQuery(document).ready(function ($) {
     }
 
   },
+
+    TSCKEntityEmbedEntity.insertTokensFromSource = function (editor) {
+
+      var html = editor.getData();
+
+      var elements = $('<div/>').append(html);
+
+      elements.find(".ts-ck-entity-embed-entity-preview").each(function () {
+
+        var element_id_parts = $(this).attr("id").split('-');
+
+        var entity_type = element_id_parts[2];
+        var entity_id = element_id_parts[3];
+        var view_mode = element_id_parts[4];
+        var alignment = element_id_parts[5];
+
+        var token = TSCKEntityEmbedEntity.generateToken(entity_type, entity_id, view_mode, alignment);
+
+        $(this).replaceWith(token);
+
+      });
+
+      editor.setData(elements.text());
+
+    },
 
     TSCKEntityEmbedEntity.insertTokens = function (editor) {
 

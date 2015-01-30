@@ -15,6 +15,9 @@ function TSCKEntityEmbedEntityBrowser (jQuery, browser_element) {
 
     console.log('Refreshing entity browser: ' + this.browser_element[0].id);
 
+    // Reset selected entity highlighting.
+    this.browser_element.contents().find("div.ts-ck-entity-embed-browser-entity").removeClass("ts-ck-entity-embed-selected-entity");
+
     // Set up click handler for elements in the browser.
     this.browser_element.contents().find("div.ts-ck-entity-embed-browser-entity").on("click", this.$.proxy(this.entityClickHandler, this));
 
@@ -28,6 +31,13 @@ function TSCKEntityEmbedEntityBrowser (jQuery, browser_element) {
     this.browser_element.contents().find(".view-filters").show();
     this.browser_element.contents().find(".view-content").show();
     this.browser_element.contents().find(".pager").show();
+
+  };
+
+  this.reset = function () {
+
+    // Reset selected entity highlighting.
+    this.browser_element.contents().find("div.ts-ck-entity-embed-browser-entity").removeClass("ts-ck-entity-embed-selected-entity");
 
   };
 

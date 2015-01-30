@@ -253,6 +253,7 @@ jQuery(document).ready(function ($) {
         }
         else
         {
+          TSCKEntityEmbedEntityDialog.reset();
           TSCKEntityEmbedEntityDialog.showEntitySearch();
         }
       }
@@ -263,6 +264,10 @@ jQuery(document).ready(function ($) {
 
       TSCKEntityEmbedEntity.selected_element = null;
       TSCKEntityEmbedEntity.selected_entity = null;
+
+      for (var i = 0; i < entity_browsers.length; i++) {
+        entity_browsers[i].reset();
+      }
 
     },
 

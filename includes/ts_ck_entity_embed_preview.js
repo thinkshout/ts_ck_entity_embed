@@ -3,7 +3,7 @@ function TSCKEntityEmbedEntityPreview (jQuery, preview_element) {
 
   this.$ = jQuery;
   this.preview_element = preview_element;
-  this.entity = null;
+  this.lastEntity = null;
 
   this.init = function () {
 
@@ -25,7 +25,12 @@ function TSCKEntityEmbedEntityPreview (jQuery, preview_element) {
 
       this.preview_element.attr('src', preview_url);
 
-      this.entity = entity;
+      this.lastEntity = {
+        entity_type: entity.entity_type,
+        entity_id: entity.entity_id,
+        view_mode: entity.view_mode,
+        alignment: entity.alignment
+      };
     }
 
   };
@@ -39,11 +44,11 @@ function TSCKEntityEmbedEntityPreview (jQuery, preview_element) {
 
   this.compareEntity = function (entity) {
 
-    if (this.entity != null) {
-      return ((entity.entity_type == this.entity.entity_type)
-        && (entity.entity_id == this.entity.entity_id)
-        && (entity.view_mode == this.entity.view_mode)
-        && (entity.alignment == this.entity.alignment))
+    if (this.lastEntity != null) {
+      return ((entity.entity_type == this.lastEntity.entity_type)
+        && (entity.entity_id == this.lastEntity.entity_id)
+        && (entity.view_mode == this.lastEntity.view_mode)
+        && (entity.alignment == this.lastEntity.alignment))
     }
 
     return false;

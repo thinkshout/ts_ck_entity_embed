@@ -218,15 +218,11 @@ jQuery(document).ready(function ($) {
               html = html.replace(regex, embedded_html);
             }
 
-            editor.setData(html, {
-              callback: function() {
-                if (this.checkDirty()) {
-                  console.log("Set updated HTML in editor.");
-
-                  TSCKEntityEmbedEntity.prepareElements(this);
-                }
-              }
-            });
+            editor.setData(html, function(editor) {
+              console.log("DATA SET");
+              this.updateElement();
+              TSCKEntityEmbedEntity.prepareElements(this);
+            } );
           }
 
         });

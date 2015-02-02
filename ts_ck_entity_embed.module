@@ -372,6 +372,7 @@ function ts_ck_entity_embed_default_entity_info() {
 function ts_ck_entity_embed_get_editor_css() {
   $files = array(
     drupal_get_path('module', 'ts_ck_entity_embed') . '/includes/ts_ck_entity_embed.css',
+    drupal_get_path('module', 'ts_ck_entity_embed') . '/includes/ts_ck_entity_embed_editor.css',
   );
 
   foreach (module_implements('ts_ck_entity_embed_editor_css') as $module) {

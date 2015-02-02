@@ -1,11 +1,3 @@
-html {
-    background: none !important;
-}
-
-body {
-    padding: 10px !important;
-}
-
 .cke_reset_all, .cke_reset_all * {
     white-space: normal !important;
 }

@@ -36,7 +36,7 @@ CKEDITOR.plugins.add('entity', {
     });
 
     // Register the file containing the dialog window code.
-    CKEDITOR.dialog.add('entityDialog', this.path + 'dialogs/entity.js');
+    CKEDITOR.dialog.add('entityDialog', this.path + 'dialogs/entity.js?v=' + Drupal.settings.cache_string);
 
     TSCKEntityEmbedEntity.init(editor);
   }

@@ -254,7 +254,7 @@ jQuery(document).ready(function ($) {
 
         var preview_html = TSCKEntityEmbedEntity.generatePreviewHtml(entity_type, entity_id, view_mode, alignment, data);
 
-        var new_element = CKEDITOR.dom.element.createFromHtml(preview_html);
+        var new_element = CKEDITOR.dom.element.createFromHtml('<p>' + preview_html + '</p>');
 
         new_element.replace(element);
 

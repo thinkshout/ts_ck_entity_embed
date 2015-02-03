@@ -128,7 +128,7 @@ jQuery(document).ready(function ($) {
 
       });
 
-      editor.setData(elements.text());
+      editor.setData(elements.html());
 
     },
 

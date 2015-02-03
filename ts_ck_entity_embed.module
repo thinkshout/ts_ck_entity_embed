@@ -132,7 +132,7 @@ function ts_ck_entity_embed_ckeditor_settings_alter(&$settings, $conf) {
   $settings['extraAllowedContent'] .= ';picture;source;*[media]';
 
   // Prevent extra newlines around emedded entities.
-  $settings['fillEmptyBlocks'] = FALSE;
+  //$settings['fillEmptyBlocks'] = FALSE;
 
   // Prevent magicline plugin interfering with embedded entities.
   $settings['removePlugins'] = 'magicline';

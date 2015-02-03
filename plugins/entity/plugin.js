@@ -304,6 +304,8 @@ jQuery(document).ready(function ($) {
         }
       }
 
+      TSCKEntityEmbedEntity.resetCursor(editor);
+
     },
 
     TSCKEntityEmbedEntity.selectEntity = function (entity_type, entity_id, view_mode, alignment) {
@@ -314,6 +316,14 @@ jQuery(document).ready(function ($) {
         view_mode: view_mode,
         alignment: alignment,
       };
+
+    },
+
+    TSCKEntityEmbedEntity.resetCursor = function (editor) {
+
+      var range = editor.createRange();
+      range.moveToElementEditEnd(range.root);
+      editor.getSelection().selectRanges([range]);
 
     }
 

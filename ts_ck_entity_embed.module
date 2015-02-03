@@ -217,7 +217,7 @@ function ts_ck_entity_embed_form_alter(&$form, &$form_state, $form_id) {
     $form['#attached']['css'] = array();
   }
 
-  $form['#attached']['css'][] = drupal_get_path('module', 'ts_ck_entity_embed') . '/includes/ts_ck_entity_embed.css';
+  $form['#attached']['css'][] = drupal_get_path('module', 'ts_ck_entity_embed') . '/includes/ts_ck_entity_embed.css?' . variable_get('css_js_query_string', '');
 }
 
 /**
@@ -371,8 +371,8 @@ function ts_ck_entity_embed_default_entity_info() {
  */
 function ts_ck_entity_embed_get_editor_css() {
   $files = array(
-    drupal_get_path('module', 'ts_ck_entity_embed') . '/includes/ts_ck_entity_embed.css',
-    drupal_get_path('module', 'ts_ck_entity_embed') . '/includes/ts_ck_entity_embed_editor.css',
+    drupal_get_path('module', 'ts_ck_entity_embed') . '/includes/ts_ck_entity_embed.css?' . variable_get('css_js_query_string', ''),
+    drupal_get_path('module', 'ts_ck_entity_embed') . '/includes/ts_ck_entity_embed_editor.css?' . variable_get('css_js_query_string', ''),
   );
 
   foreach (module_implements('ts_ck_entity_embed_editor_css') as $module) {

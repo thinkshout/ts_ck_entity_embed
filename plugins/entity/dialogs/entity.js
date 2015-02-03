@@ -169,7 +169,7 @@ jQuery(document).ready(function ($) {
     TSCKEntityEmbedEntityDialog.dialog = CKEDITOR.dialog.getCurrent();
 
     // Load entity browser.
-    $.getScript('/' + base_path + '/includes/ts_ck_entity_embed_browser.js?v=' + Drupal.settings.cache_string).done(function (script, textStatus) {
+    $.getScript('/' + base_path + '/includes/ts_ck_entity_embed_browser.js?' + Drupal.settings.cache_string).done(function (script, textStatus) {
 
       console.log("Entity browser script loaded.");
 
@@ -193,7 +193,7 @@ jQuery(document).ready(function ($) {
     });
 
     // Load entity search box.
-    $.getScript('/' + base_path + '/includes/ts_ck_entity_embed_search_box.js?v=' + Drupal.settings.cache_string).done(function (script, textStatus) {
+    $.getScript('/' + base_path + '/includes/ts_ck_entity_embed_search_box.js?' + Drupal.settings.cache_string).done(function (script, textStatus) {
 
       console.log("Entity search box script loaded.");
 
@@ -221,7 +221,7 @@ jQuery(document).ready(function ($) {
     TSCKEntityEmbedEntityDialog.dialog.disableButton('back');
     TSCKEntityEmbedEntityDialog.dialog.disableButton('remove');
 
-    $.getScript('/' + base_path + '/includes/ts_ck_entity_embed_preview.js?v=' + Drupal.settings.cache_string).done(function (script, textStatus) {
+    $.getScript('/' + base_path + '/includes/ts_ck_entity_embed_preview.js?' + Drupal.settings.cache_string).done(function (script, textStatus) {
 
       console.log("Entity preview script loaded.");
 

@@ -199,6 +199,10 @@ jQuery(document).ready(function ($) {
 
             var html = editor.getData();
 
+            // Clean up paragraph tags around tokens.
+            html = html.replace(/<p>\[/g, '[');
+            html = html.replace(/\]<\/p>/g, ']');
+
             for (var key in entity_markup) {
               var key_parts = key.split('|');
 

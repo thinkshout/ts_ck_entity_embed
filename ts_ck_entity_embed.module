@@ -217,7 +217,7 @@ function ts_ck_entity_embed_form_alter(&$form, &$form_state, $form_id) {
     $form['#attached']['css'] = array();
   }
 
-  $form['#attached']['css'][] = drupal_get_path('module', 'ts_ck_entity_embed') . '/includes/ts_ck_entity_embed.css?' . variable_get('css_js_query_string', '');
+  $form['#attached']['css'][] = drupal_get_path('module', 'ts_ck_entity_embed') . '/includes/ts_ck_entity_embed.css';
 }
 
 /**
@@ -459,7 +459,7 @@ function ts_ck_entity_embed_view_render($view_name, $display_id = 'default') {
 
   $view = views_get_view($view_name);
   if ($view && $view->access($display_id)) {
-    $custom_css_path = '/' . drupal_get_path('module', 'ts_ck_entity_embed') . '/includes/ts_ck_entity_embed_browser.css';
+    $custom_css_path = '/' . drupal_get_path('module', 'ts_ck_entity_embed') . '/includes/ts_ck_entity_embed_browser.css?' . variable_get('css_js_query_string', '');
     $custom_js_path = '/misc/autocomplete.js';
 
     $content = drupal_get_css();

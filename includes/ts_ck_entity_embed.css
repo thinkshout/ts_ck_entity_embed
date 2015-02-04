@@ -50,6 +50,7 @@
   clear: both;
   float: none;
   max-width: 600px;
+  min-width: 0;
   margin: 0 auto;
 }
 
@@ -73,6 +74,7 @@
     float: right;
     margin: 2em 0 2em 2em;
     max-width: 28%;
+    min-width: 28%;
   }
 }
 

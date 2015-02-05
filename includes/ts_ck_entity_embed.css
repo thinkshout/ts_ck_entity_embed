@@ -58,7 +58,7 @@
   .fh-entity-embed-center {
     clear: both;
     float: none;
-    max-width: 600px;
+    width: 100%;
     margin: 0 auto;
   }
 

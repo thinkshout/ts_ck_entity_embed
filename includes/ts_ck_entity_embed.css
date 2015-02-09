@@ -97,7 +97,7 @@
     #ts-ck-entity-embed-preview-box .ts-ck-entity-embed-right,
     .ts-ck-entity-embed-entity-preview .ts-ck-entity-embed-left,
     .ts-ck-entity-embed-entity-preview .ts-ck-entity-embed-right {
-        max-width: none !important;
+        max-width: 28% !important;
     }
 
     #ts-ck-entity-embed-preview-box .ts-ck-entity-embed-center,

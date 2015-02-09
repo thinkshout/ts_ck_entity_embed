@@ -4,3 +4,4 @@ package = TS CK Entity Embed
 core = 7.x
 
 dependencies[] = ckeditor
+dependencies[] = views

@@ -5,12 +5,21 @@
  * Defines core TS CK Entity Embed functionality.
  */
 
+include_once 'ts_ck_entity_embed.features.inc';
+
 /**
- * Implements hook_menu().
+ * Implements hook_menu()
  */
 function ts_ck_entity_embed_menu() {
   $items = array();
 
+  /**
+   * Provides a JSON-encoded array of entity IDs and labels.
+   *
+   * Parameters:
+   *   - Entity type
+   *   - Search string
+   */
   $items['admin/ts_ck_entity_embed/entities/%/%'] = array(
     'page callback' => 'ts_ck_entity_embed_entity_search',
     'page arguments' => array(3, 4),
@@ -18,9 +27,66 @@ function ts_ck_entity_embed_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  /**
+   * Provides the HTML of a rendered view.
+   *
+   * Parameters:
+   *   - View ID
+   */
+  $items['admin/ts_ck_entity_embed/view/%'] = array(
+    'page callback' => 'ts_ck_entity_embed_view_render',
+    'page arguments' => array(3),
+    'access callback' => 'ts_ck_entity_embed_permission',
+    'type' => MENU_CALLBACK,
+  );
+
+  /**
+   * Provides the HTML of a rendered entity.
+   *
+   * Parameters:
+   *   - Entity type
+   *   - Entity ID
+   *   - View mode
+   *   - Alignment
+   */
   $items['admin/ts_ck_entity_embed/render/%/%/%/%'] = array(
     'page callback' => 'ts_ck_entity_embed_entity_render',
     'page arguments' => array(3, 4, 5, 6),
+    'access callback' => 'ts_ck_entity_embed_permission',
+    'type' => MENU_CALLBACK,
+  );
+
+  /**
+   * Provides the HTML of multiple rendered entities.
+   *
+   * Parameters:
+   *   - JSON array of objects in the following format:
+   *     {
+   *       "entity_type": "bean",
+   *       "entity_id": 1,
+   *       "view_mode": "default",
+   *       "alignment": "left"
+   *     }
+   */
+  $items['admin/ts_ck_entity_embed/render-multiple/%'] = array(
+    'page callback' => 'ts_ck_entity_embed_entity_render_multiple',
+    'page arguments' => array(3),
+    'access callback' => 'ts_ck_entity_embed_permission',
+    'type' => MENU_CALLBACK,
+  );
+
+  /**
+   * Provides the HTML of a rendered entity preview.
+   *
+   * Parameters:
+   *   - Entity type
+   *   - Entity ID
+   *   - View mode
+   *   - Alignment
+   */
+  $items['admin/ts_ck_entity_embed/preview/render/%/%/%/%'] = array(
+    'page callback' => 'ts_ck_entity_embed_entity_preview_render',
+    'page arguments' => array(4, 5, 6, 7),
     'access callback' => 'ts_ck_entity_embed_permission',
     'type' => MENU_CALLBACK,
   );
@@ -29,7 +95,7 @@ function ts_ck_entity_embed_menu() {
 }
 
 /**
- * Implements hook_hook_info().
+ * Implements hook_hook_info()
  */
 function ts_ck_entity_embed_hook_info() {
   $hooks = array(
@@ -42,7 +108,7 @@ function ts_ck_entity_embed_hook_info() {
 }
 
 /**
- * Implements hook_permission().
+ * Implements hook_permission()
  */
 function ts_ck_entity_embed_permission() {
   return array(
@@ -53,18 +119,36 @@ function ts_ck_entity_embed_permission() {
 }
 
 /**
- * Implements hook_ckeditor_settings_alter().
+ * Implements hook_ckeditor_settings_alter()
  */
 function ts_ck_entity_embed_ckeditor_settings_alter(&$settings, $conf) {
   // Prevent CKEditor stripping IDs and classes from elements.
   $settings['extraAllowedContent'] = '*[id](*)';
 
+  // Prevent CKEditor stripping objects (embedded videos, etc)
+  $settings['extraAllowedContent'] .= ';object[type,data,width,height,class,seamlesstabbing];param[name,value]';
+
   // Prevent CKEditor stripping images from the Picture module.
   $settings['extraAllowedContent'] .= ';picture;source;*[media]';
+
+  // Prevent extra newlines around emedded entities.
+  //$settings['fillEmptyBlocks'] = FALSE;
+
+  // Prevent magicline plugin interfering with embedded entities.
+  $settings['removePlugins'] = 'magicline';
+
+  // Add custom CSS files.
+  $css_paths = ts_ck_entity_embed_get_editor_css();
+
+  foreach ($css_paths as $css_path) {
+    $settings['contentsCss'][] = '/' . $css_path;
+  }
+
+  $settings['bodyId'] = 'content';
 }
 
 /**
- * Implements hook_ckeditor_plugin().
+ * Implements hook_ckeditor_plugin()
  */
 function ts_ck_entity_embed_ckeditor_plugin() {
   $plugins = array();
@@ -85,9 +169,21 @@ function ts_ck_entity_embed_ckeditor_plugin() {
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
+ * Implements hook_form_alter()
  */
 function ts_ck_entity_embed_form_alter(&$form, &$form_state, $form_id) {
+
+  $entity_info = ts_ck_entity_embed_get_entity_info();
+
+  foreach ($entity_info as $entity_type => $info) {
+    if (isset($info['view_name'])) {
+      if ($form['#id'] == 'views-exposed-form-' . str_replace('_', '-', $info['view_name']) . '-default') {
+        $form['#action'] = '/' . $_GET['q'];
+        continue;
+      }
+    }
+  }
+
   // TODO: Limit to forms with CKEditor enabled.
 
   // Attach embeddable entity info to form.
@@ -96,7 +192,12 @@ function ts_ck_entity_embed_form_alter(&$form, &$form_state, $form_id) {
   $attached_js = array(
     array(
       'data' => array(
-        'ts_ck_entity_embed' => array('entity_info' => $entity_info),
+        'ts_ck_entity_embed' => array(
+          'base_path' => drupal_get_path('module', 'ts_ck_entity_embed'),
+          'js_files' => ts_ck_entity_embed_get_editor_js(),
+          'entity_info' => $entity_info,
+        ),
+        'cache_string' => variable_get('css_js_query_string', ''),
       ),
       'type' => 'setting',
     ),
@@ -120,7 +221,7 @@ function ts_ck_entity_embed_form_alter(&$form, &$form_state, $form_id) {
 }
 
 /**
- * Implements hook_filter_info().
+ * Implements hook_filter_info()
  */
 function ts_ck_entity_embed_filter_info() {
   $filters['ckeditor_entity_embed'] = array(
@@ -130,6 +231,35 @@ function ts_ck_entity_embed_filter_info() {
   );
 
   return $filters;
+}
+
+/**
+ * Implements hook_views_pre_render()
+ */
+function ts_ck_entity_embed_views_pre_render(&$view) {
+  $entity_info = ts_ck_entity_embed_get_entity_info();
+
+  $valid_view = FALSE;
+  foreach ($entity_info as $entity_type => $info) {
+    if (isset($info['view_name']) && ($info['view_name'] == $view->name)) {
+      $valid_view = TRUE;
+      continue;
+    }
+  }
+
+  if ($valid_view) {
+    $result_index = 0;
+    foreach ($view->style_plugin->row_plugin->rendered_content as $name => $content) {
+      $entity = $view->style_plugin->view->result[$result_index];
+
+      $container_id = $view->base_table . '-' . $entity->{$view->base_field};
+
+      $view->style_plugin->row_plugin->rendered_content[$name]['#prefix'] = '<div id="' . $container_id . '" class="ts-ck-entity-embed-browser-entity">';
+      $view->style_plugin->row_plugin->rendered_content[$name]['#suffix'] = '</div>';
+
+      $result_index++;
+    }
+  }
 }
 
 /**
@@ -204,10 +334,14 @@ function ts_ck_entity_embed_get_entity_info() {
     foreach (module_implements('ts_ck_entity_embed_entity_info') as $module) {
       foreach (module_invoke($module, 'ts_ck_entity_embed_entity_info') as $entity_type => $info) {
         $entity_info[$entity_type] = $info;
-        $entity_info[$entity_type]['view_modes'] = ts_ck_entity_embed_get_view_modes($entity_type);
+        if (!isset($entity_info[$entity_type]['view_modes']) || empty($entity_info[$entity_type]['view_modes'])) {
+          $entity_info[$entity_type]['view_modes'] = ts_ck_entity_embed_get_view_modes($entity_type);
+        }
       }
     }
   }
+
+  drupal_alter('ts_ck_entity_embed_entity_info', $entity_info);
 
   return $entity_info;
 }
@@ -220,13 +354,51 @@ function ts_ck_entity_embed_get_entity_info() {
 function ts_ck_entity_embed_default_entity_info() {
   $entity_info = array(
     'bean' => array(
+      'tab_label' => 'Bean',
       'render_method' => 'ts_ck_entity_embed_render_bean',
-      'search_field' => 'label',
+      'view_name' => 'ts_ck_entity_embed_bean',
       'view_modes' => ts_ck_entity_embed_get_view_modes('bean'),
     ),
   );
 
   return $entity_info;
+}
+
+/**
+ * Returns an array of CSS file paths to include in the editor.
+ *
+ * @see hook_ts_ck_entity_embed_editor_css()
+ */
+function ts_ck_entity_embed_get_editor_css() {
+  $files = array(
+    drupal_get_path('module', 'ts_ck_entity_embed') . '/includes/ts_ck_entity_embed.css?' . variable_get('css_js_query_string', ''),
+    drupal_get_path('module', 'ts_ck_entity_embed') . '/includes/ts_ck_entity_embed_editor.css?' . variable_get('css_js_query_string', ''),
+  );
+
+  foreach (module_implements('ts_ck_entity_embed_editor_css') as $module) {
+    foreach (module_invoke($module, 'ts_ck_entity_embed_editor_css') as $path) {
+      $files[] = $path;
+    }
+  }
+
+  return $files;
+}
+
+/**
+ * Returns an array of JS file paths to include in the editor.
+ *
+ * @see hook_ts_ck_entity_embed_editor_js()
+ */
+function ts_ck_entity_embed_get_editor_js() {
+  $files = array();
+
+  foreach (module_implements('ts_ck_entity_embed_editor_js') as $module) {
+    foreach (module_invoke($module, 'ts_ck_entity_embed_editor_js') as $path) {
+      $files[] = $path;
+    }
+  }
+
+  return $files;
 }
 
 function ts_ck_entity_embed_get_view_modes($entity_type) {
@@ -280,9 +452,39 @@ function ts_ck_entity_embed_entity_search($entity_type, $string) {
 }
 
 /**
+ * Page callback for view render URL.
+ */
+function ts_ck_entity_embed_view_render($view_name, $display_id = 'default') {
+  $content = '';
+
+  $view = views_get_view($view_name);
+  if ($view && $view->access($display_id)) {
+    $custom_css_path = '/' . drupal_get_path('module', 'ts_ck_entity_embed') . '/includes/ts_ck_entity_embed_browser.css?' . variable_get('css_js_query_string', '');
+    $custom_js_path = '/misc/autocomplete.js';
+
+    $content = drupal_get_css();
+    $content .= drupal_get_js();
+
+    $view = views_get_view($view_name);
+    if ($view && $view->access($display_id)) {
+      $view->pre_execute();
+      $view->execute();
+      $content .= $view->render($display_id);
+    }
+
+    $content .= '<div class="ts-ck-entity-embed-loading">Loading...</div>';
+
+    $content .= '<style type="text/css" media="screen">@import url("' . $custom_css_path . '");</style>';
+    $content .= '<script type="text/javascript" src="' . $custom_js_path . '"></script>';
+  }
+
+  echo $content;
+}
+
+/**
  * Page callback for entity render URL.
  */
-function ts_ck_entity_embed_entity_render($entity_type, $entity_id, $view_mode, $alignment) {
+function ts_ck_entity_embed_entity_render($entity_type, $entity_id, $view_mode, $alignment, $return_content = FALSE) {
   $content = '';
 
   $entity_info = ts_ck_entity_embed_get_entity_info();
@@ -294,11 +496,94 @@ function ts_ck_entity_embed_entity_render($entity_type, $entity_id, $view_mode, 
       $entity = entity_load_single($entity_type, $entity_id);
 
       if ($entity !== FALSE) {
-        $content = $render_method($entity, $view_mode);
+        $render_in_editor = !$return_content;
+
+        $content = $render_method($entity, $view_mode, $render_in_editor);
         $content = ts_ck_entity_embed_wrap_content_alignment($content, $alignment);
       }
     }
   }
+
+  $content = preg_replace('/<a(.*?)href="(.*?)"(.*?)>/', '', $content);
+  $content = preg_replace('/<\/a>/', '', $content);
+
+  if ($return_content) {
+    return $content;
+  }
+  else {
+    echo $content;
+  }
+}
+
+/**
+ * Page callback for entity render multiple URL.
+ */
+function ts_ck_entity_embed_entity_render_multiple($entity_data_str) {
+  $content = array();
+
+  $entity_info = ts_ck_entity_embed_get_entity_info();
+
+  $entity_data = json_decode($entity_data_str);
+
+  foreach ($entity_data as $data) {
+    if (isset($entity_info[$data->entity_type])) {
+      $render_method = $entity_info[$data->entity_type]['render_method'];
+      if (function_exists($render_method)) {
+
+        $entity = entity_load_single($data->entity_type, $data->entity_id);
+
+        if ($entity !== FALSE) {
+          $entity_key = $data->entity_type . '|' . $data->entity_id . '|' . $data->view_mode . '|' . $data->alignment;
+
+          if (!isset($content[$entity_key])) {
+            $rendered_content = $render_method($entity, $data->view_mode, TRUE);
+
+            $rendered_content = preg_replace('/<a(.*?)href="(.*?)"(.*?)>/', '', $rendered_content);
+            $rendered_content = preg_replace('/<\/a>/', '', $rendered_content);
+
+            $content[$entity_key] = ts_ck_entity_embed_wrap_content_alignment($rendered_content, $data->alignment);
+          }
+        }
+
+      }
+    }
+  }
+
+  echo json_encode($content);
+}
+
+/**
+ * Page callback for entity preview render URL.
+ */
+function ts_ck_entity_embed_entity_preview_render($entity_type, $entity_id, $view_mode, $alignment) {
+  $content = '';
+
+  $css_paths = ts_ck_entity_embed_get_editor_css();
+  foreach ($css_paths as $css_path) {
+    if (strpos($css_path, 'http', 0) === FALSE) {
+      $css_path = '/' . $css_path;
+    }
+    $content .= '<style type="text/css" media="screen">@import url("' . $css_path . '");</style>';
+  }
+
+  $js_paths = ts_ck_entity_embed_get_editor_js();
+  if (!empty($js_paths)) {
+    foreach ($js_paths as $js_path) {
+      if (strpos($js_path, 'http', 0) === FALSE) {
+        $js_path = '/' . $js_path;
+      }
+      $content .= '<script src="' . $js_path . '"></script>';
+    }
+  }
+
+  $content .= '<div id="content">';
+  $content .= '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi semper malesuada semper. Mauris aliquam dui ante, in bibendum leo consequat et. Vestibulum tortor dui, consectetur et odio et, fringilla tempor odio. Nam blandit vestibulum metus eget consectetur. Nam consequat dignissim nunc nec sagittis. Aenean a eleifend felis. Praesent vel est sed lectus pulvinar ultricies. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Pellentesque non facilisis dolor.</p>';
+
+  $content .= ts_ck_entity_embed_entity_render($entity_type, $entity_id, $view_mode, $alignment, TRUE);
+
+  $content .= '<p>Praesent consectetur tortor eget libero rhoncus posuere. Duis finibus ligula sit amet viverra feugiat. Duis at risus feugiat, ullamcorper leo in, tincidunt sapien. Integer vulputate posuere turpis in blandit. Sed accumsan viverra nibh, at laoreet libero feugiat a. Mauris est est, luctus sed nulla eu, porta malesuada augue. Nunc iaculis quam non mollis pellentesque. Sed hendrerit accumsan sapien. Pellentesque ultricies congue justo, at euismod quam placerat sed. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Quisque dolor massa, luctus sagittis est at, dictum aliquam augue. Morbi porta in est feugiat semper. Pellentesque at malesuada quam.</p>';
+  $content .= '<p>Quisque fringilla sit amet ante eget tristique. Maecenas maximus ullamcorper augue, et sagittis metus ullamcorper eu. Etiam sit amet aliquet metus. Fusce posuere ligula vitae euismod ultrices. Proin et tortor vel dolor aliquam scelerisque et vitae lectus. Suspendisse potenti. Curabitur libero velit, volutpat eget nunc sed, mattis dictum erat. Cras ut aliquam urna, non commodo ante. Nam vulputate, dolor eu sodales sodales, neque justo auctor metus, et elementum arcu ex ornare libero. Proin vel tortor ac turpis dapibus tristique suscipit et felis. Quisque eget nisl arcu. Donec ex arcu, dapibus sed lobortis eu, posuere non dolor.</p>';
+  $content .= '</div>';
 
   echo $content;
 }
@@ -306,13 +591,13 @@ function ts_ck_entity_embed_entity_render($entity_type, $entity_id, $view_mode, 
 function ts_ck_entity_embed_wrap_content_alignment($content, $alignment) {
   switch ($alignment) {
     case 'left':
-      $content = '<div class="fh-entity-embed-left">' . $content . '</div>';
+      $content = '<div class="ts-ck-entity-embed-left">' . $content . '</div>';
       break;
     case 'right':
-      $content = '<div class="fh-entity-embed-right">' . $content . '</div>';
+      $content = '<div class="ts-ck-entity-embed-right">' . $content . '</div>';
       break;
     case 'center':
-      $content = '<div class="fh-entity-embed-center">' . $content . '</div>';
+      $content = '<div class="ts-ck-entity-embed-center">' . $content . '</div>';
       break;
   }
 

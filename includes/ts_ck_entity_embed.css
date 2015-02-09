@@ -61,14 +61,6 @@
     margin: 0 auto;
 }
 
-.delete-button {
-    background-image: url('images/delete-icon.png');
-    background-position: top left;
-    background-repeat: no-repeat;
-    height: 24px;
-    width: 24px;
-}
-
 @media (min-width: 768px) {
     .ts-ck-entity-embed-center {
         clear: both;

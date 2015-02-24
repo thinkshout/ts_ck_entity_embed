@@ -585,6 +585,8 @@ function ts_ck_entity_embed_entity_preview_render($entity_type, $entity_id, $vie
   $content .= '<p>Quisque fringilla sit amet ante eget tristique. Maecenas maximus ullamcorper augue, et sagittis metus ullamcorper eu. Etiam sit amet aliquet metus. Fusce posuere ligula vitae euismod ultrices. Proin et tortor vel dolor aliquam scelerisque et vitae lectus. Suspendisse potenti. Curabitur libero velit, volutpat eget nunc sed, mattis dictum erat. Cras ut aliquam urna, non commodo ante. Nam vulputate, dolor eu sodales sodales, neque justo auctor metus, et elementum arcu ex ornare libero. Proin vel tortor ac turpis dapibus tristique suscipit et felis. Quisque eget nisl arcu. Donec ex arcu, dapibus sed lobortis eu, posuere non dolor.</p>';
   $content .= '</div>';
 
+  $content .= drupal_get_js('header');
+
   echo $content;
 }
 

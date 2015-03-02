@@ -492,13 +492,10 @@ function ts_ck_entity_embed_entity_render($entity_type, $entity_id, $view_mode, 
   if (isset($entity_info[$entity_type])) {
     $render_method = $entity_info[$entity_type]['render_method'];
     if (function_exists($render_method)) {
-
       $entity = entity_load_single($entity_type, $entity_id);
 
       if ($entity !== FALSE) {
-        $render_in_editor = !$return_content;
-
-        $content = $render_method($entity, $view_mode, $render_in_editor);
+        $content = $render_method($entity, $view_mode, TRUE);
         $content = ts_ck_entity_embed_wrap_content_alignment($content, $alignment);
       }
     }

@@ -393,7 +393,7 @@ jQuery(document).ready(function ($) {
     TSCKEntityEmbedEntityDialog.selectEntity = function (entity_type, entity_id, view_mode, alignment) {
 
       if (alignment === null) {
-        alignment = 'left';
+        alignment = 'center';
       }
 
       TSCKEntityEmbedEntity.selectEntity(entity_type, entity_id, view_mode, alignment);

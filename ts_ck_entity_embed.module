@@ -311,7 +311,7 @@ function ts_ck_entity_embed_process_callback($matches = array()) {
       $entity = entity_load_single($entity_type, $entity_id);
 
       if ($entity !== FALSE) {
-        $content = $render_method($entity, $view_mode);
+        $content = $render_method($entity, $view_mode, FALSE, FALSE);
         $content = ts_ck_entity_embed_wrap_content_alignment($content, $alignment);
       }
     }
@@ -411,7 +411,7 @@ function ts_ck_entity_embed_get_view_modes($entity_type) {
 /**
  * Render method for embedded bean entities.
  */
-function ts_ck_entity_embed_render_bean($entity, $view_mode) {
+function ts_ck_entity_embed_render_bean($entity, $view_mode, $render_in_preview = FALSE, $render_in_editor = FALSE) {
   $entity_view = bean_view($entity, $view_mode);
   return render($entity_view);
 }
@@ -494,8 +494,10 @@ function ts_ck_entity_embed_entity_render($entity_type, $entity_id, $view_mode, 
     if (function_exists($render_method)) {
       $entity = entity_load_single($entity_type, $entity_id);
 
+      $render_in_editor = !$return_content;
+
       if ($entity !== FALSE) {
-        $content = $render_method($entity, $view_mode, TRUE);
+        $content = $render_method($entity, $view_mode, TRUE, $render_in_editor);
         $content = ts_ck_entity_embed_wrap_content_alignment($content, $alignment);
       }
     }
@@ -533,7 +535,7 @@ function ts_ck_entity_embed_entity_render_multiple($entity_data_str) {
           $entity_key = $data->entity_type . '|' . $data->entity_id . '|' . $data->view_mode . '|' . $data->alignment;
 
           if (!isset($content[$entity_key])) {
-            $rendered_content = $render_method($entity, $data->view_mode, TRUE);
+            $rendered_content = $render_method($entity, $data->view_mode, FALSE, TRUE);
 
             $rendered_content = preg_replace('/<a(.*?)href="(.*?)"(.*?)>/', '', $rendered_content);
             $rendered_content = preg_replace('/<\/a>/', '', $rendered_content);

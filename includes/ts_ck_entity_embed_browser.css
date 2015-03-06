@@ -35,6 +35,7 @@
 
 .view-content .ts-ck-entity-embed-browser-entity img {
     max-width: 100%;
+    height: auto;
 }
 
 .view-content .ts-ck-entity-embed-selected-entity {

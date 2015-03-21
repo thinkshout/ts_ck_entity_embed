@@ -13,25 +13,20 @@ function TSCKEntityEmbedEntityPreview (jQuery, preview_element) {
 
   this.refresh = function (entity) {
 
-    if (this.compareEntity(entity)) {
-      console.log('Not refreshing entity preview, entity unchanged: ' + this.preview_element[0].id);
-    }
-    else {
-      console.log('Refreshing entity preview: ' + this.preview_element[0].id);
+    console.log('Refreshing entity preview: ' + this.preview_element[0].id);
 
-      this.preview_element.contents().find("body").html("<div style=\"text-align: center\">Loading...</div>");
+    this.preview_element.contents().find("body").html("<div style=\"text-align: center\">Loading...</div>");
 
-      var preview_url = '/admin/ts_ck_entity_embed/preview/render/' + entity.entity_type + '/' + entity.entity_id + '/' + entity.view_mode + '/' + entity.alignment;
+    var preview_url = '/admin/ts_ck_entity_embed/preview/render/' + entity.entity_type + '/' + entity.entity_id + '/' + entity.view_mode + '/' + entity.alignment;
 
-      this.preview_element.attr('src', preview_url);
+    this.preview_element.attr('src', preview_url);
 
-      this.lastEntity = {
-        entity_type: entity.entity_type,
-        entity_id: entity.entity_id,
-        view_mode: entity.view_mode,
-        alignment: entity.alignment
-      };
-    }
+    this.lastEntity = {
+      entity_type: entity.entity_type,
+      entity_id: entity.entity_id,
+      view_mode: entity.view_mode,
+      alignment: entity.alignment
+    };
 
   };
 

@@ -460,7 +460,6 @@ function ts_ck_entity_embed_view_render($view_name, $display_id = 'default') {
   $view = views_get_view($view_name);
   if ($view && $view->access($display_id)) {
     $custom_css_path = '/' . drupal_get_path('module', 'ts_ck_entity_embed') . '/includes/ts_ck_entity_embed_browser.css?' . variable_get('css_js_query_string', '');
-    $custom_js_path = '/misc/autocomplete.js';
 
     $content = drupal_get_css();
     $content .= drupal_get_js();
@@ -475,7 +474,16 @@ function ts_ck_entity_embed_view_render($view_name, $display_id = 'default') {
     $content .= '<div class="ts-ck-entity-embed-loading">Loading...</div>';
 
     $content .= '<style type="text/css" media="screen">@import url("' . $custom_css_path . '");</style>';
-    $content .= '<script type="text/javascript" src="' . $custom_js_path . '"></script>';
+
+    $js_paths = ts_ck_entity_embed_get_editor_js();
+    $js_paths[] = 'misc/autocomplete.js';
+
+    foreach ($js_paths as $js_path) {
+      if (strpos($js_path, 'http', 0) === FALSE) {
+        $js_path = '/' . $js_path;
+      }
+      $content .= '<script src="' . $js_path . '"></script>';
+    }
   }
 
   echo $content;

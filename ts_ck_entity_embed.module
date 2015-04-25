@@ -249,7 +249,7 @@ function ts_ck_entity_embed_views_pre_render(&$view) {
 
   if ($valid_view) {
     $result_index = 0;
-    foreach ($view->style_plugin->row_plugin->rendered_content as $name => $content) {
+    foreach (element_children($view->style_plugin->row_plugin->rendered_content, FALSE) as $name => $content) {
       $entity = $view->style_plugin->view->result[$result_index];
 
       $container_id = $view->base_table . '-' . $entity->{$view->base_field};

@@ -228,6 +228,7 @@ function ts_ck_entity_embed_filter_info() {
     'title' => t('CKEditor Entity Embed'),
     'description' => t('Renders entities embedded into a text field.'),
     'process callback' => 'ts_ck_entity_embed_filter_process',
+    'cache' => FALSE,
   );
 
   return $filters;

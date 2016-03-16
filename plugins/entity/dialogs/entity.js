@@ -247,13 +247,16 @@ jQuery(document).ready(function ($) {
       if (editor != null) {
         console.log("Refreshing editor: " + editor.name);
 
-        if ((entity_preview !== null) && (TSCKEntityEmbedEntity.selected_element !== null)) {
+        if ((entity_preview !== null) && (TSCKEntityEmbedEntity.selected_entity !== null)) {
           console.log("Existing entity selected, displaying preview.");
           TSCKEntityEmbedEntityDialog.showPreview();
         }
         else
         {
-          TSCKEntityEmbedEntityDialog.reset();
+          if (entity_preview != null) {
+            TSCKEntityEmbedEntityDialog.reset();
+          }
+
           TSCKEntityEmbedEntityDialog.showEntitySearch();
         }
       }
